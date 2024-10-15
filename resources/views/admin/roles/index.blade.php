@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.partials.layout')
 @section('css')
 
 <link rel="stylesheet" type="text/css"
@@ -31,7 +31,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">ALL ROLES LIST 
+            <h4 class="text-themecolor">All Roles
             </h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
@@ -49,43 +49,29 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <div class="col-sm-12">
                         <section class="card">
                             <header class="card-header bg-info">
-                                <h4 class="mb-0 text-white" >All Roles List</h4>
+                                <div class="row">
+                                    <div class="col-md-6 align-self-center">
+                                        <h4 class="mb-0 text-white" >All Roles List</h4>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <a class="btn btn-primary" href="{{URL::to('admin/roles/create')}}">Create New </a>
+                                    </div>
+                                </div>
                             </header>
                         <div class="card-body">    
                          
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th><input class="name form-control" placeholder="Search By Name"/></th>
-                                            <th>
-                                             <select name="status" class="status form-control" >
-                                                <option value="" >Search By Status</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">Dective</option>
-                                             </select>
-                                            </th>
-                                            <th colspan="2" title="{{__('action')}}" 
-                                            style = "background:white;">
-                                                <div class="restore_list">
-                                                    <button id="searchButton" type="button" class="btn btn-sm btn-success search_list"><i class="fa fa-search"></i>
-                                                    </button>
-                                                </div>
-                                            </th>
-                                        </tr>
                                         <tr class="" >
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Status</th>
-                                            <th class="hidden-phone">Action</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                      </thead>
                                     <tbody>
                              </tbody>
                         </table>
-               
-
-
               </div>
            </div>
           </section>
@@ -98,7 +84,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
        <!-- This is data table -->
        <script src="{{asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
-    
+       <script src="https://www.fatwaqa.com/admin/assets/node_modules/switchery/dist/switchery.min.js"></script>
 
        <script>
         $(function () {
@@ -120,47 +106,57 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 type: "GET",
                 data: function ( d ) {
 
-                        d.name = $('.mydatatable .name').val();
-                        d.status=$('.mydatatable .status').val() ? $('.mydatatable .status').val() : '';
-          
-
                 }
             },
-            columns: [
-              
-                {  
-                   orderable: true, 
-                   searchable: false  
-                },
-
-                {
-                   orderable: true, 
-                   searchable: true  
-                },
-                {
-                   orderable: true, 
-                   searchable: true  
-                },
-                { 
-                  orderable: false, 
-                  searchable: false 
-                },
-                
-            ],
             initComplete: function () {                
             }
         });
 
-        $('input[type=search]').unbind();
+        application_table.on( 'draw', function () {
+            $('.js-switch').each(function () {
+               new Switchery($(this)[0], $(this).data());
+            }); 
+        });
+
+        
         $("#searchButton").click(e =>{ 
             application_table.search($('input[type=search]').val());
             application_table.draw();
         });
 
-        $("#example23 thead .row-checkbox").change(function (e) { 
-            var isChecked = $(this).prop('checked');
-            $('#example23 tbody .row-checkbox').prop('checked', isChecked);
+
+        $(".mydatatable").delegate(".is_status", "change", function(){
+
+            $.toast({
+                        heading: "Status Change Successfully",
+                        position: 'top-right',
+                        loaderBg: '#ff6849',
+                        icon: 'success',
+                        hideAfter: 3500,
+                        stack: 6,
+                    });
+                    
+            $.ajax({
+                url: "{{URL::to('/admin/status')}}",
+                method:"POST",
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    id:$(this).data('id'),
+                    table:'roles',
+                    column:'status',
+                    value: $(this).prop('checked') ? 1: 0,
+                },
+                dataType: "json",
+                success: function (response) {
+                    
+                },
+                errror:function (response) {
+                    
+                },
+            });
         });
+
+
 
 
       });

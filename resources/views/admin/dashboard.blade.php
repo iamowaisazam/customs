@@ -1,13 +1,13 @@
-@extends('admin.layout')
+@extends('admin.partials.layout')
 
 @section('css')
     <!-- ============================================================== -->
     <!-- Page CSS -->
     <!-- ============================================================== -->
     <style>
-        @import url(https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700);
+        /* @import url(https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700);
         .cmin-height {
-        height: 105px; }
+        height: 105px; } */
 </style>
     
 @endsection
@@ -18,13 +18,13 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor">Dashboard 1</h4>
+                        <h4 class="text-themecolor">Dashboard</h4>
                     </div>
                     <div class="col-md-7 align-self-center text-end">
                         <div class="d-flex justify-content-end align-items-center">
                             <ol class="breadcrumb justify-content-end">
                                 <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard 1</li>
+                                <li class="breadcrumb-item active">Dashboard</li>
                             </ol>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                 <!-- ============================================================== -->
                 <!-- Info box -->
                 <!-- ============================================================== -->
-                <div class="row g-0">
+                <div class="d-none row g-0">
 					<div class="col-lg-3 col-md-6">
 						<div class="card border">
 							<div class="card-body">

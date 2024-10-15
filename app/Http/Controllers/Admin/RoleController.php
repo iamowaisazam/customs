@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -39,9 +39,10 @@ class RoleController extends Controller
      
         if($request->ajax()){
 
-            // dd($request->all());
-      
+        
             $query = Role::query();
+
+            $query->where('id','!=',1);
 
             //Search
             $search = $request->get('search')['value'];
@@ -52,59 +53,34 @@ class RoleController extends Controller
                });
             }
 
-            if($request->has('name') && $request->has('name') != ''){
-                $query = $query->where('roles.name','like','%'.$request->name.'%');
-            }
-
-            if($request->has('status') && $request->has('status') != '' && $request->status != NULL){
-                // dd($request->status);
-                $query = $query->where('roles.status',$request->status);
-            }
-
             $count = $query->get();
-
-            if($request->has('order')){
-                if($request->order[0]['column'] == 1){
-                    $query = $query->orderBy('roles.name',$request->order[0]['dir']);
-                }
-
-                // if($request->order[0]['column'] == 2){
-                //     $query = $query->orderBy('roles.name',$request->order[0]['dir']);
-                // }
-
-                // if($request->order[0]['column'] == 3){
-                //     $query = $query->orderBy('roles.created_at',$request->order[0]['dir']);
-                // }
-
-            }
-            
             $records = $query->skip($request->start)
             ->take($request->length)->orderBy('id','desc')
             ->get();
-            
+
             $data = [];
             foreach ($records as $key => $value) {
 
-                $action = '<div class="btn-group">';
+                $status = $value->status ? 'checked' : '';
 
-                $action .= '<a class="btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                
 
-                // $action .= '<a class="btn btn-success" href="'.URL::to('admin/permissions/'.Crypt::encryptString($value->id)).'">Permissions</a>';
-
-                $action .= '<a class="btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                $action = '<div class="text-end">';
+                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('admin/permissions/'.Crypt::encryptString($value->id)).'">Permissions</a>';
+                // $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
                 $action .= '</div>';
 
                 array_push($data,[
-                    $key,
+                    $value->id,
                     $value->name,
-                    $value->status ? 'Active' : 'Deactive',
+                    "<div class='switchery-demo'><input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
+                   </div>",
                     $action,
-                 ]
-                );
-                
-            }
+                 ]);
 
+            }
 
             return response()->json([
                 "draw" => $request->draw,
@@ -113,9 +89,7 @@ class RoleController extends Controller
                 'data'=> $data,
             ]);
         }
-        
-        
-        
+
         return view('admin.roles.index');
     }
 
@@ -152,8 +126,7 @@ class RoleController extends Controller
                 ->withInput();
         }
 
-        // dd($request->all());
-        $model = Role::create([
+        Role::create([
             'name' => $request->name,
             'status' => $request->status,
             'created_at' => Carbon::now(),
@@ -194,13 +167,13 @@ class RoleController extends Controller
            return back()->with('error','Record Not Found');
         }
 
-
         $validator = Validator::make($request->all(), [
             'name' => [
                 'required',
                 'max:255',
                 Rule::unique('roles')->ignore($id),
             ],
+            'status' => 'required|in:0,1',
         ]);
         if ($validator->fails()) {
             return back()
@@ -208,7 +181,6 @@ class RoleController extends Controller
                 ->withInput();
         }
 
-       
 
         $model->name = $request->name;
         $model->updated_by = Auth::user()->id;
@@ -227,11 +199,15 @@ class RoleController extends Controller
      */
     public function delete($id)
     {
-        
         $model = Role::find(Crypt::decryptString($id));
         if($model == false){
             return back()->with('warning','Record Not Found');
         }else{
+
+            if(User::where('role_id',$id)->frist()){
+                return back()->with('warning','Can Not Delete This Roles Its Used In Users');
+            }
+
             $model->delete();
             return redirect('/admin/roles/index')->with('success','Record Deleted Success'); 
         }

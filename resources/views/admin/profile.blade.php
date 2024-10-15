@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.partials.layout')
 
 <?php 
 $permissions = [

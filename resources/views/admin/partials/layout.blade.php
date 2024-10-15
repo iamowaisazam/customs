@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="{{asset('admin/assets/node_modules/select2/dist/css/select2.css')}}">
   
     <style>
+
+        .switchery{background-color:#fff;border:1px solid #dfdfdf;border-radius:20px;cursor:pointer;display:inline-block;height:30px;position:relative;vertical-align:middle;width:50px;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;box-sizing:content-box;background-clip:content-box}.switchery>small{background:#fff;border-radius:100%;box-shadow:0 1px 3px rgba(0,0,0,0.4);height:30px;position:absolute;top:0;width:30px}.switchery-small{border-radius:20px;height:20px;width:33px}.switchery-small>small{height:20px;width:20px}.switchery-large{border-radius:40px;height:40px;width:66px}.switchery-large>small{height:40px;width:40px}
+
         .menu-button:hover{
             color: #03a9f3;
         }
@@ -47,7 +50,36 @@
         .tox-tinymce{
         width: 100%!important;
         }
-    </style>    
+
+
+        .left-sidebar {
+        width: 251px;
+        }
+
+
+        @media (min-width: 1024px) {
+         .page-wrapper, .footer {
+             margin-left: 251px;
+         } 
+        }
+
+        @media (min-width: 768px) {
+        .navbar-header {
+            width: 251px;
+            flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+           .left-sidebar {
+            width: 220px;
+           }  
+        }
+
+
+    </style>
+    
+    
     @yield('css')
   
 </head>
@@ -106,24 +138,23 @@
             </div>
         </div>
         <footer class="footer">
-            © 2024 {{$_s['site_title']}} Developed by <a href="https://www.azamsolutions.com/">
-                azamsolutions.com</a>
+            © 2024 {{$_s['site_title']}} Developed by 
+            <a href="https://www.coderzlab.com/">coderzlab.com</a>
         </footer>
     </div>
 
-    <script src="{{asset('admin/assets/node_modules/jquery/dist/jquery.min.js')}}"></script>
-    <script src="{{asset('admin/assets/node_modules/select2/dist/js/select2.js')}}"></script>
+    <script src="{{asset('admin/assets/node_modules/jquery/dist/jquery3.7.js')}}"></script>
     <script src="{{asset('admin/assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('admin/assets/node_modules/select2/dist/js/select2.js')}}"></script>
     <script src="{{asset('admin/assets/node_modules/raphael/raphael-min.js')}}"></script>
     <script src="{{asset('admin/assets/node_modules/morrisjs/morris.min.js')}}"></script>
     <script src="{{asset('admin/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
     <script src="{{asset('admin/assets/node_modules/toast-master/js/jquery.toast.js')}}"></script>
     <script src="{{asset('admin/assets/node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
     <script src="{{asset('admin/assets/js/perfect-scrollbar.jquery.min.js')}}"></script>
-    <script src="{{asset('admin/assets/js/waves.js')}}"></script>
-    <script src="{{asset('admin/assets/js/custom.js')}}"></script>
     <script src="{{asset('admin/tinymce/tinymce.min.js')}}"></script>
-    <script src="{{asset('admin/assets/js/tinymce.js')}}"></script>
+    <script src="{{asset('admin/assets/js/custom.js')}}"></script>
+
     <script>
          let site_url = "{{URL::to('/')}}";
           $('.file_manager').select2({
@@ -139,6 +170,8 @@
             },
         });
     </script>
+
+    
 
     @include('admin.partials.alert')
 

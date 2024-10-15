@@ -33,15 +33,12 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Schema::defaultStringLength(191);
-       $_s = [];
 
-        
-       
+         $_s = [];
+
         if (Schema::hasTable('settings')) {
 
-            $settings_Data = Cache::rememberForever('settings',function () {
-                return Setting::with('image')->orderBy('group_sorting')->get();
-            });
+             $settings_Data = Setting::with('image')->orderBy('group_sorting')->get();
 
              $groups = [];
              $settings = [];
@@ -49,18 +46,11 @@ class AppServiceProvider extends ServiceProvider
                 $settings[$value->field] = $value->value;
                 array_push($groups,$value->grouping);
              }
-           
-             
              $_s = $settings;
              $_s['grouping'] = implode(',',array_unique($groups)); 
         }
 
-        if (Schema::hasTable('settings')) {   
-            $_s['menus'] = Cache::rememberForever('menus',function () {
-                return Menu::with('children.children.children')->get(); 
-            });
-        }
-
+   
         View::share('_s',$_s);
 
     }

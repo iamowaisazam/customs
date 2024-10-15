@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.partials.layout')
 @section('css')
     
 <style>
@@ -12,7 +12,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">EDIT YOUR ROLE
+        <h4 class="text-themecolor">Edit Role
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -28,7 +28,7 @@
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header bg-info">
-                <h4 class="mb-0 text-white" >Edit Role And Assign The Permission</h4>
+                <h4 class="mb-0 text-white" >Edit Role</h4>
             </header>
             <div class="card-body">
                 <form method="post" action="{{URL::to('admin/roles/update/'.Crypt::encryptString($model->id))}}" >
@@ -38,18 +38,19 @@
                         <input type="text" value="{{$model->name}}" name="name" class="form-control" 
                         placeholder="User Name">
                         @if($errors->has('name'))
-                         <p class="invalid-feedback" >{{ $errors->first('name') }}</p>
+                         <p class="pt-2 text-danger" >{{ $errors->first('name') }}</p>
                         @endif 
                     </div>
                     
                     <div class="form-group">
                       <label class="form-label">Status</label>
                       <select name="status" class="form-control" >
+                        <option value="">Select Status</option>
                         <option {{$model->status ? 'Selected' : ''}} value="1" >Active</option>
                         <option {{$model->status ? '' : 'Selected'}}  value="0">Deactive</option>
                       </select>
                       @if($errors->has('status'))
-                      <p class="invalid-feedback" >{{ $errors->first('status') }}</p>
+                      <p class="pt-2 text-danger" >{{ $errors->first('status') }}</p>
                      @endif 
                    </div>
                    

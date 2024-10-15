@@ -20,73 +20,23 @@ Route::get('/',function(){
 
 
 
-//Blogs
-Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
-Route::get('/category/{id}', [App\Http\Controllers\HomeController::class, 'category']);
-
-Route::get('/products/{id}', [App\Http\Controllers\HomeController::class, 'product']);
-
-Route::get('/shop', [App\Http\Controllers\HomeController::class, 'shop'])->name('shop.index');;
-Route::get('/shopdata', [App\Http\Controllers\HomeController::class, 'shopData'])->name('shop.data');;
-
-
-// Route::post('/cart/add_to_cart', [App\Http\Controllers\HomeController::class, 'add_to_cart']);
-
-Route::get('/combination_maker', [App\Http\Controllers\HomeController::class, 'combination_maker']);
-Route::get('/blogs/categories/{id}', [App\Http\Controllers\HomeController::class, 'blog_categories']);
-Route::get('/pages/{slug}', [App\Http\Controllers\HomeController::class, 'pageContent']);
-
-//Carts
-Route::get('/cart', [App\Http\Controllers\CartController::class, 'cart']);
-Route::get('/getCart', [App\Http\Controllers\CartController::class, 'getCart']);
-
-Route::get('/cart/add_to_cart', [App\Http\Controllers\CartController::class, 'add_to_cart']);
-Route::get('/cart/get_cart_details', [App\Http\Controllers\CartController::class, 'get_cart_details']);
-Route::get('/cart/cart_clear', [App\Http\Controllers\CartController::class, 'cart_clear']);
-Route::get('/cart/remove/{id}', [App\Http\Controllers\CartController::class, 'cart_remove']);
-
-
-
-//Checkout
-Route::get('/order-tracking', [App\Http\Controllers\CheckoutController::class, 'order_tracking']);
-
-Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index']);
-Route::get('/order-confirmaton/{id}', [App\Http\Controllers\CheckoutController::class, 'order_confirmaton']);
-Route::post('/checkout/submit', [App\Http\Controllers\CheckoutController::class, 'checkout_submit']);
-Route::get('/get_invoice/{id}', [App\Http\Controllers\CheckoutController::class, 'get_invoice']);
-
-// Newsletter
-Route::post('theme/submit_newslettert', [App\Http\Controllers\HomeController::class, 'newslettertSubmit'])->name('newslettertSubmit');
-// testing 
-Route::get('/test', [App\Http\Controllers\HomeController::class, 'test']);
-
-// Website login 
-// Route::get('/login', [App\Http\Controllers\WebAuthController::class, 'login'])->name('weblogin');
-// Route::get('/register', [App\Http\Controllers\WebAuthController::class, 'register'])->name('register');
-// Route::get('/forgotpassword', [App\Http\Controllers\WebAuthController::class, 'forgotPassword'])->name('forgotpassword');
-// Route::post('/createaccount', [App\Http\Controllers\WebAuthController::class, 'createAccount']);
-// Route::post('/weblogin', [App\Http\Controllers\WebAuthController::class, 'webLogin']);
-// Route::post('/password-reset-request', [App\Http\Controllers\WebAuthController::class, 'sendResetLink'])->name('resetpassword');
-
-// dashboard login Group 
-// Route::middleware(['webLoginChk'])->group(function () {
-//   Route::get('/dashboard', [App\Http\Controllers\WebAuthController::class, 'dashboard'])->name('dashboard');
-//   Route::get('/logout', [App\Http\Controllers\WebAuthController::class, 'weblogout'])->name('weblogout');
-// });
-
-
 //Admin
+Route::get('/', [App\Http\Controllers\Admin\AuthController::class, 'login']);
 Route::get('/admin/login', [App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login');
 Route::post('/admin/login_submit', [App\Http\Controllers\Admin\AuthController::class, 'login_submit']);
+
 
 Route::middleware(['web', 'auth'])->group(function () {
   
   Route::get('/admin/update_file_url', [App\Http\Controllers\Admin\DashboardController::class, 'update_file_url']);
+  
   Route::get('/admin/logout', [App\Http\Controllers\Admin\AuthController::class, 'logout']);
   Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard']);
   Route::get('/admin/changepassword', [App\Http\Controllers\Admin\DashboardController::class, 'changepassword']);
+  
   Route::post('/admin/changepassword_submit', [App\Http\Controllers\Admin\DashboardController::class, 'changepassword_submit']);
-  Route::get('/admin/status', [App\Http\Controllers\Admin\DashboardController::class, 'status']);
+
+  Route::post('/admin/status', [App\Http\Controllers\Admin\DashboardController::class, 'status']);
   
   
   //Users
@@ -112,44 +62,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/admin/roles/update/{id}', [App\Http\Controllers\Admin\RoleController::class, 'update']);
     Route::get('/admin/roles/delete/{id}', [App\Http\Controllers\Admin\RoleController::class, 'delete']);
     
-    //Menus
-    Route::get('/admin/menus/index', [App\Http\Controllers\Admin\MenuController::class, 'index']);
-    Route::get('/admin/menus/create', [App\Http\Controllers\Admin\MenuController::class, 'create']);
-    Route::post('/admin/menus/store', [App\Http\Controllers\Admin\MenuController::class, 'store']);
-    Route::get('/admin/menus/edit/{id}', [App\Http\Controllers\Admin\MenuController::class, 'edit']);
-    Route::post('/admin/menus/update/{id}', [App\Http\Controllers\Admin\MenuController::class, 'update']);
-    Route::get('/admin/menus/delete/{id}', [App\Http\Controllers\Admin\MenuController::class, 'delete']);
-    
-    
-    //Variations
-    Route::get('/admin/variations/index', [App\Http\Controllers\Admin\VariationController::class, 'index']);
-    Route::get('/admin/variations/create', [App\Http\Controllers\Admin\VariationController::class, 'create']);
-    Route::post('/admin/variations/store', [App\Http\Controllers\Admin\VariationController::class, 'store']);
-    Route::get('/admin/variations/edit/{id}', [App\Http\Controllers\Admin\VariationController::class, 'edit']);
-    Route::post('/admin/variations/update/{id}', [App\Http\Controllers\Admin\VariationController::class, 'update']);
-    Route::get('/admin/variations_items/{variations}/index', [App\Http\Controllers\Admin\VariationItemController::class,'index']);
-    Route::post('/admin/variations_items/store', [App\Http\Controllers\Admin\VariationItemController::class,'store']);
-    Route::get('/admin/variations_items/edit/{id}', [App\Http\Controllers\Admin\VariationItemController::class, 'edit']);
-    Route::post('/admin/variations_items/update/{id}', [App\Http\Controllers\Admin\VariationItemController::class, 'update']);
-    Route::get('/admin/variations_items/delete/{id}', [App\Http\Controllers\Admin\VariationItemController::class, 'delete']);
-   
-    
-    //Menus Items
-    Route::get('/admin/menus_items/{menu}/index', [App\Http\Controllers\Admin\MenuItemController::class,'index']);
-    Route::post('/admin/menus_items/store', [App\Http\Controllers\Admin\MenuItemController::class,'store']);
-    Route::get('/admin/menus_items/sort/{id}', [App\Http\Controllers\Admin\MenuItemController::class, 'sort']);
-    Route::get('/admin/menus_items/edit/{id}', [App\Http\Controllers\Admin\MenuItemController::class, 'edit']);
-    Route::post('/admin/menus_items/update/{id}', [App\Http\Controllers\Admin\MenuItemController::class, 'update']);
-    Route::get('/admin/menus_items/delete/{id}', [App\Http\Controllers\Admin\MenuItemController::class, 'delete']);
-     //page
-     Route::get('/admin/page/index', [App\Http\Controllers\Admin\PageController::class, 'index']);
-     Route::get('/admin/page/edit/{id}', [App\Http\Controllers\Admin\PageController::class, 'edit']);
-     Route::get('/admin/page/create', [App\Http\Controllers\Admin\PageController::class, 'create']);
-     Route::post('/admin/page/store', [App\Http\Controllers\Admin\PageController::class, 'store']);
-     Route::post('/admin/page/update/{id}', [App\Http\Controllers\Admin\PageController::class, 'update']);
-     Route::get('/admin/page/delete/{id}', [App\Http\Controllers\Admin\PageController::class, 'delete']);
 
-         
+   
+           
     //newsletters
     Route::get('/admin/newsletter/index', [App\Http\Controllers\Admin\NewsletterController::class, 'index'])->name('admin.newsletter.index');
     Route::get('admin/newsletter/delete/{id}', [App\Http\Controllers\Admin\NewsletterController::class, 'delete'])->name('admin.newsletter.delete');

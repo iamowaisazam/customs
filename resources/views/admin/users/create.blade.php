@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.partials.layout')
 @section('css')
 <style>
     .invalid-feedback{
@@ -10,7 +10,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">ADD YOUR USER 
+        <h4 class="text-themecolor">Create User
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -28,7 +28,7 @@
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header bg-info">
-                <h4 class="mb-0 text-white" >Create User And Assign The Permission</h4>
+                <h4 class="mb-0 text-white" >Create User Form</h4>
             </header>
             <div class="card-body">
                 <form method="post" action="{{URL::to('admin/users/store')}}" >
@@ -41,23 +41,49 @@
                          <p class="invalid-feedback" >{{ $errors->first('name') }}</p>
                         @endif 
                     </div>
-                    
+
                     <div class="form-group">
-                      <label class="form-label" >Email Address</label>
-                      <input type="email" value="{{old('email')}}" name="email" class="form-control" placeholder="Email Address"> 
-                      @if($errors->has('email'))
-                      <p class="invalid-feedback" >{{ $errors->first('email') }}</p>
-                     @endif 
+                        <label class="form-label" >Email Address</label>
+                        <input type="email" value="{{old('email')}}" name="email" class="form-control" placeholder="Email Address"> 
+                        @if($errors->has('email'))
+                        <p class="invalid-feedback" >{{ $errors->first('email') }}</p>
+                        @endif 
                    </div>
 
                     <div class="form-group">
                         <label class="form-label" >Password</label>
-                        <input type="password" name="password" value="{{old('password')}}" class="form-control" placeholder="Password">
+                        <input type="password" name="password" value="" 
+                        class="form-control" placeholder="Password">
                         <small  class="form-text text-dark">Please never share your email & password with anyone else.</small>
 
                         @if($errors->has('password'))
                           <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
                          @endif 
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Select Role</label>
+                        <select name="role" class="form-control" >
+                            <option value="">Select Role</option>
+                            @foreach ($roles as $item)
+                            <option @if(old('role') == $item->id) selected @endif value="{{$item->id}}">{{$item->name}}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->has('role'))
+                         <p class="invalid-feedback" >{{ $errors->first('role') }}</p>
+                        @endif 
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Select Status</label>
+                        <select name="status" class="form-control" >
+                            <option value="">Select Status</option>
+                            <option @if(old('status') == '1') selected @endif value="1">Enable</option>
+                            <option @if(old('status') == '0') selected @endif  value="0">Disable</option>
+                        </select>
+                        @if($errors->has('status'))
+                         <p class="invalid-feedback" >{{ $errors->first('status') }}</p>
+                        @endif 
                     </div>
                    
                     <div class="form-group row">

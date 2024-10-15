@@ -25,8 +25,44 @@ return new class extends Migration
             'email_token' => null,
             'email_verified_at' => now(),
         ]);
+        
         DB::table('roles')->insert([
-            ['name' => 'Admin', 'status' => 1, 'created_at' => '2024-01-27 14:11:35', 'updated_at' => '2024-01-27 09:45:22', 'created_by' => 1, 'updated_by' => null],
+            [
+                'id' =>1,
+                'name' => 'Admin', 
+                'status' => 1, 
+                'created_at' => '2024-01-27 14:11:35', 
+                'updated_at' => '2024-01-27 09:45:22', 
+                'created_by' => 1, 
+                'updated_by' => null
+            ],
+            [
+                'id' => 2,
+                'name' => 'User', 
+                'status' => 1, 
+                'created_at' => '2024-01-27 14:11:35', 
+                'updated_at' => '2024-01-27 09:45:22', 
+                'created_by' => 1, 
+                'updated_by' => null
+            ],
+            [
+                'id' => 3,
+                'name' => 'Customer', 
+                'status' => 1, 
+                'created_at' => '2024-01-27 14:11:35', 
+                'updated_at' => '2024-01-27 09:45:22', 
+                'created_by' => 1, 
+                'updated_by' => null
+            ],
+            [
+                'id' => 4,
+                'name' => 'Vendor', 
+                'status' => 1, 
+                'created_at' => '2024-01-27 14:11:35', 
+                'updated_at' => '2024-01-27 09:45:22', 
+                'created_by' => 1, 
+                'updated_by' => null
+            ],
         ]);
 
     }

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
@@ -42,10 +42,6 @@ class UserController extends Controller
 
             $query = User::where('role_id','!=',1);
 
-            // dd($request->all());
-
-        
-
             //Search
             $search = $request->get('search')['value'];
             if($search != ""){
@@ -54,74 +50,48 @@ class UserController extends Controller
                    ->orwhere('users.email','like','%'.$search.'%');
                });
             }
-
-            if($request->has('username') && $request->has('username') != ''){
-                $query = $query->where('users.name','like','%'.$request->username.'%');
-            }
-
-            if($request->has('email') && $request->has('email') != ''){
-                $query = $query->where('users.email','like','%'.$request->email.'%');
-            }
-
-            if($request->has('role_id') && $request->has('role_id') != '' && $request-> role_id != null){
-                $query = $query->where('users.role_id',$request->role_id);
-            }
-
             
-
-            $count = $query->get();
-
-            if($request->has('order')){
-                if($request->order[0]['column'] == 1){
-                    $query = $query->orderBy('users.name',$request->order[0]['dir']);
-                }
-
-                if($request->order[0]['column'] == 2){
-                    $query = $query->orderBy('users.email',$request->order[0]['dir']);
-                }
-            }
-            
+            $count = $query->count();       
             $users = $query->skip($request->start)
             ->take($request->length)->orderBy('id','desc')
             ->get();
 
-          
-            
             $data = [];
             foreach ($users as $key => $value) {
 
-                $action = '<div class="btn-group">';
+                $action = '<div class="text-end">';
 
-                $action .= '<a class="btn btn-info" href="'.URL::to('admin/users/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
-                $action .= '<a class="btn btn-danger" href="'.URL::to('admin/users/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/users/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                
+                $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/users/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
                 $action .= '</div>';
+
+                $status = $value->status ? 'checked' : '';
 
                 array_push($data,[
                     $value->id,
                     $value->name,
                     $value->email,
-                    $value->role_id,
+                    $value->role->name,
+                    "<div class='switchery-demo'>
+                     <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
+                    </div>",
                     $action,
-                 ]
-                );
-                
+                ]);        
             }
-
 
             return response()->json([
                 "draw" => $request->draw,
-                "recordsTotal" => count($count),
-                "recordsFiltered" => count($count),
+                "recordsTotal" => $count,
+                "recordsFiltered" => $count,
                 'data'=> $data,
             ]);
         }
-        
 
         $roles = Role::all();
-        
-        
         return view('admin.users.index',compact('roles'));
+
     }
 
     
@@ -134,7 +104,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+
+        $roles = Role::whereNotIn('id',[1])->where('status',1)->get();
+        return view('admin.users.create',compact('roles'));
+
     }
 
 
@@ -148,6 +121,8 @@ class UserController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'role' => 'required|exists:roles,id',
+            'status' => 'required|in:0,1',
             'email' => 'required|email|unique:users,email|max:255',
             'password' => 'required|string|min:8|max:255',
         ]);
@@ -163,7 +138,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 2,
+            'role_id' => $request->role,
+            'status' => $request->status,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'created_by' => Auth::user()->id,
@@ -180,12 +156,15 @@ class UserController extends Controller
      */
     public function edit(Request $request,$id)
     {
+
+        $roles = Role::whereNotIn('id',[1])->where('status',1)->get();
+
         $user = User::find(Crypt::decryptString($id));
         if($user == false){  
             return back()->with('error','Record Not Found');
          }
 
-        return view('admin.users.edit',compact('user'));
+        return view('admin.users.edit',compact('user','roles'));
     }
 
 
@@ -199,6 +178,8 @@ class UserController extends Controller
         $id = Crypt::decryptString($id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'role' => 'required|exists:roles,id',
+            'status' => 'required|in:0,1',
             'email' => [
                 'required',
                 'email',

@@ -99,14 +99,33 @@ class DashboardController extends Controller
 
     }
 
+
     /**
      * Create a new controller instance.
      * @return void
      */
     public function status(Request $request)
     {
-        DB::update('UPDATE '.$request->table.' SET '.$request->column.' = ? WHERE id = ?', [$request->value,Crypt::decryptString($request->id)]);
+        $request->validate([
+            'table' => ['required','max:255',"regex:/^[a-zA-Z0-9\_]+$/"],
+            'column' => ['required','max:255',"regex:/^[a-zA-Z0-9\_]+$/"],
+            'value' => ['required','max:255',"regex:/^[a-zA-Z0-9\_]+$/"],
+            'id' => ['required','max:500',"regex:/^[a-zA-Z0-9\_]+$/"],
+        ]);
+
+        $table = $request->table;
+        $column = $request->column;
+        $value = $request->value;
+        $id = $request->id;
+
+        // try {
+            DB::update('UPDATE '.$table.' SET '.$column.' = ? WHERE id = ?', [$value,Crypt::decryptString($id)]);
+            return response()->json([],200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([],200);
+        // }
     }
+
 
      /**
      * Create a new controller instance.

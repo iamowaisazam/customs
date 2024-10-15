@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.partials.layout')
 @section('css')
 <style>
     .invalid-feedback{
@@ -10,7 +10,7 @@
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">ADD YOUR ROLE 
+        <h4 class="text-themecolor">Create Role
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -28,7 +28,7 @@
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header bg-info">
-                <h4 class="mb-0 text-white" >Create Role And Assign The Permission</h4>
+                <h4 class="mb-0 text-white" >Create Role Form</h4>
             </header>
             <div class="card-body">
                 <form method="post" action="{{URL::to('admin/roles/store')}}" >
@@ -45,6 +45,7 @@
                     <div class="form-group">
                       <label class="form-label" >Status</label>
                       <select name="status" class="form-control" >
+                        <option value="">Select Status</option>
                         <option value="1">Active</option>
                         <option value="0">Deactive</option>
                       </select>
