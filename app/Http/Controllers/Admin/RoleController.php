@@ -39,10 +39,8 @@ class RoleController extends Controller
      
         if($request->ajax()){
 
-        
             $query = Role::query();
-
-            $query->where('id','!=',1);
+            $query->whereNotIn('id',[1,3,4]);
 
             //Search
             $search = $request->get('search')['value'];
@@ -63,12 +61,15 @@ class RoleController extends Controller
 
                 $status = $value->status ? 'checked' : '';
 
-                
-
                 $action = '<div class="text-end">';
                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
-                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('admin/permissions/'.Crypt::encryptString($value->id)).'">Permissions</a>';
-                // $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+
+                $action .= '<a class="mx-1 btn btn-success" href="#">Permissions</a>';
+           
+
+                if(!in_array($value->id,[1,3,4])){
+                    //  $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                }
 
                 $action .= '</div>';
 
@@ -117,7 +118,6 @@ class RoleController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:roles,name|max:255',
-            'status' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -128,7 +128,7 @@ class RoleController extends Controller
 
         Role::create([
             'name' => $request->name,
-            'status' => $request->status,
+            'status' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => NULL,
             'created_by' => Auth::user()->id,
@@ -173,7 +173,6 @@ class RoleController extends Controller
                 'max:255',
                 Rule::unique('roles')->ignore($id),
             ],
-            'status' => 'required|in:0,1',
         ]);
         if ($validator->fails()) {
             return back()

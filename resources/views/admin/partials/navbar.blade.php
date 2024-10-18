@@ -13,6 +13,16 @@
     </ul>
 </li>
 
+<li> <a class="waves-effect waves-dark {{ request()->is('admin/customers/*') ? 'active' : '' }}" href="{{URL::to('admin/customers')}}" aria-expanded="false">
+    <i class="mdi mdi-border-all"></i>
+    <span class="hide-menu"> Customers</span></a>
+</li>
+
+<li> <a class="waves-effect waves-dark {{ request()->is('admin/vendors/*') ? 'active' : '' }}" href="{{URL::to('admin/vendors')}}" aria-expanded="false">
+    <i class="mdi mdi-border-all"></i>
+    <span class="hide-menu"> Vendors</span></a>
+</li>
+
 {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-google-pages"></i>
     <span class="hide-menu"> Pages </span></a>    
     <ul aria-expanded="false" class="collapse">

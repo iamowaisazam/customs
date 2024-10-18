@@ -41,19 +41,7 @@
                          <p class="pt-2 text-danger" >{{ $errors->first('name') }}</p>
                         @endif 
                     </div>
-                    
-                    <div class="form-group">
-                      <label class="form-label">Status</label>
-                      <select name="status" class="form-control" >
-                        <option value="">Select Status</option>
-                        <option {{$model->status ? 'Selected' : ''}} value="1" >Active</option>
-                        <option {{$model->status ? '' : 'Selected'}}  value="0">Deactive</option>
-                      </select>
-                      @if($errors->has('status'))
-                      <p class="pt-2 text-danger" >{{ $errors->first('status') }}</p>
-                     @endif 
-                   </div>
-                   
+                                       
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
                             <button type="submit" class="btn btn-info">Submit</button>

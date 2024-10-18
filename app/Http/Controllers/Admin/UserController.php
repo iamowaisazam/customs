@@ -37,10 +37,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-    
         if($request->ajax()){
 
-            $query = User::where('role_id','!=',1);
+            $query = User::whereNotIn('role_id',[1,3,4]);
 
             //Search
             $search = $request->get('search')['value'];
@@ -89,8 +88,8 @@ class UserController extends Controller
             ]);
         }
 
-        $roles = Role::all();
-        return view('admin.users.index',compact('roles'));
+        
+        return view('admin.users.index');
 
     }
 
@@ -105,7 +104,8 @@ class UserController extends Controller
     public function create()
     {
 
-        $roles = Role::whereNotIn('id',[1])->where('status',1)->get();
+        $roles = Role::whereNotIn('id',[1,3,4])->where('status',1)->get();
+
         return view('admin.users.create',compact('roles'));
 
     }
@@ -122,7 +122,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'role' => 'required|exists:roles,id',
-            'status' => 'required|in:0,1',
             'email' => 'required|email|unique:users,email|max:255',
             'password' => 'required|string|min:8|max:255',
         ]);
@@ -139,7 +138,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $request->role,
-            'status' => $request->status,
+            'status' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'created_by' => Auth::user()->id,
@@ -157,7 +156,7 @@ class UserController extends Controller
     public function edit(Request $request,$id)
     {
 
-        $roles = Role::whereNotIn('id',[1])->where('status',1)->get();
+        $roles = Role::whereNotIn('id',[1,3,4])->where('status',1)->get();
 
         $user = User::find(Crypt::decryptString($id));
         if($user == false){  
@@ -179,7 +178,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'role' => 'required|exists:roles,id',
-            'status' => 'required|in:0,1',
             'email' => [
                 'required',
                 'email',
@@ -201,6 +199,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role_id = $request->role;
         $user->created_by = Auth::user()->id;
         $user->created_at = Carbon::now();
 
@@ -229,6 +228,52 @@ class UserController extends Controller
             $user->delete();
             return redirect('/admin/users/index')->with('success','Record Deleted Success'); 
         }
+
+    }
+
+
+    public function profile(Request $request)
+    {
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        if($user == false){  
+            return back()->with('error','Record Not Found');
+         }
+
+        return view('admin.profile',compact('user'));
+    }
+
+
+    public function profile_update(Request $request)
+    {
+
+        $id = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255', 
+            'email' => ['required','email','max:255',Rule::unique('users')->ignore($id)],
+            'password' => 'nullable|string|min:8|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = User::find($id);
+        if($user == false){  
+           return back()->with('error','Record Not Found');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if($request->password){
+          $user->password =  Hash::make($request->password);
+        }
+
+        $user->save();
+        return back()->with('success','Record Updated');
 
     }
 

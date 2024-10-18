@@ -1,19 +1,6 @@
 @extends('admin.partials.layout')
-
-<?php 
-$permissions = [
-    'store_management',
-    'coupons_management',
-    'blogs_management',
-    'site_management',
-    'user_rights_management'
-];
-
-?>
 @section('css')
-    
 <style>
-
     .error{
         color:red;
     }
@@ -23,7 +10,7 @@ $permissions = [
 @section('content')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">EDIT YOUR PROFILE 
+        <h4 class="text-themecolor">Edit Profile 
         </h4>
     </div>
     <div class="col-md-7 align-self-center text-end">
@@ -35,68 +22,63 @@ $permissions = [
         </div>
     </div>
 </div>
+
+
 <div class="row">
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header bg-info">
-                <h4 class="mb-0 text-white" >Edit your profile</h4>
+                <h4 class="mb-0 text-white" >Edit Profile</h4>
             </header>
             <div class="card-body">
-                <form method="post" action="{{route('update')}}" enctype="multipart/form-data">
+                <form method="post" action="{{URL::to('/admin/profile-update')}}" enctype="multipart/form-data">
                     @csrf
-                    <div class="form-group">
-                        <label class="form-label" >User Name</label>
-                        <input type="text" value="{{$user->name}}" name="name" class="form-control" 
-                        placeholder="User Name">
-                        @if($errors->has('name'))
-                         <p class="invalid-feedback" >{{ $errors->first('name') }}</p>
-                        @endif 
-                    </div>
-                    
-                    <div class="form-group">
-                      <label class="form-label">Email Address</label>
-                      <input type="email" value="{{$user->email}}" name="email" class="form-control" placeholder="Email Address"> 
-                      @if($errors->has('email'))
-                      <p class="invalid-feedback" >{{ $errors->first('email') }}</p>
-                     @endif 
-                   </div>
-                   <div class="my-2 row">
-                    
-                   <div class="form-group">
-                        <label class="form-label" >Image</label>
-                        @if(isset($user->profile_image))
-                        <input type="text" value="{{$user->profile_image}}" name="image_id" class="form-control" placeholder="Image"> 
-                        @else
-                        <input type="text" value="{{old('image_id')}}" name="image_id" class="form-control" placeholder="Image"> 
 
-                          @endif 
-                          @if($errors->has('image_id'))
-                          <p class="invalid-feedback" >{{ $errors->first('image_id') }}</p>
-                          @endif 
-                      </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" >User Name</label>
+                                <input type="text" value="{{$user->name}}" name="name" class="form-control" 
+                                placeholder="User Name">
+                                @if($errors->has('name'))
+                                <p class="invalid-feedback" >{{ $errors->first('name') }}</p>
+                                @endif 
+                            </div>
+                        </div>
 
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" value="{{$user->email}}" name="email" class="form-control" placeholder="Email Address"> 
+                                    @if($errors->has('email'))
+                                    <p class="invalid-feedback" >{{ $errors->first('email') }}</p>
+                                    @endif 
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" value="" class="form-control" placeholder="Password">
-                        <small  class="form-text text-dark">Please never share your email & password with anyone else.</small>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" value="" class="form-control" placeholder="Password">
+                                <small  class="form-text text-dark">Please never share your email & password with anyone else.</small>
+                                @if($errors->has('password'))
+                                <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
+                                @endif 
+                            </div>
+                        </div>
 
-                        @if($errors->has('password'))
-                          <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
-                         @endif 
-                    </div>
-                   
-                    <div class="form-group row">
                         <div class="col-md-12 text-left">
                             <button type="submit" class="btn btn-info">Submit</button>
                         </div>
-                     </div>
+
+                    </div>
                      
                 </form>
-            </div>
         </section>
     </div>
 </div>
+
+
 @endsection
 
 @section('js')

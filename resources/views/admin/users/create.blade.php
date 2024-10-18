@@ -73,19 +73,7 @@
                          <p class="invalid-feedback" >{{ $errors->first('role') }}</p>
                         @endif 
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Select Status</label>
-                        <select name="status" class="form-control" >
-                            <option value="">Select Status</option>
-                            <option @if(old('status') == '1') selected @endif value="1">Enable</option>
-                            <option @if(old('status') == '0') selected @endif  value="0">Disable</option>
-                        </select>
-                        @if($errors->has('status'))
-                         <p class="invalid-feedback" >{{ $errors->first('status') }}</p>
-                        @endif 
-                    </div>
-                   
+                                       
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
                             <button type="submit" class="btn btn-info">Submit</button>

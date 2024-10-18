@@ -59,7 +59,6 @@
                           <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
                          @endif 
                     </div>
-
                     
                     <div class="form-group">
                         <label class="form-label">Select Role</label>
@@ -74,24 +73,11 @@
                         @endif 
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Select Status</label>
-                        <select name="status" class="form-control" >
-                            <option value="">Select Status</option>
-                            <option @if($user->status == '1') selected @endif value="1">Enable</option>
-                            <option @if($user->status == '0') selected @endif  value="0">Disable</option>
-                        </select>
-                        @if($errors->has('status'))
-                         <p class="invalid-feedback" >{{ $errors->first('status') }}</p>
-                        @endif 
-                    </div>
-                   
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
                             <button type="submit" class="btn btn-info">Submit</button>
                         </div>
-                     </div>
-                     
+                     </div> 
                 </form>
             </div>
         </section>
