@@ -29,8 +29,7 @@
                     <a href="{{URL::to("admin/profile")}}" class="dropdown-item">
                         <i class="ti-user"></i> My Profile
                     </a>
-                    <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings
-                    </a>
+                    {{-- <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings</a> --}}
                     <a href="{{URL::to('/admin/logout')}}" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                 </div>
             </li>

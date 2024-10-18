@@ -14,14 +14,13 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->id(); // Primary key column with auto-increment
-            $table->string('name'); // Name column of type varchar
-            $table->integer('status')->nullable(); // Status column of type integer, nullable
-            $table->timestamps(); // Adds created_at and updated_at columns of type timestamp
-            $table->unsignedBigInteger('created_by')->nullable(); // Nullable created_by column of type big integer
-            $table->unsignedBigInteger('updated_by')->nullable(); // Nullable updated_by column of type big integer
-
-            // Foreign key constraints
+            $table->id();
+            $table->string('name');
+            $table->integer('status')->nullable();
+            $table->timestamps();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->string('permissions')->default('')->nullable();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
         });

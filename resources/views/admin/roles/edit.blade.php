@@ -10,6 +10,8 @@
 @endsection
 
 @section('content')
+
+
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h4 class="text-themecolor">Edit Role
@@ -28,7 +30,7 @@
     <div class="col-lg-12">
         <section class="card">
             <header class="card-header bg-info">
-                <h4 class="mb-0 text-white" >Edit Role</h4>
+                <h4 class="mb-0 text-white" >Edit Role & Permission</h4>
             </header>
             <div class="card-body">
                 <form method="post" action="{{URL::to('admin/roles/update/'.Crypt::encryptString($model->id))}}" >
@@ -41,10 +43,32 @@
                          <p class="pt-2 text-danger" >{{ $errors->first('name') }}</p>
                         @endif 
                     </div>
+
+                    <h3 class="box-title m-t-40 heading-style">User Access &amp; Permission</h3>
+                    <hr>
+                    <div class="row">
+                        @foreach ($permissions  as $item)
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-check mr-sm-2">
+                                        <input type="checkbox" 
+                                        @if(in_array($item->slug,explode(',',$model->permissions)))
+                                         checked
+                                        @endif
+                                          class="form-check-input" 
+                                          id="{{$item->slug}}" 
+                                          name="permissions[]" 
+                                          value="{{$item->slug}}">
+                                        <label class="form-check-label" for="{{$item->slug}}">{{$item->name}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                                        
                     <div class="form-group row">
-                        <div class="col-md-12 text-left">
-                            <button type="submit" class="btn btn-info">Submit</button>
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-info">Update</button>
                         </div>
                      </div>
                      

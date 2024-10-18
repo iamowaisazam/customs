@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
       Route::get('/admin/roles/edit/{id}', [App\Http\Controllers\Admin\RoleController::class, 'edit']);
       Route::post('/admin/roles/update/{id}', [App\Http\Controllers\Admin\RoleController::class, 'update']);
       Route::get('/admin/roles/delete/{id}', [App\Http\Controllers\Admin\RoleController::class, 'delete']);
+   
       
       //customers
       Route::resource('/admin/customers', App\Http\Controllers\Admin\CustomerController::class);

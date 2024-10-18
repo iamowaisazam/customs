@@ -41,9 +41,28 @@
                          <p class="invalid-feedback" >{{ $errors->first('name') }}</p>
                         @endif 
                     </div>
+
+                    <h3 class="box-title m-t-40 heading-style">User Access &amp; Permission</h3>
+                    <hr>
+                    <div class="row">
+                        @foreach ($permissions  as $item)
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="form-check mr-sm-2">
+                                        <input type="checkbox" 
+                                          class="form-check-input" 
+                                          id="{{$item->slug}}" 
+                                          name="permissions[]" 
+                                          value="{{$item->slug}}">
+                                        <label class="form-check-label" for="{{$item->slug}}">{{$item->name}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                                 
                     <div class="form-group row">
-                        <div class="col-md-12 text-left">
+                        <div class="col-md-12 text-center">
                             <button type="submit" class="btn btn-info">Submit</button>
                         </div>
                      </div>

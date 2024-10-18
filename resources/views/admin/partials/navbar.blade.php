@@ -1,5 +1,5 @@
 
-<li><a class=" waves-effect waves-dark" href="{{URL::to('admin/dashboard')}}" 
+<li><a class="bg-green waves-effect waves-dark" href="{{URL::to('admin/dashboard')}}" 
     aria-expanded="false"><i class="icon-speedometer"></i>
     <span class="hide-menu">Dashboard</span></a>
 </li>
@@ -13,15 +13,115 @@
     </ul>
 </li>
 
-<li> <a class="waves-effect waves-dark {{ request()->is('admin/customers/*') ? 'active' : '' }}" href="{{URL::to('admin/customers')}}" aria-expanded="false">
+<li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/customers/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
     <i class="mdi mdi-border-all"></i>
     <span class="hide-menu"> Customers</span></a>
+    <ul aria-expanded="false" class="collapse {{ request()->is('admin/customers/*') ? 'in' : '' }}">
+        <li><a class="{{ request()->is('admin/customers/create') ? 'active' : ''}}"  
+            href="{{URL::to('admin/customers/create')}}">Create New Customer</a></li>
+        <li><a 
+            class="{{ request()->is('admin/customers/*') && request()->is('admin/customers/create') == false  ? 'active' : '' }}" 
+            href="{{URL::to('admin/customers')}}">View Customers</a>
+        </li>
+    </ul>
 </li>
 
-<li> <a class="waves-effect waves-dark {{ request()->is('admin/vendors/*') ? 'active' : '' }}" href="{{URL::to('admin/vendors')}}" aria-expanded="false">
+   <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/vendors/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
     <i class="mdi mdi-border-all"></i>
-    <span class="hide-menu"> Vendors</span></a>
-</li>
+    <span class="hide-menu">Vendors</span></a>
+    <ul aria-expanded="false" class="collapse {{ request()->is('admin/vendors/*') ? 'in' : '' }}">
+        <li><a class="{{ request()->is('admin/vendors/create') ? 'active' : ''}}"  
+            href="{{URL::to('admin/vendors/create')}}">Create New Vendor</a>
+        </li>
+        <li><a 
+            class="{{ request()->is('admin/vendors/*') && request()->is('admin/vendors/create') == false  ? 'active' : '' }}" 
+            href="{{URL::to('admin/vendors')}}">View Vendor</a>
+        </li>
+    </ul>
+    </li>
+
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Jobs Creation</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">Create jobs</a></li>
+            <li><a href="app-calendar.html">View jobs</a></li>
+            
+        </ul>
+    </li>
+
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Customer</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">Create Customers</a></li>
+            <li><a href="app-calendar.html">View Customers</a></li>
+            <li><a href="app-calendar.html">View Customers Statements</a></li>
+        </ul>
+    </li>
+
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Vendors</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">Create Vendors</a></li>
+            <li><a href="app-calendar.html">View Vendors</a></li>
+            
+        </ul>
+    </li>
+
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Consignment Information</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">Create Consignment</a></li>
+            <li><a href="app-calendar.html">View Consignment</a></li>
+            
+        </ul>
+    </li>
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Payment Request </span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">Create Payment Request</a></li>
+            <li><a href="app-calendar.html">View Payment Request</a></li>
+            
+        </ul>
+    </li>
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Delivery Challan</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">Create Delivery Challan</a></li>
+            <li><a href="app-calendar.html">View Delivery Challan</a></li>
+            
+        </ul>
+    </li>
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Jobs Tracking And status</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">View Jobs Tracking And status</a></li>
+            
+        </ul>
+    </li>
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">job History</span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">View Job History</a></li>
+            
+        </ul>
+    </li>
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Accounts &amp; Finance </span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">View Accounts &amp; Finance </a></li>
+            
+        </ul>
+    </li>
+    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Reports </span></a>
+        <ul aria-expanded="false" class="collapse">
+            <li><a href="app-calendar.html">View Customer Reports </a></li>
+            <li><a href="app-calendar.html">View Jobs Reports </a></li>
+            <li><a href="app-calendar.html">View Vendors Reports </a></li>
+            <li><a href="app-calendar.html">View Consignment Reports </a></li>
+            <li><a href="app-calendar.html">View payments Reports </a></li>
+            <li><a href="app-calendar.html">View Delivery challan Reports </a></li>
+            
+        </ul>
+    </li>
+  
+ 
+   
+   
+   
+   
+   
+
 
 {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-google-pages"></i>
     <span class="hide-menu"> Pages </span></a>    

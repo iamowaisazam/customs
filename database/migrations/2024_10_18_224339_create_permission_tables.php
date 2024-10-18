@@ -1,0 +1,58 @@
+<?php
+
+use App\Models\Permission;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('permissions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->integer('status')->default(1);
+            $table->timestamps();
+        });
+
+        $permissions = [
+            'Job Creation',
+            'Customer',
+            'Vendors',
+            'Consignment Information',
+            'Payment Request',
+            'Delivery Challan',
+            'Jobs Tracking And status',
+            'Customer Statements',
+            'Reports',
+            'Job History',
+            'Finance'
+        ];
+
+        foreach ($permissions as $value) {
+            Permission::create([
+                'name' => $value,
+                'slug' => strtolower(str_replace(' ','',$value)),
+                'status' => 1,
+            ]);
+        }
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('permissions');
+    }
+};

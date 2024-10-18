@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -64,12 +65,12 @@ class RoleController extends Controller
                 $action = '<div class="text-end">';
                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
 
-                $action .= '<a class="mx-1 btn btn-success" href="#">Permissions</a>';
+                // $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('admin/roles/permission/'.Crypt::encryptString($value->id)).'">Permissions</a>';
            
 
-                if(!in_array($value->id,[1,3,4])){
-                    //  $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
-                }
+                // if(!in_array($value->id,[2,])){
+                     $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                // }
 
                 $action .= '</div>';
 
@@ -104,13 +105,13 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('admin.roles.create');
+        $permissions = Permission::where('status',1)->get();
+        return view('admin.roles.create',compact('permissions'));
     }
 
 
     /**
      * Create a new controller instance.
-     *
      * @return void
      */
     public function store(Request $request)
@@ -118,6 +119,8 @@ class RoleController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:roles,name|max:255',
+           
+
         ]);
 
         if ($validator->fails()) {
@@ -129,10 +132,12 @@ class RoleController extends Controller
         Role::create([
             'name' => $request->name,
             'status' => 1,
+            'permissions' => $request->permissions ? implode(',',$request->permissions) : '',
             'created_at' => Carbon::now(),
             'updated_at' => NULL,
             'created_by' => Auth::user()->id,
         ]);
+        
         
         
         return redirect('/admin/roles/index')->with('success','Record Created Success'); 
@@ -150,7 +155,9 @@ class RoleController extends Controller
             return back()->with('error','Record Not Found');
          }
 
-        return view('admin.roles.edit',compact('model'));
+         $permissions = Permission::where('status',1)->get();
+
+        return view('admin.roles.edit',compact('model','permissions'));
     }
 
 
@@ -180,10 +187,10 @@ class RoleController extends Controller
                 ->withInput();
         }
 
-
         $model->name = $request->name;
         $model->updated_by = Auth::user()->id;
         $model->updated_at = Carbon::now();
+        $model->permissions = $request->permissions ? implode(',',$request->permissions) : '';
         $model->save();
 
         return redirect('admin/roles/index')->with('success','Record Updated');
@@ -203,7 +210,7 @@ class RoleController extends Controller
             return back()->with('warning','Record Not Found');
         }else{
 
-            if(User::where('role_id',$id)->frist()){
+            if(User::where('role_id',$model->id)->first()){
                 return back()->with('warning','Can Not Delete This Roles Its Used In Users');
             }
 
@@ -213,6 +220,4 @@ class RoleController extends Controller
 
     }
 
-
-    
 }
