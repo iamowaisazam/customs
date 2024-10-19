@@ -17,11 +17,6 @@ class CreateSettingsTable extends Migration
             $table->id();
             $table->text('field');
             $table->text('value')->nullable();
-            $table->text('type')->default('text');
-            $table->integer('sort')->default(0);
-            $table->text('grouping')->nullable();
-            $table->integer('section_sorting')->default(0);
-            $table->integer('group_sorting')->default(0);
             $table->text('section')->default('others');
             $table->timestamps();
         });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,11 +10,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
     {
+
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
@@ -44,6 +45,12 @@ return new class extends Migration
             ]);
         }
 
+        $perm = Permission::pluck('slug')->toArray();
+        foreach (Role::all() as $key => $role) {
+            $role->permissions = implode(',',$perm);
+            $role->save();
+        }
+
     }
 
     /**
@@ -55,4 +62,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('permissions');
     }
+
 };

@@ -46,18 +46,10 @@ class SettingController extends Controller
     public function edit(Request $request)
     {
         $group = $request->group;
-        $settings = Setting::where('grouping', $group)
-            ->orderBy('section_sorting')
-            ->get();
-    
-        $data = $settings->groupBy('section')->map(function ($section) {
-            return $section->pluck('value', 'field')->toArray();
-        });
-    
-        if ($data->isEmpty()) {
-            return redirect()->back()->with('error', 'No settings found for this group.');
-        }
-    return view('admin.settings.'.$group,compact('data', 'group'));
+
+        $data = Setting::where('section', $group)->pluck('value','field');
+
+        return view('admin.settings.'.$group,compact('data', 'group'));
     
     
     }
@@ -70,16 +62,12 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
-        
-        foreach ($request->all() as $key => $value) {
-            if(isset($value['value'])){
-                if(in_array($value['type'],['text','textarea','keywords','image'])){
-                     Setting::where('field',$key)->update(["value" => $value['value']]);
-                }       
-            }
+
+        foreach ($request->data as $key => $value) {
+                Setting::where('field',$key)->update(["value" => $value]);
         }
         return back()->with('success','Record Updated');
-        
     }
   
+    
 }

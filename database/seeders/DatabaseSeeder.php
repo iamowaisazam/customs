@@ -19,12 +19,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CustomerSeeder::class,
             VendorSeeder::class,
+            // SiteSettingSeeder::class,
             // ProductSeeder::class,
             // SliderSeedar::class,
             // MenuSeeder::class,
             // PagesSeeder::class,
             // FilemanagerSeeder::class,
-            // SiteSettingSeeder::class,
+           
             // PaymentMethodsSeeder::class,
         ]);
 

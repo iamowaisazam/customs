@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('admin/assets/images/favicon.png')}}">
-    <title>{{$_s['site_title']}}</title>
+    <title>{{$_s['web_name']}}</title>
 
     <!-- ============================================================== -->
     <!-- Plugins -->
@@ -80,7 +80,7 @@
         /* Colors */
 
         .sidebar-nav{
-           background-color: #0e2843 !important;
+           background-color: {{$_s['primary_color']}} !important;
         }
 
         .bg-green {
@@ -88,7 +88,7 @@
         }
 
         .sidebar-nav li ul{
-           background-color: #0e2843 !important;
+           background-color: {{$_s['primary_color']}} !important;
         }
 
         .sidebar-nav ul li a {
@@ -108,15 +108,15 @@
         }
 
         .topbar .top-navbar .navbar-header {
-            background: #0e2843 !important;
+            background: {{$_s['primary_color']}} !important;
         }
 
         .top-navbar{
-            background: #0e2843 !important;
+            background: {{$_s['primary_color']}} !important;
         }
 
         .navbar-collapse {
-            background: #0e2843 !important;
+            background: {{$_s['primary_color']}} !important;
         }
 
         .left-sidebar {
@@ -124,45 +124,38 @@
         }
 
         .mini-sidebar .sidebar-nav #sidebarnav > li:hover > a {
-          background: #0e2843;
+          background: {{$_s['primary_color']}};
         }
 
         .card-header{
-            background: #0e2843!important;
+            background: {{$_s['primary_color']}} !important;
         }
 
         .btn-info{
-            background: #0e2843!important;
-            border-color: #0e2843;
+            background: {{$_s['primary_color']}} !important;
+            border-color: {{$_s['primary_color']}};
         }
 
         @media (min-width: 768px) {
             .mini-sidebar .sidebar-nav #sidebarnav li {
-                background: #0e2843;
+                background: {{$_s['primary_color']}};
             }
         }
 
         @media (min-width: 768px) {
             .mini-sidebar .sidebar-nav #sidebarnav > li:hover > ul, .mini-sidebar .sidebar-nav #sidebarnav > li:hover > ul.collapse {
-                background: #0e2843;
+                background: {{$_s['primary_color']}};
             }
          }
-
-        
-
-
     </style>
-    
-    
     @yield('css')
-  
 </head>
 <body class="skin-blue fixed-layout">
     
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
-            <p class="loader__label">{{$_s['site_title']}}</p>
+            <p class="loader__label">{{$_s['web_name']}}</p>
         </div>
     </div>
 
@@ -212,7 +205,7 @@
             </div>
         </div>
         <footer class="footer">
-            © 2024 {{$_s['site_title']}} Developed by 
+            © 2024 {{$_s['web_name']}} Developed by 
             <a href="https://www.coderzlab.com/">coderzlab.com</a>
         </footer>
     </div>

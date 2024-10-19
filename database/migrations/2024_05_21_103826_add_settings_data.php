@@ -11,23 +11,41 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::table('settings')->insert([
-            ['field' => 'site_title', 'value' => 'Website Name', 'type' => 'text', 'sort' => 1, 'grouping' => 'general', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-            ['field' => 'meta_title', 'value' => 'Meta Title', 'type' => 'text', 'sort' => 2, 'grouping' => 'seo', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'seo'],
-            ['field' => 'meta_description', 'value' => 'meta_description', 'type' => 'text', 'sort' => 3, 'grouping' => 'seo', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'seo'],
-            ['field' => 'meta_keywords', 'value' => 'meta_keywords,meta_keywords', 'type' => 'text', 'sort' => 4, 'grouping' => 'seo', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'seo'],
+
+        $data = [
+            ['field' => 'web_name', 'value' => 'Customs Software'],
+            ['field' => 'web_logo', 'value' => 'logo'],
+            ['field' => 'web_favicon','value' => 'logo.png'],
+
+            ['field' => 'phone_number', 'value' => '+92000000000'],
+            ['field' => 'email_address', 'value' => 'admin@admin.com'],
+           
+            ['field' => 'meta_title', 'value' => 'Customs Software'],
+            ['field' => 'meta_description', 'value' => ''],
+            ['field' => 'meta_keywords', 'value' => ''],
             
-            ['field' => 'footer_credits', 'value' => 'Copyright: 2024 <a href="#."><span class="color_red">Lara commerce</span></a>', 'type' => 'text', 'sort' => 5, 'grouping' => 'theme', 'section_sorting' => 3, 'group_sorting' => 0, 'section' => 'footer'],
-            ['field' => 'phone_number', 'value' => '+92000000000', 'type' => 'text', 'sort' => 5, 'grouping' => 'general', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-            ['field' => 'email_address', 'value' => 'admin@admin.com', 'type' => 'text', 'sort' => 4, 'grouping' => 'general', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-            ['field' => 'address', 'value' => 'Address Will come here.', 'type' => 'text', 'sort' => 4, 'grouping' => 'general', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-            ['field' => 'domain', 'value' => 'www.yourdomain.com', 'type' => 'text', 'sort' => 4, 'grouping' => 'general', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-     
-            ['field' => 'admin_logo', 'value' => 'www.yourdomain.com', 'type' => 'image', 'sort' => 4, 'grouping' => 'admin_settings', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-            ['field' => 'admin_favicon', 'value' => 'www.yourdomain.com', 'type' => 'image', 'sort' => 4, 'grouping' => 'admin_settings', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'others'],
-            ['field' => 'site_currency', 'value' => 'PKR', 'type' => 'text', 'sort' => 5, 'grouping' => 'shop_settings', 'section_sorting' => 0, 'group_sorting' => 0, 'section' => 'shop'],
-            
-        ]);
+            ['field' => 'address', 'value' => 'Address Will come here.'],
+            ['field' => 'domain', 'value' => 'www.yourdomain.com'],
+        ];
+
+        // General Settings
+        foreach ($data as $key => $value) {
+            $value['section'] = 'general_settings';
+            DB::table('settings')->insert($value);
+        }
+        
+        $data = [
+            ['field' => 'primary_color', 'value' => '#0e2843'],
+            ['field' => 'secondry_color', 'value' => '#0ea396'],
+        ];
+        
+         // General Settings
+         foreach ($data as $key => $value) {
+            $value['section'] = 'theme_settings';
+            DB::table('settings')->insert($value);
+        }
+
+        
     }
 
     /**

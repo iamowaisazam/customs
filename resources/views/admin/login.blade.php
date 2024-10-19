@@ -20,23 +20,16 @@
     </style>
 </head>
 <body class="skin-default card-no-border">
-
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
-            <p class="loader__label">{{$_s['site_title']}}</p>
+            <p class="loader__label">{{$_s['web_name']}}</p>
         </div>
     </div>
-  
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
     <section id="wrapper">
         <div class="login-register" 
-        style="background-image:url({{asset('admin/assets/images/background/login-register.jpg')}});">
+        style="background-image:url({{asset('https://clearitusa.com/wp-content/uploads/2017/03/The-benefits-of-appointing-a-licensed-customs-broker.jpeg')}});padding:0px">
+        <div style="padding:10% 0;background: #00000063;">
             <div class="login-box card">
                 <div class="card-body">
                     <form method="post" class="form-horizontal form-material"  id="loginform" action="{{URL::to('/admin/login_submit')}}">
@@ -60,29 +53,14 @@
                         </div>
                         <div class="form-group text-center">
                             <div class="col-xs-12 p-b-20">
-                                <button class="btn w-100 btn-lg btn-info btn-rounded text-white" type="submit">Log In</button>
-                            </div>
-                        </div>
-                    </form>
-                    <form class="form-horizontal" id="recoverform" action="index.html">
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <h3>Recover Password</h3>
-                                <p class="text-muted">Enter your Email and instructions will be sent to you! </p>
-                            </div>
-                        </div>
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Email"> </div>
-                        </div>
-                        <div class="form-group text-center m-t-20">
-                            <div class="col-xs-12">
-                                <button class="btn btn-primary btn-lg w-100 text-uppercase waves-effect waves-light" type="submit">Reset</button>
+                                <button style="background:{{$_s['primary_color']}}" class="mb-3 btn w-100 btn-lg btn-info btn-rounded text-white" type="submit">Log In</button>
+                                <a class="mt-3" style="color:{{$_s['primary_color']}}"  href="" target="_blank">Click Here To Reset Password</a>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
+             </div>
+           </div>
         </div>
     </section>
     
@@ -103,8 +81,6 @@
             $("#loginform").slideUp();
             $("#recoverform").fadeIn();
         });
-    </script>
-    
-</body>
-
+    </script>   
+ </body>
 </html>

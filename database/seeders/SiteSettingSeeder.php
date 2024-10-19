@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Setting;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SiteSettingSeeder extends Seeder
 {
@@ -15,40 +16,40 @@ class SiteSettingSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('settings')->select('*')->delete();
 
         $data = [
-            "site_title" => "MSTORE",
-            "meta_title" => "MSTORE",
-            "meta_description" => "MSTORE is fully customizable and appearing to your customers in accordance with what they need and what they search",
-            "meta_keywords" => "MSTORE is fully customizable and appearing to your customers in accordance with what they need and what they search",
-            "footer_credits" => 'Copyright: 2024 <a href="#."><span class="color_red">MSTORE</span></a>',
-            "phone_number" => '03112239342',
-            "email_address" => 'lara@commerce.com',
-            "address" => "Address Will come here.",
-            "domain" => "www.laracommerce.com",
-            "logo" =>"demo/logo.png", 
-            "fav_icon" => "demo/favicon.png",
-            "facebook_link" => "#",
-            "youtube_link" => "#",
-            "twitter_link" => "",
-            "instagram_link" => "",
-            "admin_logo" => "",
-            "admin_favicon" => "",
-            "site_currency" => "PKR",
-            "topbar_title" => "Welcome To MSTORE",
-            "site_short_details" => "MSTORE is fully customizable and appearing to your customers in accordance with what they need and what they search Be a star of your own dream. Start your own ecommerce business right now!",
-            "delivery_charges" => 200,
-            "home_page_banner" => "demo/banner1.jpg",
-            "home_page_text" => "MSTORE",
-            "home_page_text_color" => "white",
-            "home_page_details" => "WE ENJOY WORKING ON THE SERVICES & PRODUCTS. WE PROVIDE AS MUCH AS YOU NEED THEM. THIS HELP US IN DELIVERING YOUR GOALS EASILY. BROWSE THROUGH THE WIDE RANGE OF SERVICES WE PROVIDE.",
-            "menu_type" => "left",
-            "shop_banner" => "demo/shopbanner.jpg",
+            ['field' => 'web_name', 'value' => 'Customs Software'],
+            ['field' => 'web_logo', 'value' => 'logo'],
+            ['field' => 'web_favicon','value' => 'logo.png'],
+
+            ['field' => 'phone_number', 'value' => '+92000000000'],
+            ['field' => 'email_address', 'value' => 'admin@admin.com'],
+           
+            ['field' => 'meta_title', 'value' => 'Customs Software'],
+            ['field' => 'meta_description', 'value' => ''],
+            ['field' => 'meta_keywords', 'value' => ''],
+            
+            ['field' => 'address', 'value' => 'Address Will come here.'],
+            ['field' => 'domain', 'value' => 'www.yourdomain.com'],
+        ];
+
+        // General Settings
+        foreach ($data as $key => $value) {
+            $value['section'] = 'general_settings';
+            DB::table('settings')->insert($value);
+        }
+
+
+        $data = [
+            ['field' => 'primarry_color', 'value' => 'Customs Software'],
+            ['field' => 'secondry_color', 'value' => 'logo'],
         ];
         
-        foreach ($data as $key => $value) {
-            Setting::where('field',$key)->update(["value" => $value]);
+         // General Settings
+         foreach ($data as $key => $value) {
+            $value['section'] = 'theme_settings';
+            DB::table('settings')->insert($value);
         }
         
     }

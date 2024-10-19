@@ -37,22 +37,14 @@ class AppServiceProvider extends ServiceProvider
          $_s = [];
 
         if (Schema::hasTable('settings')) {
-
-             $settings_Data = Setting::with('image')->orderBy('group_sorting')->get();
-
-             $groups = [];
-             $settings = [];
-             foreach ($settings_Data as $key => $value) {
-                $settings[$value->field] = $value->value;
-                array_push($groups,$value->grouping);
-             }
-             $_s = $settings;
-             $_s['grouping'] = implode(',',array_unique($groups)); 
+             $settings_Data = Setting::pluck('value','field');
+             $_s = $settings_Data;
         }
-
-   
+        
         View::share('_s',$_s);
 
     }
+
+
 
 }

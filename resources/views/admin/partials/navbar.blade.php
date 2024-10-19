@@ -182,16 +182,16 @@
     </ul>
 </li> --}}
 
-{{-- <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+<li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
     <i class="ti-settings"></i>
     <span class="hide-menu">Settings</span></a>
     <ul aria-expanded="false" class="collapse">
-       @foreach (explode(',',$_s['grouping']) as $item)
-        <li><a href="{{URL::to('admin/settings/edit')}}?group={{$item}}">
-          {{ ucwords(str_ireplace("_", " ",$item))}}</a></li>  
-       @endforeach
+        <li><a href="{{URL::to('admin/settings/edit')}}?group=general_settings">General Settings</a>
+        </li>  
+        <li><a href="{{URL::to('admin/settings/edit')}}?group=theme_settings">Theme Settings</a>
+        </li>  
     </ul>
-</li> --}}
+</li>
 
 <li><a class=" waves-effect waves-dark" href="{{URL::to('/admin/logout')}}" 
     aria-expanded="false"><i class="icon-speedometer"></i>
