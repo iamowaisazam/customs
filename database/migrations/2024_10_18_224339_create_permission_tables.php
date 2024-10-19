@@ -24,8 +24,9 @@ return new class extends Migration
         });
 
         $permissions = [
+            'User Managment',
             'Job Creation',
-            'Customer',
+            'Customers',
             'Vendors',
             'Consignment Information',
             'Payment Request',

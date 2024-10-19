@@ -58,4 +58,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
 
+    public function permission($permission)
+    {
+        if(in_array($permission,explode(',',$this->role->permissions))){
+            return true;
+        }else{
+            return false;
+        }
+    
+    }
+
 }
