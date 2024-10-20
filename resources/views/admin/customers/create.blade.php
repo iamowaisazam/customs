@@ -94,7 +94,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" >Email</label>
-                                <input type="text" value="{{old('email')}}" 
+                                <input readonly type="text" value="{{old('email')}}" 
                                 name="email" class="form-control" placeholder="Email">
                                 @if($errors->has('email'))
                                  <p class="text-danger" >{{ $errors->first('email') }}</p>
@@ -128,5 +128,13 @@
 @endsection
 
 @section('js')
+
+    <script>
+        $(document).ready(function() {
+            $('input[name=customer_email]').change(function (e) { 
+                $('input[name=email]').val($(this).val());
+            });
+        });
+    </script>
     
 @endsection

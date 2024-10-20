@@ -95,7 +95,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" >Email</label>
-                                <input type="text" value="{{$customer->user->email}}" 
+                                <input readonly type="text" value="{{$customer->user->email}}" 
                                 name="email" class="form-control" placeholder="Email">
                                 @if($errors->has('email'))
                                  <p class="text-danger" >{{ $errors->first('email') }}</p>
@@ -108,7 +108,7 @@
                                 <label class="form-label" >Password</label>
                                 <input type="password" name="password" value="" 
                                 class="form-control" placeholder="Password">
-                                <small  class="form-text text-dark">Please never share your email & password with anyone else.</small>
+                                <small  class="form-text text-dark">Leave It Blank For Default Password.</small>
                                 @if($errors->has('password'))
                                 <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
                                 @endif 
@@ -129,5 +129,12 @@
 @endsection
 @section('js')
     
+<script>
+    $(document).ready(function() {
+        $('input[name=customer_email]').change(function (e) { 
+            $('input[name=email]').val($(this).val());
+        });
+    });
+</script>
 
 @endsection

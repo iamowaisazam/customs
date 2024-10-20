@@ -43,11 +43,11 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" >Company Name</label>
-                                <input type="text" value="{{$model->company_name}}" name="company_name" class="form-control" 
-                                placeholder="Company Name">
-                                @if($errors->has('company_name'))
-                                 <p class="text-danger" >{{ $errors->first('company_name') }}</p>
+                                <label class="form-label" >Vendor Service</label>
+                                <input type="text" value="{{$model->vendor_service}}" name="vendor_service" class="form-control" 
+                                placeholder="Vendor Service">
+                                @if($errors->has('vendor_service'))
+                                 <p class="text-danger" >{{ $errors->first('vendor_service') }}</p>
                                 @endif 
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" >Email</label>
-                                <input type="text" value="{{$model->user->email}}" 
+                                <input readonly type="text" value="{{$model->user->email}}" 
                                 name="email" class="form-control" placeholder="Email">
                                 @if($errors->has('email'))
                                  <p class="text-danger" >{{ $errors->first('email') }}</p>
@@ -108,7 +108,7 @@
                                 <label class="form-label" >Password</label>
                                 <input type="password" name="password" value="" 
                                 class="form-control" placeholder="Password">
-                                <small  class="form-text text-dark">Please never share your email & password with anyone else.</small>
+                                <small  class="form-text text-dark">Leave It Blank For Default Password.</small>
                                 @if($errors->has('password'))
                                 <p class="invalid-feedback" >{{ $errors->first('password') }}</p>
                                 @endif 
@@ -129,5 +129,12 @@
 @endsection
 @section('js')
     
+<script>
+    $(document).ready(function() {
+        $('input[name=vendor_email]').change(function (e) { 
+            $('input[name=email]').val($(this).val());
+        });
+    });
+</script>
 
 @endsection

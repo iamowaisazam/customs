@@ -25,17 +25,17 @@ return new class extends Migration
 
         $permissions = [
             'User Managment',
-            'Job Creation',
             'Customers',
             'Vendors',
-            'Consignment Information',
-            'Payment Request',
-            'Delivery Challan',
-            'Jobs Tracking And status',
-            'Customer Statements',
-            'Reports',
-            'Job History',
-            'Finance'
+            'Job / Consignment',
+            'Settings',
+            // 'Payment Request',
+            // 'Delivery Challan',
+            // 'Jobs Tracking And status',
+            // 'Customer Statements',
+            // 'Reports',
+            // 'Job History',
+            // 'Finance'
         ];
 
         foreach ($permissions as $value) {

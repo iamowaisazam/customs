@@ -41,11 +41,25 @@ class VendorController extends Controller
 
             $query = Vendor::query();
 
+            if($request->has('status') && $request->status != ''){
+                $query->where('status',$request->status);
+            }
+
+            if($request->has('vendor_service') && $request->vendor_service != ''){
+                $query->where('vendor_service','like','%'.$request->vendor_service.'%');
+            }
+
+            if($request->has('vendor_name') && $request->vendor_name != ''){
+                $query->where('vendor_name','like','%'.$request->vendor_name.'%');
+                
+            }
+
             //Search
-            $search = $request->get('search')['value'];
+            $search = $request->get('search');
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
                    $s->where('vendor_name','like','%'.$search.'%')
+                   ->orwhere('vendor_service','like','%'.$search.'%')
                    ->orwhere('vendor_email','like','%'.$search.'%')
                    ->orwhere('vendor_phone','like','%'.$search.'%');
                });
@@ -72,6 +86,7 @@ class VendorController extends Controller
 
                 array_push($data,[
                     $value->id,
+                    $value->vendor_service,
                     $value->vendor_name,
                     $value->vendor_email,
                     $value->vendor_phone,
@@ -117,7 +132,7 @@ class VendorController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            "company_name" => 'required|max:255',
+            "vendor_service" => 'required|max:255',
             "vendor_name" => 'required|max:255',
             "vendor_phone" => 'required|max:255',
             "vendor_email" => 'required|email|max:255',
@@ -146,8 +161,7 @@ class VendorController extends Controller
 
        $vendor = Vendor::create([
             'user_id' => $user->id,
-            'company_logo' => '',
-            'company_name' => $request->company_name,
+            'vendor_service' => $request->vendor_service,
             'vendor_name' => $request->vendor_name,
             'vendor_email' => $request->vendor_email,
             'vendor_phone' => $request->vendor_phone,
@@ -207,7 +221,7 @@ class VendorController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            "company_name" => 'required|max:255',
+            "vendor_service" => 'required|max:255',
             "vendor_name" => 'required|max:255',
             "vendor_phone" => 'required|max:255',
             "vendor_email" => 'required|email|max:255',
@@ -221,9 +235,7 @@ class VendorController extends Controller
             ->withInput();
         }
 
-
-        // $customer->company_logo = '',
-        $model->company_name = $request->company_name;
+        $model->vendor_service = $request->vendor_service;
         $model->vendor_name = $request->vendor_name;
         $model->vendor_email = $request->vendor_email;
         $model->vendor_phone = $request->vendor_phone;

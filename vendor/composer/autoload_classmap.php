@@ -60,6 +60,7 @@ return array(
     'App\\Models\\OrderStatus' => $baseDir . '/app/Models/OrderStatus.php',
     'App\\Models\\Page' => $baseDir . '/app/Models/Page.php',
     'App\\Models\\PaymentMethod' => $baseDir . '/app/Models/PaymentMethod.php',
+    'App\\Models\\Permission' => $baseDir . '/app/Models/Permission.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
     'App\\Models\\ProductCollection' => $baseDir . '/app/Models/ProductCollection.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',

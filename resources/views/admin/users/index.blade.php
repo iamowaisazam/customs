@@ -24,6 +24,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         }
     }
 
+    .dataTables_info {
+     float: right;
+    }
+
 
 </style>
 @endsection
@@ -43,6 +47,51 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="card">
+                <header class="card-header bg-info">
+                    <h4 class="mb-0 text-white" >Search</h4>
+                </header>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select name="role_id" class="form-control" >
+                                    <option value="">Select Status</option>
+                                    @foreach ($roles as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select name="status" class="form-control" >
+                                    <option value="">Select Status</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Search</label>
+                                <input class="form-control" name="search" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="button" class="search_btn btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
 
     <!-- page start-->
                 <div class="row">
@@ -104,14 +153,16 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             scrollX: true,
             // scrollY: '500px',
             autoWidth: false, 
-            dom: 'lfrtip',
+            dom: 'lirtp',
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
             ajax: {
                 url: "{{URL::to('admin/users/index')}}",
                 type: "GET",
                 data: function ( d ) {
-                
+                    d.role_id = $('select[name=role_id]').val();
+                    d.status = $('select[name=status]').val();
+                    d.search = $('input[name=search]').val();
                 }
             },
          
@@ -126,10 +177,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         } );
 
        
-        $("#searchButton").click(e =>{ 
-            application_table.search($('input[type=search]').val());
+        $(".search_btn").click(e =>{ 
             application_table.draw();
         });
+
 
 
         $(".mydatatable").delegate(".is_status", "change", function(){

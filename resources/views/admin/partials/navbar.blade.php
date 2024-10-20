@@ -48,28 +48,17 @@
         </li>
     @endif
     
-    
-    
-        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Jobs Creation</span></a>
+    @if(Auth::user()->permission('job/consignment'))
+        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Jobs / Consignmen</span></a>
             <ul aria-expanded="false" class="collapse">
-                <li><a href="app-calendar.html">Create jobs</a></li>
-                <li><a href="app-calendar.html">View jobs</a></li>
+                <li><a href="app-calendar.html">Create Consignment</a></li>
+                <li><a href="app-calendar.html">View Consignment</a></li>
                 
             </ul>
         </li>
-    
+    @endif
 
-        @if(Auth::user()->permission('consignmentinformation'))
-            <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Consignment Information</span></a>
-                <ul aria-expanded="false" class="collapse">
-                    <li><a href="app-calendar.html">Create Consignment</a></li>
-                    <li><a href="app-calendar.html">View Consignment</a></li>
-                    
-                </ul>
-            </li>
-        @endif
-
-    <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Payment Request </span></a>
+    {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Payment Request </span></a>
         <ul aria-expanded="false" class="collapse">
             <li><a href="app-calendar.html">Create Payment Request</a></li>
             <li><a href="app-calendar.html">View Payment Request</a></li>
@@ -119,7 +108,7 @@
   
  
    
-   
+    --}}
    
    
    

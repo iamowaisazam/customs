@@ -42,8 +42,7 @@ class CustomerSeeder extends Seeder
 
             Customer::create([
                 'user_id' => $user->id,
-                'company_logo' => 'company',
-                'company_name' => $name,
+                'company_name' => $faker->company,
                 'customer_name' => $name,
                 'customer_email' => $email,
                 'customer_phone' => $faker->phoneNumber,

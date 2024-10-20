@@ -3,12 +3,40 @@
 @section('css')
  
     <style>
+
+		.dashboard_boxes .card-body{
+			background: #0e2843; 
+		}
+
+		.dashboard_boxes h3{
+			color: #fff !important;
+			font-size: 14px !important;
+			font-weight: 500 !important;
+		}
  
 </style>
     
 @endsection
 
 @section('content')
+
+<?php 
+
+$dashboard = [
+	'User Management',
+	'Customer Management',
+	'Vendor Management',
+	'Jobs / Consignment Management',
+	// 'Consignment Management',
+	// 'Payment Request Management',
+	// 'Delivery Challan Management',
+	// 'Jobs Tracking Management',
+	// 'Customer Statements Management',
+	// 'Finance Management',
+];
+
+
+?>
 
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
@@ -22,6 +50,53 @@
                             </ol>
                         </div>
                     </div>
+                </div>
+
+				<div class="row dashboard_boxes">
+                    <!-- .col -->
+					@foreach ($dashboard as $item)
+						<div class="col-md-4 col-lg-4 col-xl-4">
+							<div class="card card-body dark">
+								<div class="row align-items-center">
+									<div class="col-md-4 col-lg-3 text-center">
+										<a href="#"><img src="{{asset('admin/assets/images/users/1.jpg')}}" width="90" class="img-circle img-fluid"></a>
+									</div>
+									<div class="col-md-8 col-lg-8">
+										<h3 class="box-title m-b-0 color-white">{{$item}}</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					@endforeach
+
+                    {{-- <div class="col-md-6 col-lg-6 col-xl-4">
+                        <div class="card card-body dark">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 col-lg-3 text-center">
+                                    <a href="app-contact-detail.html"><img src="../assets/images/users/1.jpg" width="90" alt="user" class="img-circle img-fluid"></a>
+                                </div>
+                                <div class="col-md-8 col-lg-8">
+                                    <h3 class="box-title m-b-0 color-white">Reports Management</h3>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-4">
+                        <div class="card card-body darkk">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 col-lg-3 text-center">
+                                    <a href="app-contact-detail.html"><img src="../assets/images/users/1.jpg" width="90" alt="user" class="img-circle img-fluid"></a>
+                                </div>
+                                <div class="col-md-8 col-lg-8">
+                                    <h3 class="box-title m-b-0 color-white">Master Data</h3>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
+              
+                 
                 </div>
    
 

@@ -41,8 +41,16 @@ class UserController extends Controller
 
             $query = User::whereNotIn('role_id',[1,3,4]);
 
+            if($request->has('status') && $request->status != ''){
+                $query->where('status',$request->status);
+            }
+
+            if($request->has('role_id') && $request->role_id != ''){
+                $query->where('role_id',$request->role_id);
+            }
+
             //Search
-            $search = $request->get('search')['value'];
+            $search = $request->get('search');
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
                    $s->where('users.name','like','%'.$search.'%')
@@ -88,8 +96,10 @@ class UserController extends Controller
             ]);
         }
 
+
+        $roles = Role::whereNotIn('id',[1,3,4])->where('status',1)->get();
         
-        return view('admin.users.index');
+        return view('admin.users.index',compact('roles'));
 
     }
 

@@ -17,8 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('company_logo')->nullable();
-            $table->string('company_name')->nullable();
+            $table->string('vendor_service')->nullable();
             $table->string('vendor_name')->nullable();
             $table->string('vendor_email')->nullable();
             $table->string('vendor_phone')->nullable();

@@ -15,6 +15,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         }
     }
 
+    .dataTables_info {
+     float: right;
+    }
+
 </style>
 @endsection
 
@@ -31,6 +35,51 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <li class="breadcrumb-item active">Customers</li>
                 </ol>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="card">
+                <header class="card-header bg-info">
+                    <h4 class="mb-0 text-white" >Search</h4>
+                </header>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Company</label>
+                                <input class="form-control" name="company_name" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input class="form-control" name="customer_name" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select name="status" class="form-control" >
+                                    <option value="">Select Status</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Search</label>
+                                <input class="form-control" name="search" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="button" class="search_btn btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
@@ -53,6 +102,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                     <thead>
                                         <tr class="" >
                                             <th>#</th>
+                                            <th>Company</th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
@@ -87,13 +137,19 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             scrollX: true,
             // scrollY: '500px',
             autoWidth: false, 
-            dom: 'lfrtip',
+            dom: 'lirtp',
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
             ajax: {
                 url: "{{URL::to('admin/customers')}}",
                 type: "GET",
                 data: function ( d ) {  
+
+                    d.vendor_service = $('input[name=vendor_service]').val();
+                    d.customer_name = $('input[name=customer_name]').val();
+                    d.status = $('select[name=status]').val();
+                    d.search = $('input[name=search]').val();
+
                 }
             },
             initComplete: function () {                
@@ -107,8 +163,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         } );
 
        
-        $("#searchButton").click(e =>{ 
-            application_table.search($('input[type=search]').val());
+        $(".search_btn").click(e =>{ 
             application_table.draw();
         });
 

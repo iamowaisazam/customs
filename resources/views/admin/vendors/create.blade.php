@@ -42,11 +42,11 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" >Company Name</label>
-                                <input type="text" value="{{old('company_name')}}" name="company_name" class="form-control" 
-                                placeholder="Company Name">
-                                @if($errors->has('company_name'))
-                                 <p class="text-danger" >{{ $errors->first('company_name') }}</p>
+                                <label class="form-label" >Vendor Service</label>
+                                <input type="text" value="{{old('vendor_service')}}" name="vendor_service" class="form-control" 
+                                placeholder="Vendor Service">
+                                @if($errors->has('vendor_service'))
+                                 <p class="text-danger" >{{ $errors->first('vendor_service') }}</p>
                                 @endif 
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" >Email</label>
-                                <input type="text" value="{{old('email')}}" 
+                                <input readonly type="text" value="{{old('email')}}" 
                                 name="email" class="form-control" placeholder="Email">
                                 @if($errors->has('email'))
                                  <p class="text-danger" >{{ $errors->first('email') }}</p>
@@ -128,5 +128,13 @@
 @endsection
 
 @section('js')
+
+<script>
+    $(document).ready(function() {
+        $('input[name=vendor_email]').change(function (e) { 
+            $('input[name=email]').val($(this).val());
+        });
+    });
+</script>
     
 @endsection

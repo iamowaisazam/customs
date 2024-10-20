@@ -44,8 +44,7 @@ class VendorSeeder extends Seeder
 
             Vendor::create([
                 'user_id' => $user->id,
-                'company_logo' => 'company',
-                'company_name' => $name,
+                'vendor_service' => $faker->bs,
                 'vendor_name' => $name,
                 'vendor_email' => $email,
                 'vendor_phone' => $faker->phoneNumber,

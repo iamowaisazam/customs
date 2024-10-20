@@ -42,12 +42,25 @@ class CustomerController extends Controller
             $query = Customer::query();
 
             //Search
-            $search = $request->get('search')['value'];
+            if($request->has('status') && $request->status != ''){
+                $query->where('status',$request->status);
+            }
+
+            if($request->has('company_name') && $request->company_name != ''){
+                $query->where('company_name',$request->company_name);
+            }
+
+            if($request->has('customer_name') && $request->customer_name != ''){
+                $query->where('customer_name',$request->customer_name);
+            }
+
+            $search = $request->get('search');
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
-                   $s->where('customers_name','like','%'.$search.'%')
-                   ->orwhere('customers_email','like','%'.$search.'%')
-                   ->orwhere('customers_phone','like','%'.$search.'%');
+                   $s->where('customer_name','like','%'.$search.'%')
+                   ->orwhere('customer_email','like','%'.$search.'%')
+                   ->orwhere('company_name','like','%'.$search.'%')
+                   ->orwhere('customer_phone','like','%'.$search.'%');
                });
             }
             
@@ -72,6 +85,7 @@ class CustomerController extends Controller
 
                 array_push($data,[
                     $value->id,
+                    $value->company_name,
                     $value->customer_name,
                     $value->customer_email,
                     $value->customer_phone,
@@ -146,7 +160,6 @@ class CustomerController extends Controller
 
        $customer = Customer::create([
             'user_id' => $user->id,
-            'company_logo' => '',
             'company_name' => $request->company_name,
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
@@ -224,7 +237,7 @@ class CustomerController extends Controller
         }
 
 
-        // $customer->company_logo = '',
+    
         $customer->company_name = $request->company_name;
         $customer->customer_name = $request->customer_name;
         $customer->customer_email = $request->customer_email;
