@@ -49,11 +49,17 @@
     @endif
     
     @if(Auth::user()->permission('job/consignment'))
-        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Jobs / Consignmen</span></a>
-            <ul aria-expanded="false" class="collapse">
-                <li><a href="app-calendar.html">Create Consignment</a></li>
-                <li><a href="app-calendar.html">View Consignment</a></li>
-                
+        <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/consignments/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+            <i class="mdi mdi-border-all"></i>
+            <span class="hide-menu">Job / Consignment</span></a>
+            <ul aria-expanded="false" class="collapse {{ request()->is('admin/consignments/*') ? 'in' : '' }}">
+                <li><a class="{{ request()->is('admin/consignments/create') ? 'active' : ''}}"  
+                    href="{{URL::to('admin/consignments/create')}}">Create Consignment</a>
+                </li>
+                <li><a 
+                    class="{{ request()->is('admin/consignments/*') && request()->is('admin/consignments/create') == false  ? 'active' : '' }}" 
+                    href="{{URL::to('admin/consignments')}}">View Consignments</a>
+                </li>
             </ul>
         </li>
     @endif

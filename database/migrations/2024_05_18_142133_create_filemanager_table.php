@@ -25,7 +25,7 @@ class CreateFilemanagerTable extends Migration
             $table->integer('created_by')->nullable();
             $table->timestamps();
             $table->integer('is_enable')->default(1);
-            $table->text('grouping')->default('others');
+            $table->string('grouping')->default('others');
         });
     }
 

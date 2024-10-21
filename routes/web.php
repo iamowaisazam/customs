@@ -68,9 +68,10 @@ Route::middleware(['auth'])->group(function () {
       Route::get('/admin/roles/delete/{id}', [App\Http\Controllers\Admin\RoleController::class, 'delete']);
    
       
-      //customers
+      //Modules
       Route::resource('/admin/customers', App\Http\Controllers\Admin\CustomerController::class);
       Route::resource('/admin/vendors', App\Http\Controllers\Admin\VendorController::class);
+      Route::resource('/admin/consignments', App\Http\Controllers\Admin\ConsignmentController::class);
 
       
   //filemanager

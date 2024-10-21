@@ -54,7 +54,7 @@
                         <div class="form-group text-center">
                             <div class="col-xs-12 p-b-20">
                                 <button style="background:{{$_s['primary_color']}}" class="mb-3 btn w-100 btn-lg btn-info btn-rounded text-white" type="submit">Log In</button>
-                                <a class="mt-3" style="color:{{$_s['primary_color']}}"  href="" target="_blank">Click Here To Reset Password</a>
+                                {{-- <a class="mt-3" style="color:{{$_s['primary_color']}}"  href="" target="_blank">Click Here To Reset Password</a> --}}
                             </div>
                         </div>
                     </form>
