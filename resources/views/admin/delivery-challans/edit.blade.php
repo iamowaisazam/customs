@@ -28,18 +28,20 @@
     @method('PUT')
 
     <div class="row">
+
         <div class="col-lg-12">
           <section class="card">
               <header class="card-header bg-info">
                     <h4 class="mb-0 text-white">Jobs With Consignment information</h4>
               </header>
               <div class="card-body">
+
                  <div class="row">
 
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Job Number (Auto)</label>
-                            <input readonly type="text" value="{{$model->job_number_prefix}}" name="job_number" 
+                            <input readonly type="text" value="{{$model->job_number}}{{$model->job_number_prefix}}" name="job_number" 
                             class="form-control" placeholder="Job Number">
                             @if($errors->has('job_number'))
                              <p class="text-danger" >{{ $errors->first('job_number') }}</p>
@@ -152,7 +154,7 @@
                   <div class="col-md-3">
                       <div class="form-group">
                           <label class="form-label">Job Number</label>
-                          <input readonly value="{{$model->job_number_prefix}}"
+                          <input readonly value="{{$model->job_number}}{{$model->job_number_prefix}}"
                           class="form-control">
                       </div>
                   </div>

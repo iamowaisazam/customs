@@ -564,6 +564,7 @@ class ComposerStaticInita36bf903df8967f04e807e6d7d475532
 
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Enums\\Currency' => __DIR__ . '/../..' . '/app/Enums/Currency.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Admin\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AuthController.php',
         'App\\Http\\Controllers\\Admin\\CategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CategoryController.php',
@@ -636,6 +637,7 @@ class ComposerStaticInita36bf903df8967f04e807e6d7d475532
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Providers\\SiteSettingsServiceProvider' => __DIR__ . '/../..' . '/app/Providers/SiteSettingsServiceProvider.php',
+        'App\\Utilities\\ConsigmentUtility' => __DIR__ . '/../..' . '/app/Utilities/ConsigmentUtility.php',
         'Asm89\\Stack\\Cors' => __DIR__ . '/..' . '/asm89/stack-cors/src/Cors.php',
         'Asm89\\Stack\\CorsService' => __DIR__ . '/..' . '/asm89/stack-cors/src/CorsService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
@@ -750,6 +752,7 @@ class ComposerStaticInita36bf903df8967f04e807e6d7d475532
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\CategorySubCategorySeeder' => __DIR__ . '/../..' . '/database/seeders/CategorySubCategorySeeder.php',
+        'Database\\Seeders\\ConsignmentSeeder' => __DIR__ . '/../..' . '/database/seeders/ConsignmentSeeder.php',
         'Database\\Seeders\\CustomerSeeder' => __DIR__ . '/../..' . '/database/seeders/CustomerSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\FilemanagerSeeder' => __DIR__ . '/../..' . '/database/seeders/FilemanagerSeeder.php',

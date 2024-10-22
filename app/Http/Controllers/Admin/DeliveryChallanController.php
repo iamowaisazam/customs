@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Currency;
 use App\Http\Controllers\Controller;
+use App\Models\Challan;
 use App\Models\Consignment;
 use App\Models\Customer;
 use App\Models\Role;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Mpdf\Tag\Select;
 
-class ConsignmentController extends Controller
+class DeliveryChallanController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -43,51 +44,51 @@ class ConsignmentController extends Controller
 
         if($request->ajax()){
 
-            $query = Consignment::join('customers','customers.id','=','consignments.customer_id');
+            $query = Challan::join('customers','customers.id','=','delivery_challans.customer_id')->join('consignments','consignments.id','=','delivery_challans.consignment_id');
 
             //Search
             if($request->has('status') && $request->status != ''){
                 $query->where('consignments.status',$request->status);
             }
 
-            if($request->has('job_number') && $request->job_number != ''){
-                $query->where('consignments.job_number_prefix',$request->job_number);
-            }
+            // if($request->has('job_number') && $request->job_number != ''){
+            //     $query->where('consignments.job_number',explode('/',$request->job_number)[0]);
+            // }
 
-            if($request->has('company_name') && $request->company_name != ''){
-                $query->where('customers.company_name','like','%'.$request->company_name.'%');
-            }
+            // if($request->has('company_name') && $request->company_name != ''){
+            //     $query->where('customers.company_name','like','%'.$request->company_name.'%');
+            // }
 
-            if($request->has('customer_name') && $request->customer_name != ''){
-                $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
-            }
+            // if($request->has('customer_name') && $request->customer_name != ''){
+            //     $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
+            // }
 
-            if($request->has('lc_no') && $request->lc_no != ''){
-                $query->where('consignments.lc_no',$request->lc_no);
-            }
+            // if($request->has('lc_no') && $request->lc_no != ''){
+            //     $query->where('consignments.lc_no',$request->lc_no);
+            // }
 
             
 
-            $search = $request->get('search');
-            if($search != ""){
-               $query = $query->where(function ($s) use($search) {
-                   $s->where('customers.customer_name','like','%'.$search.'%')
-                   ->orwhere('customers.company_name','like','%'.$search.'%')
-                   ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
-               });
-            }
+            // $search = $request->get('search');
+            // if($search != ""){
+            //    $query = $query->where(function ($s) use($search) {
+            //        $s->where('customers.customer_name','like','%'.$search.'%')
+            //        ->orwhere('customers.company_name','like','%'.$search.'%')
+            //        ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
+            //    });
+            // }
             
             $count = $query->count();
             
             
             $users = $query->skip($request->start)
             ->select([
-                'consignments.*',
+                'delivery_challans.*',
                 'customers.customer_name',
                 'customers.company_name',
             ])
             ->take($request->length)
-            ->orderBy('consignments.id','desc')
+            ->orderBy('delivery_challans.id','desc')
             ->get();
 
             $data = [];
@@ -106,7 +107,7 @@ class ConsignmentController extends Controller
 
                 array_push($data,[
                     $value->id,
-                    $value->job_number_prefix,
+                    $value->job_number.$value->job_number_prefix,
                     $value->customer->company_name,
                     $value->customer->customer_name,
                     $value->invoice_value,
@@ -142,12 +143,10 @@ class ConsignmentController extends Controller
     {
 
         $data = [
-            'customers' => Customer::where('status',1)->get(),
-            'currencies' => Currency::DATA,
-            'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
+            'model' => Consignment::where('job_number_prefix',request()->job_number)->first(),
         ];
 
-        return view('admin.consignments.create',$data);
+        return view('admin.delivery-challans.create',$data);
     }
 
 
@@ -158,7 +157,9 @@ class ConsignmentController extends Controller
      */
     public function store(Request $request)
     {
-        
+
+       dd($request->all());
+
         $validator = Validator::make($request->all(), [
              "job_number" => 'required|max:255',
              "customer_id" => 'required|max:255',
@@ -177,8 +178,8 @@ class ConsignmentController extends Controller
         }
 
        $Consignment = Consignment::create([
-            "job_number" => ConsigmentUtility::get_job_number_with_prefix(),
-            "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
+            "job_number" => ConsigmentUtility::get_job_number(),
+            "job_number_prefix" => '/34-24',
             "customer_id" => $request->customer_id,
             "blawbno" => $request->blawbno,
             "lcbtitno" => $request->lcbtitno,
@@ -190,6 +191,8 @@ class ConsignmentController extends Controller
             'status' => 1,
             'created_by' => Auth::user()->id,
         ]);
+
+        // return back()->with('success','Record Created Success'); 
 
         return redirect('/admin/consignments/'.Crypt::encryptString($Consignment->id).'/edit')
         ->with('success','Record Created Success'); 

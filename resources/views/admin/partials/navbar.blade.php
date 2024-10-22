@@ -64,6 +64,22 @@
         </li>
     @endif
 
+    @if(Auth::user()->permission('deliverychallan'))
+        <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-challans/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+            <i class="mdi mdi-border-all"></i>
+            <span class="hide-menu">Delivery Challans</span></a>
+            <ul aria-expanded="false" class="collapse {{ request()->is('admin/delivery-challans/*') ? 'in' : '' }}">
+                <li><a class="{{ request()->is('admin/delivery-challans/create') ? 'active' : ''}}"  
+                    href="{{URL::to('admin/delivery-challans/create')}}">Create Challans</a>
+                </li>
+                <li><a 
+                    class="{{ request()->is('admin/delivery-challans/*') && request()->is('admin/delivery-challans/create') == false  ? 'active' : '' }}" 
+                    href="{{URL::to('admin/delivery-challans')}}">View Challans</a>
+                </li>
+            </ul>
+        </li>
+    @endif
+
     {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Payment Request </span></a>
         <ul aria-expanded="false" class="collapse">
             <li><a href="app-calendar.html">Create Payment Request</a></li>

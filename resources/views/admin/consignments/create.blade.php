@@ -37,7 +37,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label">Job Number (Auto)</label>
-                                <input type="text" value="{{old('job_number')}}" name="job_number" 
+                                <input readonly value="{{$job_number}}" name="job_number" 
                                 class="form-control" placeholder="Job Number">
                                 @if($errors->has('job_number'))
                                  <p class="text-danger" >{{ $errors->first('job_number') }}</p>
@@ -51,7 +51,7 @@
                                 <select name="customer_id" class="form-control" >
                                     <option value="">Select Consignee</option>
                                     @foreach ($customers as $item)
-                                        <option value="{{$item->id}}">{{$item->customer_name}}</option>
+                                        <option @if(old('customer_id') == $item->id) selecred @endif value="{{$item->id}}">{{$item->customer_name}}</option>
                                     @endforeach
                                 </select>
                                 @if($errors->has('customer_id'))
@@ -96,7 +96,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label"> Invoice Value </label>
-                                <input value="{{old('invoice_value')}}" name="invoice_value" 
+                                <input required min="1" type="number" value="{{old('invoice_value')}}" name="invoice_value" 
                                  class="form-control" placeholder="Invoice Value">
                                 @if($errors->has('invoice_value'))
                                  <p class="text-danger" >{{ $errors->first('invoice_value') }}</p>
@@ -104,19 +104,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label">Select Invoice Currency</label>
-                                <select name="currency" class="form-control currency" >
-                                    <option value="dollar">US</option>
-                                    <option value="dollar">US</option>
-                                    <option value="dollar">US</option>
-                                </select>
-                                @if($errors->has('currency'))
-                                 <p class="text-danger" >{{ $errors->first('currency') }}</p>
-                                @endif 
-                            </div>
+                     
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Select Invoice Currency</label>
+                            <select class="form-control" name="currency">
+                                @foreach ($currencies as $cr)
+                                <option value="{{$cr['code']}}">{{$cr['code']}}</option>
+                               @endforeach
+                            </select>
+                            @if($errors->has('currency'))
+                             <p class="text-danger" >{{ $errors->first('currency') }}</p>
+                            @endif 
                         </div>
+                    </div>
 
                         <div class="col-md-4">
                             <div class="form-group">

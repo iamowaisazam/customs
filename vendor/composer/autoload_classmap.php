@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Enums\\Currency' => $baseDir . '/app/Enums/Currency.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Admin\\AuthController' => $baseDir . '/app/Http/Controllers/Admin/AuthController.php',
     'App\\Http\\Controllers\\Admin\\CategoryController' => $baseDir . '/app/Http/Controllers/Admin/CategoryController.php',
@@ -79,6 +80,7 @@ return array(
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Providers\\SiteSettingsServiceProvider' => $baseDir . '/app/Providers/SiteSettingsServiceProvider.php',
+    'App\\Utilities\\ConsigmentUtility' => $baseDir . '/app/Utilities/ConsigmentUtility.php',
     'Asm89\\Stack\\Cors' => $vendorDir . '/asm89/stack-cors/src/Cors.php',
     'Asm89\\Stack\\CorsService' => $vendorDir . '/asm89/stack-cors/src/CorsService.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
@@ -193,6 +195,7 @@ return array(
     'Cron\\MonthField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
     'Database\\Factories\\UserFactory' => $baseDir . '/database/factories/UserFactory.php',
     'Database\\Seeders\\CategorySubCategorySeeder' => $baseDir . '/database/seeders/CategorySubCategorySeeder.php',
+    'Database\\Seeders\\ConsignmentSeeder' => $baseDir . '/database/seeders/ConsignmentSeeder.php',
     'Database\\Seeders\\CustomerSeeder' => $baseDir . '/database/seeders/CustomerSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
     'Database\\Seeders\\FilemanagerSeeder' => $baseDir . '/database/seeders/FilemanagerSeeder.php',

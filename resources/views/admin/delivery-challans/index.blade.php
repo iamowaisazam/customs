@@ -7,8 +7,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/dataTables.boots
 href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataTables.min.css')}}">
 
 
-<style>
-    
+<style>    
     @media (max-width: 767px){
         .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {       
             overflow: scroll!important;
@@ -18,20 +17,19 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
     .dataTables_info {
      float: right;
     }
-
 </style>
 @endsection
 
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Consignment & Job Creation</h4>
+            <h4 class="text-themecolor">Delivery Challans</h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Consignment & Job Creation</li>
+                    <li class="breadcrumb-item active">Delivery Challans</li>
                 </ol>
             </div>
         </div>
@@ -105,11 +103,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 <header class="card-header bg-info">
                     <div class="row">
                         <div class="col-md-6 align-self-center">
-                            <h4 class="mb-0 text-white" >Consignment & Job Creation
-                                List</h4>
+                            <h4 class="mb-0 text-white" >Delivery Challans List</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a class="btn btn-primary" href="{{URL::to('admin/consignments/create')}}">Create New </a>
+                            <a class="btn btn-primary" href="{{URL::to('admin/delivery-challans/create')}}">Create New </a>
                         </div>
                     </div>
                 </header>
@@ -166,10 +163,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     d.company_name = $('input[name=company_name]').val();
                     d.customer_name = $('input[name=customer_name]').val();
                     d.lc_no = $('input[name=lc_no]').val();
-
                     d.status = $('select[name=status]').val();
-
-                    
                     d.search = $('input[name=search]').val();
 
                 }

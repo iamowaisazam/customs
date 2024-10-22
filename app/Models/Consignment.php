@@ -17,6 +17,7 @@ class Consignment extends Model
      */
     protected $fillable = [
         'id',
+        'job_number_prefix',
         'job_number',
         'customer_id',
         'blawbno',
@@ -24,8 +25,9 @@ class Consignment extends Model
         'description',
         'invoice_value',
         'currency',
+        'demands_received',
         'machine_number',
-        
+        'documents',
         'job_date',
         'your_ref',
         'port',
@@ -47,6 +49,7 @@ class Consignment extends Model
         'gross',
         'nett',
         'status',
+        
         'created_by',
         'created_at',
         'updated_at',

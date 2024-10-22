@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('consignments', function (Blueprint $table) {
             $table->id();
 
-            $table->string('job_number')->nullable();
+            $table->integer('job_number')->nullable();
+            $table->string('job_number_prefix')->nullable();
+
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('blawbno')->nullable();
@@ -47,6 +49,9 @@ return new class extends Migration
             $table->string('due_date')->nullable();
             $table->string('gross')->nullable();
             $table->string('nett')->nullable();
+
+            $table->text('demands_received')->nullable();
+            $table->text('documents')->nullable();
 
             $table->integer('status')->default(1);
             $table->integer('created_by')->default(1);
