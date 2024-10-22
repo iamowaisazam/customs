@@ -44,39 +44,40 @@ class DeliveryChallanController extends Controller
 
         if($request->ajax()){
 
-            $query = Challan::join('customers','customers.id','=','delivery_challans.customer_id')->join('consignments','consignments.id','=','delivery_challans.consignment_id');
+            $query = Challan::join('customers','customers.id','=','delivery_challans.customer_id')
+            ->join('consignments','consignments.id','=','delivery_challans.consignment_id');
 
             //Search
             if($request->has('status') && $request->status != ''){
-                $query->where('consignments.status',$request->status);
+                $query->where('delivery_challans.status',$request->status);
             }
 
-            // if($request->has('job_number') && $request->job_number != ''){
-            //     $query->where('consignments.job_number',explode('/',$request->job_number)[0]);
-            // }
+            if($request->has('job_number') && $request->job_number != ''){
+                $query->where('consignments.job_number',explode('/',$request->job_number)[0]);
+            }
 
-            // if($request->has('company_name') && $request->company_name != ''){
-            //     $query->where('customers.company_name','like','%'.$request->company_name.'%');
-            // }
+            if($request->has('company_name') && $request->company_name != ''){
+                $query->where('customers.company_name','like','%'.$request->company_name.'%');
+            }
 
-            // if($request->has('customer_name') && $request->customer_name != ''){
-            //     $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
-            // }
+            if($request->has('customer_name') && $request->customer_name != ''){
+                $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
+            }
 
-            // if($request->has('lc_no') && $request->lc_no != ''){
-            //     $query->where('consignments.lc_no',$request->lc_no);
-            // }
+            if($request->has('lc_no') && $request->lc_no != ''){
+                $query->where('consignments.lc_no',$request->lc_no);
+            }
 
             
 
-            // $search = $request->get('search');
-            // if($search != ""){
-            //    $query = $query->where(function ($s) use($search) {
-            //        $s->where('customers.customer_name','like','%'.$search.'%')
-            //        ->orwhere('customers.company_name','like','%'.$search.'%')
-            //        ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
-            //    });
-            // }
+            $search = $request->get('search');
+            if($search != ""){
+               $query = $query->where(function ($s) use($search) {
+                   $s->where('customers.customer_name','like','%'.$search.'%')
+                   ->orwhere('customers.company_name','like','%'.$search.'%')
+                   ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
+               });
+            }
             
             $count = $query->count();
             
@@ -84,6 +85,9 @@ class DeliveryChallanController extends Controller
             $users = $query->skip($request->start)
             ->select([
                 'delivery_challans.*',
+                'consignments.job_number_prefix',
+                'consignments.invoice_value',
+                'consignments.lc_no',
                 'customers.customer_name',
                 'customers.company_name',
             ])
@@ -91,14 +95,15 @@ class DeliveryChallanController extends Controller
             ->orderBy('delivery_challans.id','desc')
             ->get();
 
+
             $data = [];
             foreach ($users as $key => $value) {
 
                 $action = '<div class="text-end">';
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
-                
-                $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                    $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/delivery-challans/'.Crypt::encryptString($value->id)).'">View</a>';
+                    
+                    $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/delivery-challans/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
                 $action .= '</div>';
 
@@ -107,7 +112,8 @@ class DeliveryChallanController extends Controller
 
                 array_push($data,[
                     $value->id,
-                    $value->job_number.$value->job_number_prefix,
+                    date('d-m-Y', strtotime($value->created_at)),
+                    $value->job_number_prefix,
                     $value->customer->company_name,
                     $value->customer->customer_name,
                     $value->invoice_value,
@@ -127,7 +133,7 @@ class DeliveryChallanController extends Controller
             ]);
         }
 
-        return view('admin.consignments.index');
+        return view('admin.delivery-challans.index');
 
     }
 
@@ -142,11 +148,29 @@ class DeliveryChallanController extends Controller
     public function create()
     {
 
-        $data = [
-            'model' => Consignment::where('job_number_prefix',request()->job_number)->first(),
-        ];
 
-        return view('admin.delivery-challans.create',$data);
+        if(request()->job_number != ''){
+
+            
+
+            $consignment = Consignment::where('job_number_prefix',request()->job_number)->first();
+            if(!$consignment){
+                return back()->with('warning','Consignment Not Found');
+            }
+
+            if($consignment->challan){
+                return back()->with('warning','Challan Is Already Generated');
+            }
+            $data = [
+                'model' => $consignment,
+            ];
+            
+            return view('admin.delivery-challans.create',$data);
+        }
+      
+
+        return view('admin.delivery-challans.create');
+       
     }
 
 
@@ -158,44 +182,14 @@ class DeliveryChallanController extends Controller
     public function store(Request $request)
     {
 
-       dd($request->all());
-
-        $validator = Validator::make($request->all(), [
-             "job_number" => 'required|max:255',
-             "customer_id" => 'required|max:255',
-             "blawbno" => 'required|max:255',
-             "lcbtitno" => 'required|max:255',
-             "description" => 'required|max:255',
-             "invoice_value" => 'required|max:255',
-             "currency" => 'required|max:255',
-             "machine_number" => 'required|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-       $Consignment = Consignment::create([
-            "job_number" => ConsigmentUtility::get_job_number(),
-            "job_number_prefix" => '/34-24',
-            "customer_id" => $request->customer_id,
-            "blawbno" => $request->blawbno,
-            "lcbtitno" => $request->lcbtitno,
-            "description" => $request->description,
-            "invoice_value" => $request->invoice_value,
-            "currency" => $request->currency,
-            "machine_number" => $request->machine_number,
-            "job_date" => Carbon::now(),
+       $challan = Challan::create([
+            "consignment_id" => $request->consignment_id,
+            "customer_id" => $request->customer_id, 
             'status' => 1,
             'created_by' => Auth::user()->id,
         ]);
 
-        // return back()->with('success','Record Created Success'); 
-
-        return redirect('/admin/consignments/'.Crypt::encryptString($Consignment->id).'/edit')
-        ->with('success','Record Created Success'); 
+        return redirect('/admin/delivery-challans')->with('success','Record Created Success'); 
     }
 
      /**
@@ -228,7 +222,17 @@ class DeliveryChallanController extends Controller
     public function show(Request $request,$id)
     {
 
-      
+        $model = Challan::find(Crypt::decryptString($id));
+        if($model == false){  
+          return back()->with('error','Record Not Found');
+        }
+
+        $data = [
+            'model' => $model,
+        ];
+
+        return view('admin.delivery-challans.print',$data);
+  
     }
 
 
@@ -292,7 +296,7 @@ class DeliveryChallanController extends Controller
     public function destroy($id)
     {
 
-        $data = Consignment::find(Crypt::decryptString($id));
+        $data = Challan::find(Crypt::decryptString($id));
         if($data == false){
             return response()->json(['message' => 'Record Not Found'],400);
         }else{

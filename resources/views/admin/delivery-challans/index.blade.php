@@ -115,6 +115,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                     <thead>
                                         <tr class="">
                                             <th>#</th>
+                                            <th>Challan Date</th>
                                             <th>Job Number</th>
                                             <th>Company Name</th>
                                             <th>Customer Name</th>
@@ -155,7 +156,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
             ajax: {
-                url: "{{URL::to('admin/consignments')}}",
+                url: "{{URL::to('admin/delivery-challans')}}",
                 type: "GET",
                 data: function ( d ) {  
 
@@ -202,7 +203,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 data: {
                     '_token': "{{ csrf_token() }}",
                     id:$(this).data('id'),
-                    table:'consignments',
+                    table:'delivery-challans',
                     column:'status',
                     value: $(this).prop('checked') ? 1: 0,
                 },

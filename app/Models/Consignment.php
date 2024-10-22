@@ -60,6 +60,11 @@ class Consignment extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function challan()
+    {
+        return $this->hasOne(Challan::class, 'consignment_id');
+    }
+
 
    
 }

@@ -24,6 +24,9 @@
 </div>
 
 
+
+@if(!isset($model))
+
 <form method="get" action="{{URL::to('admin/delivery-challans/create')}}" >
     <div class="row">
         <div class="col-lg-12">
@@ -50,10 +53,9 @@
     </div>
 </form>
 
-@if($model)
-
+@else
  
-<form method="post" action="{{URL::to('admin/delivery-challans')}}" >
+   <form method="post" action="{{URL::to('admin/delivery-challans')}}" >
         @csrf
     <div class="row">
         <div class="col-lg-12">
@@ -63,6 +65,9 @@
                 </header>
                 <div class="card-body">
                     <div class="row">
+                        <input type="hidden" name="customer_id" value="{{$model->customer_id}}" />
+                        <input type="hidden" name="consignment_id" value="{{$model->id}}" />
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Job Number</label>
@@ -192,7 +197,7 @@
                       <div class="col-md-3">
                           <div class="form-group">
                               <label class="form-label">Rate Of Exchange</label>
-                              <input required type="number" value="{{$model->rate_of_exchange}}" 
+                              <input readonly required type="number" value="{{$model->rate_of_exchange}}" 
                               class="form-control" /> 
                           </div>
                       </div>
@@ -200,34 +205,35 @@
                       <div class="col-md-3">
                           <div class="form-group">
                               <label class="form-label">Master Agent</label>
-                              <input required value="{{$model->master_agent}}" class="form-control" >
+                              <input readonly required value="{{$model->master_agent}}" class="form-control" >
                           </div>
                       </div>
       
                       <div class="col-md-3">
                           <div class="form-group">
                               <label class="form-label">Due Date</label>
-                              <input required type="date" value="{{ \Carbon\Carbon::parse($model->due_date)->format('Y-m-d') }}" class="form-control" />
+                              <input readonly required type="date" value="{{ \Carbon\Carbon::parse($model->due_date)->format('Y-m-d') }}" class="form-control" />
                           </div>
                       </div>
       
                       <div class="col-md-3">
                           <div class="form-group">
                               <label class="form-label">Gross</label>
-                              <input required type="number" value="{{$model->gross}}" class="form-control" />
+                              <input readonly required type="number" value="{{$model->gross}}" class="form-control" />
                           </div>
                       </div>
       
                       <div class="col-md-3">
                           <div class="form-group">
                               <label class="form-label">Nett</label>
-                              <input required type="number" value="{{$model->nett}}"  class="form-control" />
+                              <input readonly required type="number" value="{{$model->nett}}"  class="form-control" />
                           </div>
                       </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 text-center">
+                            <a class="btn btn-danger" href="{{URL::to('admin/delivery-challans/create')}}" >Cancel</a>
                            <button type="submit" class="btn btn-info">Generate Challan</button>
                         </div>
                     </div>
