@@ -32,8 +32,8 @@ class Challan extends Model
 
     public function consignment()
     {
-        dd('test');
-        return $this->hasOne(Consignment::class, 'consignment_id');
+        
+        return $this->belongsTo(Consignment::class, 'consignment_id');
     }
 
 
