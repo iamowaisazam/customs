@@ -598,7 +598,7 @@
                         <div class="col-sm-2 nopadding">
                             <div class="form-group">
                                 <label for="Received">Pending</label>
-                                <input type="number" class="pending form-control" name="data[${un}][pending]" />
+                                <input readonly type="number" class="pending form-control" name="data[${un}][pending]" />
                             </div>
                         </div>
                         <div class="col-sm-3 nopadding">
