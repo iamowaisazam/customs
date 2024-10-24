@@ -51,7 +51,7 @@
                                 <select name="customer_id" class="form-control" >
                                     <option value="">Select Consignee</option>
                                     @foreach ($customers as $item)
-                                        <option @if(old('customer_id') == $item->id) selecred @endif value="{{$item->id}}">{{$item->customer_name}}</option>
+                                        <option @if(old('customer_id') == $item->id) selecred @endif value="{{$item->id}}">{{$item->company_name}}</option>
                                     @endforeach
                                 </select>
                                 @if($errors->has('customer_id'))
