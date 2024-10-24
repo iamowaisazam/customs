@@ -177,7 +177,7 @@ class ConsignmentController extends Controller
         }
 
        $Consignment = Consignment::create([
-            "job_number" => ConsigmentUtility::get_job_number_with_prefix(),
+            "job_number" => ConsigmentUtility::get_job_number(),
             "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
             "customer_id" => $request->customer_id,
             "blawbno" => $request->blawbno,
