@@ -413,18 +413,25 @@
                                 value="{{$item->title}}" >
                             </div>
                         </div>
-                        <div class="col-sm-3 nopadding">
+                        <div class="col-sm-2 nopadding">
                             <div class="form-group">
                                 <label for="Demand">Demands</label>
-                                <input required type="number" class="form-control" 
+                                <input required type="number" class="demand form-control" 
                                 name="data[{{$key}}][demand]" value="{{$item->demand}}" >
                             </div>
                         </div>
-                        <div class="col-sm-3 nopadding">
+                        <div class="col-sm-2 nopadding">
                             <div class="form-group">
                                 <label for="Received">Received</label>
-                                <input required type="number" class="form-control" 
+                                <input required type="number" class="receive form-control" 
                                 name="data[{{$key}}][received]" value="{{$item->received}}" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 nopadding">
+                            <div class="form-group">
+                                <label for="Received">Pending</label>
+                                <input readonly type="number" class="pending form-control" 
+                                name="data[{{$key}}][pending]" value="{{$item->pending ?? ''}}" />
                             </div>
                         </div>
                         <div class="col-sm-3 nopadding">
@@ -538,6 +545,22 @@
             return uniqueNumber;
         }
 
+
+        function calculatePrice(){
+            $('.rows').children().each(function() {
+                let el =  $(this);
+                let demand = parseFloat(el.find('.demand').val()) || 0;
+                let receive = parseFloat(el.find('.receive').val()) || 0; 
+               el.find('.pending').val(demand - receive);
+            });
+        }
+
+        calculatePrice();
+
+        $('.rows').on('change', '.demand, .receive', function() {
+            calculatePrice();  // Recalculate whenever the demand or receive changes
+        });
+
         $('input[name=customer_email]').change(function (e) { 
             $('input[name=email]').val($(this).val());
         });
@@ -560,16 +583,22 @@
                                 <input name="data[${un}][title]" class="form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3 nopadding">
+                        <div class="col-sm-2 nopadding">
                             <div class="form-group">
                                 <label for="Demand">Demands</label>
-                                <input type="number" class="form-control" name="data[${un}][demand]" >
+                                <input type="number" class="demand form-control" name="data[${un}][demand]" >
                             </div>
                         </div>
-                        <div class="col-sm-3 nopadding">
+                        <div class="col-sm-2 nopadding">
                             <div class="form-group">
                                 <label for="Received">Received</label>
-                                <input type="number" class="form-control" name="data[${un}][received]" />
+                                <input type="number" class="receive form-control" name="data[${un}][received]" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 nopadding">
+                            <div class="form-group">
+                                <label for="Received">Pending</label>
+                                <input type="number" class="pending form-control" name="data[${un}][pending]" />
                             </div>
                         </div>
                         <div class="col-sm-3 nopadding">
