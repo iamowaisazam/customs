@@ -65,6 +65,8 @@ class Consignment extends Model
         return $this->hasOne(Challan::class, 'consignment_id');
     }
 
+    
+
 
    
 }

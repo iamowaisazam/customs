@@ -36,6 +36,12 @@ class Challan extends Model
         return $this->belongsTo(Consignment::class, 'consignment_id');
     }
 
+    public function intimation()
+    {
+        
+        return $this->belongsTo(DeliveryIntimation::class, 'challan_id');
+    }
+
 
    
 }

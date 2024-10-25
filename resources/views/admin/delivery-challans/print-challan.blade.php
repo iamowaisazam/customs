@@ -1,6 +1,6 @@
 <div class="header text-center">
     <h4 class="heading" >Oceanic Logistics</h4>
-    <h6 style="padding-bottom: 13px" class="sub-heading" >Creating, Forwarding And Shipping Agenct</h6>
+    <h6 style="padding-bottom: 13px" class="sub-heading" >Creating, Forwarding And Shipping Agent</h6>
 
     <h6 class="sub-heading" style="border: 1px solid;
     margin: 10px 15px;

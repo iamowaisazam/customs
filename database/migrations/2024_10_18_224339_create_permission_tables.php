@@ -29,6 +29,7 @@ return new class extends Migration
             'Vendors',
             'Job / Consignment',
             'Delivery Challan',
+            'Delivery Intimation',
             'Settings',
             // 'Payment Request',
             // 'Delivery Challan',

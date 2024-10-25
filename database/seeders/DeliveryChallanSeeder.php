@@ -36,21 +36,7 @@ class DeliveryChallanSeeder extends Seeder
             Challan::create([
                 "customer_id" =>  Customer::inRandomOrder()->first()->id,
                 "consignment_id" => Consignment::inRandomOrder()->first()->id,
-                "l_no" => $faker->randomNumber(6),
-                "m_s" => $faker->randomNumber(6),
-                "it_no" => $faker->randomNumber(6),
-                "lgnno" => $faker->randomNumber(6),
-                "invoice_no" => $faker->randomNumber(6),
-                "invoice_date" => $faker->dateTimeBetween('-1 year', 'now'),
-                "description" => "desc",
-                "total_packages" => "total packages",
-                "packages_delivered" => "Packages Delivered",
-                "gross_wt" => "Gross",
-                "net_wt" => " Net",
-                "bl_no" => "bl_no",
-                "truck_no" => "truck_no",
-                "remarks" => "remarks",
-                "consignee" => "consignee",
+               
                 "status" => 1,
                 "created_by" => 1,
             ]);

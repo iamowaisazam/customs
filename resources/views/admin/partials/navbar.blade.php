@@ -80,6 +80,22 @@
         </li>
     @endif
 
+    @if(Auth::user()->permission('deliveryintimation'))
+    <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-intimations/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+        <i class="mdi mdi-border-all"></i>
+        <span class="hide-menu">Delivery Intimation</span></a>
+        <ul aria-expanded="false" class="collapse {{ request()->is('admin/delivery-intimations/*') ? 'in' : '' }}">
+            <li><a class="{{ request()->is('admin/delivery-intimations/create') ? 'active' : ''}}"  
+                href="{{URL::to('admin/delivery-intimations/create')}}">Create Intimation</a>
+            </li>
+            <li><a 
+                class="{{ request()->is('admin/delivery-intimations/*') && request()->is('admin/delivery-intimations/create') == false  ? 'active' : '' }}" 
+                href="{{URL::to('admin/delivery-intimations')}}">View Intimation</a>
+            </li>
+        </ul>
+    </li>
+    @endif
+
     {{-- <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Payment Request </span></a>
         <ul aria-expanded="false" class="collapse">
             <li><a href="app-calendar.html">Create Payment Request</a></li>

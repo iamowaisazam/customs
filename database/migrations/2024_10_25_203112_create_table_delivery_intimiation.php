@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('delivery_challans', function (Blueprint $table) {
+        Schema::create('delivery_intimations', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-
-            $table->unsignedBigInteger('consignment_id');
-            $table->foreign('consignment_id')->references('id')->on('consignments')->onDelete('cascade');
-
-            
+            $table->text('message')->nullable();
+            $table->string('person_name')->nullable();
+            $table->unsignedBigInteger('challan_id');
+            $table->foreign('challan_id')->references('id')->on('delivery_challans')->onDelete('cascade');
             $table->integer('status')->default(1);
             $table->integer('created_by')->default(1);
             $table->timestamps();
@@ -36,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delivery_challans');
+        Schema::dropIfExists('delivery_intimiations');
     }
 };
