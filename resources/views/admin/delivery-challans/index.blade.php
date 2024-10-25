@@ -203,7 +203,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 data: {
                     '_token': "{{ csrf_token() }}",
                     id:$(this).data('id'),
-                    table:'delivery-challans',
+                    table:'delivery_challans',
                     column:'status',
                     value: $(this).prop('checked') ? 1: 0,
                 },

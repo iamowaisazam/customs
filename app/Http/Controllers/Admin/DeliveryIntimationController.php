@@ -154,6 +154,8 @@ class DeliveryIntimationController extends Controller
 
             $consignment = Consignment::where('job_number_prefix',request()->job_number)->first();
 
+            
+
             if(!$consignment){
                 return back()->with('warning','Consigment Not Found');
             }

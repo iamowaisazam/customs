@@ -39,7 +39,7 @@ class Challan extends Model
     public function intimation()
     {
         
-        return $this->belongsTo(DeliveryIntimation::class, 'challan_id');
+        return $this->hasOne(DeliveryIntimation::class, 'challan_id');
     }
 
 
