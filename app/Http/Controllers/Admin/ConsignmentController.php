@@ -227,7 +227,17 @@ class ConsignmentController extends Controller
     public function show(Request $request,$id)
     {
 
-      
+        $model = Consignment::find(Crypt::decryptString($id));
+        if($model == false){  
+          return back()->with('error','Record Not Found');
+        }
+
+        $data = [
+            'model' => $model,
+        ];
+
+        return view('admin.consignments.prints.print',$data);
+
     }
 
 

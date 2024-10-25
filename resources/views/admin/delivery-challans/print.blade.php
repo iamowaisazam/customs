@@ -91,7 +91,7 @@
     <div class="content">
 
        @include('admin.delivery-challans.print-challan')
-       <div style="height: 100px" ></div>
+       <div style="height: 20px" ></div>
        @include('admin.delivery-challans.print-challan')
 
     </div>
