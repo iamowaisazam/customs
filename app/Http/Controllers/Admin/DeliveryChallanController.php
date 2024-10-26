@@ -101,7 +101,7 @@ class DeliveryChallanController extends Controller
 
                 $action = '<div class="text-end">';
 
-                    $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/delivery-challans/'.Crypt::encryptString($value->id)).'">View</a>';
+                    $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/delivery-challans/'.Crypt::encryptString($value->id)).'">Print</a>';
                     
                     $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/delivery-challans/'.Crypt::encryptString($value->id)).'">Delete</a>';
 

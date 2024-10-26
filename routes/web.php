@@ -71,7 +71,10 @@ Route::middleware(['auth'])->group(function () {
       //Modules
       Route::resource('/admin/customers', App\Http\Controllers\Admin\CustomerController::class);
       Route::resource('/admin/vendors', App\Http\Controllers\Admin\VendorController::class);
+     
+      Route::get('/admin/consignments/view/{id}', [App\Http\Controllers\Admin\ConsignmentController::class,'view']);
       Route::resource('/admin/consignments', App\Http\Controllers\Admin\ConsignmentController::class);
+     
       Route::resource('/admin/delivery-challans',App\Http\Controllers\Admin\DeliveryChallanController::class);
       Route::resource('/admin/delivery-intimations',App\Http\Controllers\Admin\DeliveryIntimationController::class);
 

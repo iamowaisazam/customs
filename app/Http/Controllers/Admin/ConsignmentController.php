@@ -78,8 +78,6 @@ class ConsignmentController extends Controller
             }
             
             $count = $query->count();
-            
-            
             $users = $query->skip($request->start)
             ->select([
                 'consignments.*',
@@ -97,7 +95,9 @@ class ConsignmentController extends Controller
 
                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">View</a>';
+                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">Print</a>';
+
+                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/consignments/view/'.Crypt::encryptString($value->id)).'">View</a>';
                 
                 $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
@@ -240,7 +240,29 @@ class ConsignmentController extends Controller
 
     }
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function view(Request $request,$id)
+    {
 
+        $model = Consignment::find(Crypt::decryptString($id));
+        if($model == false){  
+          return back()->with('error','Record Not Found');
+        }
+
+        $data = [
+            'model' => $model,
+        ];
+
+        return view('admin.consignments.view',$data);
+
+    }
+
+
+    
 
      /**
      * Create a new controller instance.
