@@ -37,6 +37,10 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+
+        if(!Auth::user()->permission('roles.list')){
+            return back()->with('warning','You Dont Have Access');
+        }
      
         if($request->ajax()){
 
@@ -60,25 +64,34 @@ class RoleController extends Controller
             $data = [];
             foreach ($records as $key => $value) {
 
-                $status = $value->status ? 'checked' : '';
+              
 
                 $action = '<div class="text-end">';
+
+                if(Auth::user()->permission('roles.view')){
                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                }
 
-                // $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('admin/roles/permission/'.Crypt::encryptString($value->id)).'">Permissions</a>';
-           
+                if(Auth::user()->permission('roles.delete')){
+                    $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                }
 
-                // if(!in_array($value->id,[2,])){
-                     $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
-                // }
+
+                $status = $value->status ? 'Active' : 'Deactive';
+
+                if(Auth::user()->permission('roles.edit')){
+                    $selected = $value->status ? 'checked' : '';
+                    $status = "<div class='switchery-demo'><input ".$selected." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
+                    </div>";
+                }
+                    
 
                 $action .= '</div>';
 
                 array_push($data,[
                     $value->id,
                     $value->name,
-                    "<div class='switchery-demo'><input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
-                   </div>",
+                    $status,
                     $action,
                  ]);
 
@@ -105,7 +118,13 @@ class RoleController extends Controller
      */
     public function create()
     {
+
+        if(!Auth::user()->permission('roles.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $permissions = Permission::where('status',1)->get();
+        
         return view('admin.roles.create',compact('permissions'));
     }
 
@@ -116,6 +135,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(!Auth::user()->permission('roles.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:roles,name|max:255',
@@ -150,12 +173,19 @@ class RoleController extends Controller
      */
     public function edit(Request $request,$id)
     {
+
+        if(!Auth::user()->permission('roles.view')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $model = Role::find(Crypt::decryptString($id));
         if($model == false){  
             return back()->with('error','Record Not Found');
          }
 
          $permissions = Permission::where('status',1)->get();
+
+        //  dd($permissions);
 
         return view('admin.roles.edit',compact('model','permissions'));
     }
@@ -168,6 +198,11 @@ class RoleController extends Controller
      */
     public function update(Request $request,$id)
     {
+
+        if(!Auth::user()->permission('roles.edit')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $id = Crypt::decryptString($id);
         $model = Role::find($id);
         if($model == false){  
@@ -205,6 +240,11 @@ class RoleController extends Controller
      */
     public function delete($id)
     {
+
+        if(!Auth::user()->permission('roles.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $model = Role::find(Crypt::decryptString($id));
         if($model == false){
             return back()->with('warning','Record Not Found');
@@ -219,5 +259,9 @@ class RoleController extends Controller
         }
 
     }
+
+
+
+    
 
 }

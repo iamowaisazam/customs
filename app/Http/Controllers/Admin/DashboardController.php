@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Auth;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rule;
@@ -17,6 +17,7 @@ use App\Models\Order;
 use App\Models\Collection;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -41,10 +42,13 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        $totalOrder = Order::count();
-        $totalCollection = Collection::count();
-        $totalCategory = Category::count();
-        $totalProduct = Product::count();
+
+      
+
+        $totalOrder = 1;
+        $totalCollection = 1;
+        $totalCategory = 1;
+        $totalProduct = 1;
         
         return view('admin.dashboard',compact('totalOrder','totalCollection','totalCategory','totalProduct'));
     }

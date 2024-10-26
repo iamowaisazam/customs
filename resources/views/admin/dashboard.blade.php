@@ -20,6 +20,8 @@
 
 @section('content')
 
+@if(Auth::user()->permission('users.dashboard'))
+
 <?php 
 
 $dashboard = [
@@ -208,7 +210,7 @@ $dashboard = [
                 <!-- End Info box -->
                 <!-- ============================================================== -->
 
-
+@endif
 @endsection
 @section('js')
 <script>

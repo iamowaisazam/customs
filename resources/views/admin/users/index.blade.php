@@ -103,13 +103,13 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                         <h4 class="mb-0 text-white" >All Users List</h4>
                                     </div>
                                     <div class="col-md-6 text-end">
+                                        @if(Auth::user()->permission('users.create'))
                                         <a class="btn btn-primary" href="{{URL::to('admin/users/create')}}">Create New </a>
+                                        @endif
                                     </div>
                                 </div>
                             </header>
                         <div class="card-body">    
-
-                          {{-- <div class="table-responsive m-t-40"> --}}
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
                                         <tr class="" >
@@ -124,15 +124,11 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                     <tbody>
                              </tbody>
                         </table>
-                    {{-- </div> --}}
-
-
-              </div>
-           </div>
-          </section>
+                  </div>
+               </div>
+             </section>
          </div>
 @endsection
-
 
  @section('js')
 

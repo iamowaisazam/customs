@@ -73,11 +73,13 @@
                         @endif 
                     </div>
 
+                    @if(Auth::user()->permission('users.edit'))
                     <div class="form-group row">
                         <div class="col-md-12 text-left">
                             <button type="submit" class="btn btn-info">Submit</button>
                         </div>
-                     </div> 
+                     </div>
+                     @endif 
                 </form>
             </div>
         </section>

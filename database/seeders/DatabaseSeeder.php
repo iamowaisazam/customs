@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+            PermissionSeeder::class,
             CustomerSeeder::class,
             ConsignmentSeeder::class,
             DeliveryChallanSeeder::class,
@@ -27,7 +28,6 @@ class DatabaseSeeder extends Seeder
             // MenuSeeder::class,
             // PagesSeeder::class,
             // FilemanagerSeeder::class,
-           
             // PaymentMethodsSeeder::class,
         ]);
 

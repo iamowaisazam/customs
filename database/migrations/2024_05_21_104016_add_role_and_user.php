@@ -13,57 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::table('users')->insert([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('admin123'),
-            'status' => 1,
-            'created_by' => null,
-            'role_id' => 1,
-            'permissions' => null,
-            'profile_image' => null,
-            'email_token' => null,
-            'email_verified_at' => now(),
-        ]);
         
-        DB::table('roles')->insert([
-            [
-                'id' =>1,
-                'name' => 'Admin', 
-                'status' => 1, 
-                'created_at' => '2024-01-27 14:11:35', 
-                'updated_at' => '2024-01-27 09:45:22', 
-                'created_by' => 1, 
-                'updated_by' => null
-            ],
-            [
-                'id' => 2,
-                'name' => 'User', 
-                'status' => 1, 
-                'created_at' => '2024-01-27 14:11:35', 
-                'updated_at' => '2024-01-27 09:45:22', 
-                'created_by' => 1, 
-                'updated_by' => null
-            ],
-            [
-                'id' => 3,
-                'name' => 'Customer', 
-                'status' => 1, 
-                'created_at' => '2024-01-27 14:11:35', 
-                'updated_at' => '2024-01-27 09:45:22', 
-                'created_by' => 1, 
-                'updated_by' => null
-            ],
-            [
-                'id' => 4,
-                'name' => 'Vendor', 
-                'status' => 1, 
-                'created_at' => '2024-01-27 14:11:35', 
-                'updated_at' => '2024-01-27 09:45:22', 
-                'created_by' => 1, 
-                'updated_by' => null
-            ],
-        ]);
 
     }
 

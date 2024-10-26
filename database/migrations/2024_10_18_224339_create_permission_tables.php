@@ -19,40 +19,10 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
+            $table->string('grouping')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
         });
-
-        $permissions = [
-            'User Managment',
-            'Customers',
-            'Vendors',
-            'Job / Consignment',
-            'Delivery Challan',
-            'Delivery Intimation',
-            'Settings',
-            // 'Payment Request',
-            // 'Delivery Challan',
-            // 'Jobs Tracking And status',
-            // 'Customer Statements',
-            // 'Reports',
-            // 'Job History',
-            // 'Finance'
-        ];
-
-        foreach ($permissions as $value) {
-            Permission::create([
-                'name' => $value,
-                'slug' => strtolower(str_replace(' ','',$value)),
-                'status' => 1,
-            ]);
-        }
-
-        $perm = Permission::pluck('slug')->toArray();
-        foreach (Role::all() as $key => $role) {
-            $role->permissions = implode(',',$perm);
-            $role->save();
-        }
 
     }
 

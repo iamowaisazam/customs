@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $cachedPermissions = null;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -60,12 +63,21 @@ class User extends Authenticatable
 
     public function permission($permission)
     {
-        if(in_array($permission,explode(',',$this->role->permissions))){
+        
+        if ($this->cachedPermissions === null) {
+            $this->cachedPermissions = $this->role->permissions;
+        }
+
+        if(in_array($permission,explode(',',$this->cachedPermissions))){
             return true;
         }else{
             return false;
+        
         }
     
     }
+
+
+
 
 }

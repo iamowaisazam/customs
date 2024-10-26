@@ -42,24 +42,29 @@
                         @endif 
                     </div>
 
-                    <h3 class="box-title m-t-40 heading-style">User Access &amp; Permission</h3>
+                    @foreach ($permissions->groupBy('grouping') as $group => $permissions)
+
+                    <h3 class="box-title m-t-40 heading-style">{{$group}} &amp; Permission</h3>
                     <hr>
                     <div class="row">
-                        @foreach ($permissions  as $item)
+                        @foreach ($permissions  as $permission)
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <div class="form-check mr-sm-2">
                                         <input type="checkbox" 
                                           class="form-check-input" 
-                                          id="{{$item->slug}}" 
+                                          id="{{$permission->slug}}" 
                                           name="permissions[]" 
-                                          value="{{$item->slug}}">
-                                        <label class="form-check-label" for="{{$item->slug}}">{{$item->name}}</label>
+                                          value="{{$permission->slug}}">
+                                        <label class="form-check-label" for="{{$permission->slug}}">{{ucfirst($permission->name)}}</label>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
+
+                        
+                    @endforeach
                                 
                     <div class="form-group row">
                         <div class="col-md-12 text-center">

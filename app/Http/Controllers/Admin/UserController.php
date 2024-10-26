@@ -36,6 +36,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+    
+        if(!Auth::user()->permission('users.list')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         if($request->ajax()){
 
@@ -67,23 +71,33 @@ class UserController extends Controller
             foreach ($users as $key => $value) {
 
                 $action = '<div class="text-end">';
+                if(Auth::user()->permission('users.view')){
+                    $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/users/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                }
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/users/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
-                
-                $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/users/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                if(Auth::user()->permission('users.delete')){
+                   $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/users/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                }
 
                 $action .= '</div>';
 
-                $status = $value->status ? 'checked' : '';
+                $status = $value->status ? 'active' : 'deactive';
+
+                if(Auth::user()->permission('users.edit')){
+
+                    $checked = $value->status ? 'checked' : '';
+
+                    $status = "<div class='switchery-demo'>
+                    <input ".$checked." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
+                       </div>";
+                }
 
                 array_push($data,[
                     $value->id,
                     $value->name,
                     $value->email,
                     $value->role->name,
-                    "<div class='switchery-demo'>
-                     <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
-                    </div>",
+                    $status,
                     $action,
                 ]);        
             }
@@ -114,6 +128,10 @@ class UserController extends Controller
     public function create()
     {
 
+        if(!Auth::user()->permission('users.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $roles = Role::whereNotIn('id',[1,3,4])->where('status',1)->get();
 
         return view('admin.users.create',compact('roles'));
@@ -128,6 +146,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->permission('users.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -143,7 +164,7 @@ class UserController extends Controller
         }
 
     
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -165,6 +186,9 @@ class UserController extends Controller
      */
     public function edit(Request $request,$id)
     {
+        if(!Auth::user()->permission('users.view')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $roles = Role::whereNotIn('id',[1,3,4])->where('status',1)->get();
 
@@ -184,6 +208,10 @@ class UserController extends Controller
      */
     public function update(Request $request,$id)
     {
+        if(!Auth::user()->permission('users.edit')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $id = Crypt::decryptString($id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -230,6 +258,9 @@ class UserController extends Controller
      */
     public function delete($id)
     {
+        if(!Auth::user()->permission('users.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
         
         $user = User::find(Crypt::decryptString($id));
         if($user == false){
@@ -244,6 +275,11 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
+
+        if(!Auth::user()->permission('users.profile-view')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $id = Auth::user()->id;
         $user = User::find($id);
         if($user == false){  
@@ -256,6 +292,9 @@ class UserController extends Controller
 
     public function profile_update(Request $request)
     {
+        if(!Auth::user()->permission('users.profile-update')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $id = Auth::user()->id;
         $validator = Validator::make($request->all(), [

@@ -67,9 +67,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 text-left">
-                            <button type="submit" class="btn btn-info">Submit</button>
-                        </div>
+                        @if(Auth::user()->permission('users.profile-update'))
+                            <div class="col-md-12 text-left">
+                                <button type="submit" class="btn btn-info">Submit</button>
+                            </div>
+                        @endif
 
                     </div>
                      

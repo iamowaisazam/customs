@@ -54,7 +54,9 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                         <h4 class="mb-0 text-white" >All Roles List</h4>
                                     </div>
                                     <div class="col-md-6 text-end">
+                                        @if(Auth::user()->permission('roles.create'))
                                         <a class="btn btn-primary" href="{{URL::to('admin/roles/create')}}">Create New </a>
+                                        @endif
                                     </div>
                                 </div>
                             </header>

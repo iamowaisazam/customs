@@ -26,9 +26,11 @@
                   <span class="hidden-md-down">{{ Auth::user()->name }} &nbsp;<i class="fa fa-angle-down"></i></span> 
                 </a>
                 <div class="dropdown-menu dropdown-menu-end animated flipInY">
+                    @if(Auth::user()->permission('users.profile-view'))
                     <a href="{{URL::to("admin/profile")}}" class="dropdown-item">
                         <i class="ti-user"></i> My Profile
                     </a>
+                    @endif
                     {{-- <a href="javascript:void(0)" class="right-side-toggle dropdown-item"><i class="ti-settings"></i> Settings</a> --}}
                     <a href="{{URL::to('/admin/logout')}}" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                 </div>
