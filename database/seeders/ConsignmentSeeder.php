@@ -57,7 +57,7 @@ class ConsignmentSeeder extends Seeder
                 'lc_date' => Carbon::now(),
                 'vessel' => 'vessel',
                 'igmno' => 'igmno',
-                'igmno_date' => Carbon::now(),
+                'igm_date' => Carbon::now(),
                 "blawbno" => $faker->randomNumber(6),
                 "bl_awb_date" => Carbon::now(),
                 'port_of_shippment' => $faker->randomNumber(6),
@@ -67,7 +67,7 @@ class ConsignmentSeeder extends Seeder
                 'due_date' => $faker->dateTimeBetween('-1 year', 'now'),
                 'gross' => $faker->randomFloat(2, 100, 10000),
                 'nett' => $faker->randomFloat(2, 100, 10000),
-                'documents' => [
+                'documents' => json_encode([
                     [
                         'name' => 'Document 1',
                         'date' => Carbon::now(),
@@ -76,8 +76,8 @@ class ConsignmentSeeder extends Seeder
                         'name' => 'Document 2',
                         'date' => Carbon::now(),
                     ]
-                ],
-                'demands_received' => [
+                ]),
+                'demands_received' => json_encode([
                     [
                         'title' => 'Title 1',
                         'hs_code' => 'Hs Code 1',
@@ -85,7 +85,7 @@ class ConsignmentSeeder extends Seeder
                         'price' => 1,
                         'total' => 10,
                     ]
-                ]
+                ])
             ]);
 
 
