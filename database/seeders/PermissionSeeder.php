@@ -35,6 +35,8 @@ class PermissionSeeder extends Seeder
         Role::create(['id' => 3,'name' => 'Customer']);
         Role::create(['id' => 4,'name' => 'Vendor']);
 
+        Role::create(['name' => 'Consignment Editor']);
+
 
         $user = User::create([
             'name' => 'admin',

@@ -96,7 +96,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="form-label"> Invoice Value </label>
-                                <input required min="1" type="number" value="{{old('invoice_value')}}" name="invoice_value" 
+                                <input readonly required min="1" type="number" value="{{old('invoice_value')}}" name="invoice_value" 
                                  class="form-control" placeholder="Invoice Value">
                                 @if($errors->has('invoice_value'))
                                  <p class="text-danger" >{{ $errors->first('invoice_value') }}</p>
@@ -104,52 +104,57 @@
                             </div>
                         </div>
 
-                     
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Select Invoice Currency</label>
-                            <select class="form-control" name="currency">
-                                @foreach ($currencies as $cr)
-                                <option value="{{$cr['code']}}">{{$cr['code']}}</option>
-                               @endforeach
-                            </select>
-                            @if($errors->has('currency'))
-                             <p class="text-danger" >{{ $errors->first('currency') }}</p>
-                            @endif 
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label"> Total Quantity </label>
+                                <input readonly required min="1" type="number" value="{{old('total_quantity')}}" name="total_quantity" 
+                                 class="form-control" placeholder="Total Quantity">
+                                @if($errors->has('total_quantity'))
+                                 <p class="text-danger" >{{ $errors->first('total_quantity') }}</p>
+                                @endif 
+                            </div>
                         </div>
-                    </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label"> Machine Number </label>
-                                <input value="{{old('machine_number')}}" name="machine_number" 
-                                 class="form-control" placeholder="Machine Number">
-                                @if($errors->has('machine_number'))
-                                 <p class="text-danger" >{{ $errors->first('machine_number') }}</p>
+                                <label class="form-label">Select Invoice Currency</label>
+                                <select class="form-control" name="currency">
+                                    @foreach ($currencies as $cr)
+                                    <option value="{{$cr['code']}}">{{$cr['code']}}</option>
+                                @endforeach
+                                </select>
+                                @if($errors->has('currency'))
+                                <p class="text-danger" >{{ $errors->first('currency') }}</p>
                                 @endif 
                             </div>
-                        </div>                 
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                           <button type="submit" class="btn btn-info">Create Job</button>
-                        </div>
+                        </div>  
                     </div>
               </div>
         </section>
     </div>
-</div>
-</form>
+
+    <div class="col-lg-12">
+        @include('admin.consignments.price-section')
+    </div>
+
+       <div class="row">
+            <div class="col-md-12 py-3 text-center">
+                 <button type="submit" class="btn btn-info">Create Job</button>
+            </div>
+        </div>
+
+      </div>
+ </form>
 @endsection
 
 @section('js')
 
     <script>
         $(document).ready(function() {
-            $('input[name=customer_email]').change(function (e) { 
-                $('input[name=email]').val($(this).val());
-            });
+           
+
+
+       
         });
     </script>
     

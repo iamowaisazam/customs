@@ -236,6 +236,16 @@
                 return $('<span><img src="' +site_url+'/'+state.id + '" class="img-flag" /> ' + state.text + '</span>');
             },
         });
+
+        
+        function getRandomUniqueNumber() {
+            const dateNow = Date.now();
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            const uniqueNumber = dateNow.toString() + randomNum.toString();
+            return uniqueNumber;
+        }
+
+
     </script>
 
     
@@ -246,6 +256,8 @@
     <!-- Pages JS -->
     <!-- ============================================================== -->
     @yield('js')
+
+    @stack('js')
     
  </body>
 </html>

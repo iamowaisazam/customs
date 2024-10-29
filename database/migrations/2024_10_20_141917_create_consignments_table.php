@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('lcbtitno')->nullable();
             $table->text('description')->nullable();
             $table->string('invoice_value')->nullable();
+            $table->string('total_quantity')->nullable();
             $table->string('currency')->nullable();
             $table->string('machine_number')->nullable();
             $table->timestamp('job_date')->nullable();
@@ -39,6 +40,15 @@ return new class extends Migration
             $table->string('ins_rs')->nullable();
             $table->string('us')->nullable();
             $table->string('lc_no')->nullable();
+
+            $table->timestamp('lc_date')->nullable();
+            $table->timestamp('igm_date')->nullable();
+            $table->timestamp('bl_awb_date')->nullable();
+            $table->string('landing_charges')->nullable();
+            $table->string('no_of_packages')->nullable();
+            $table->string('index_no')->nullable();
+        
+
             $table->timestamp('consignment_date')->nullable();
             $table->string('vessel')->nullable();
             $table->string('igmno')->nullable();
@@ -49,6 +59,8 @@ return new class extends Migration
             $table->string('due_date')->nullable();
             $table->string('gross')->nullable();
             $table->string('nett')->nullable();
+
+
 
             $table->text('demands_received')->nullable();
             $table->text('documents')->nullable();

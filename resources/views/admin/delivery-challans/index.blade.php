@@ -179,8 +179,11 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             }); 
         } );
 
-       
         $(".search_btn").click(e =>{ 
+            application_table.draw();
+        });
+
+        $('input[name=search]').change(function (e) { 
             application_table.draw();
         });
 
@@ -188,12 +191,12 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         $(".mydatatable").delegate(".is_status", "change", function(){
 
             $.toast({
-            heading: "Status Change Successfully",
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'success',
-            hideAfter: 3500,
-            stack: 6,
+                heading: "Status Change Successfully",
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'success',
+                hideAfter: 3500,
+                stack: 6,
             });
 
             var isChecked = $(this).prop('checked');

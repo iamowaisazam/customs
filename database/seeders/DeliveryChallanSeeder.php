@@ -30,17 +30,16 @@ class DeliveryChallanSeeder extends Seeder
 
         Challan::select('*')->delete();
 
+        $consigments = Consignment::where('status',1)->limit(250)->get();
 
-        foreach(range(1,50) as $key => $data){
+        foreach($consigments as $key => $consigment){
 
             Challan::create([
-                "customer_id" =>  Customer::inRandomOrder()->first()->id,
-                "consignment_id" => Consignment::inRandomOrder()->first()->id,
-               
+                "customer_id" => $consigment->customer_id,
+                "consignment_id" => $consigment->id,
                 "status" => 1,
-                "created_by" => 1,
+                "created_by" => $consigment->created_by,
             ]);
-
 
         }
 

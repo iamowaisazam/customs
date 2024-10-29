@@ -34,7 +34,6 @@ class ConsignmentSeeder extends Seeder
                 "job_number" => ConsigmentUtility::get_job_number(),
                 "job_number_prefix" => ConsigmentUtility::get_job_number().'/34-24',
                 "customer_id" =>  Customer::inRandomOrder()->first()->id,
-                "blawbno" => $faker->randomNumber(6),
                 "lcbtitno" =>  $faker->randomNumber(6),
                 "description" => $faker->sentence,
                 "invoice_value" => $faker->randomFloat(2, 100, 10000),
@@ -45,7 +44,6 @@ class ConsignmentSeeder extends Seeder
                 'created_by' => User::where('status',1)->where('role_id',2)
                 ->inRandomOrder()
                 ->first()->id,
-
                 'your_ref' => $faker->name,
                 'port' => $faker->randomNumber(6),
                 'eiffino' => 'eiffino',
@@ -53,10 +51,15 @@ class ConsignmentSeeder extends Seeder
                 'consignee_by_to' => $faker->name,
                 'freight' => $faker->randomNumber(6),
                 'ins_rs' => 'ins_rs',
+                'landing_charges' => 10,
                 'us' => 'us',
                 'lc_no' => $faker->randomNumber(6),
+                'lc_date' => Carbon::now(),
                 'vessel' => 'vessel',
                 'igmno' => 'igmno',
+                'igmno_date' => Carbon::now(),
+                "blawbno" => $faker->randomNumber(6),
+                "bl_awb_date" => Carbon::now(),
                 'port_of_shippment' => $faker->randomNumber(6),
                 'country_origion' => 'Pakistan',
                 'rate_of_exchange' => $faker->randomFloat(2, 100, 10000),
@@ -64,6 +67,25 @@ class ConsignmentSeeder extends Seeder
                 'due_date' => $faker->dateTimeBetween('-1 year', 'now'),
                 'gross' => $faker->randomFloat(2, 100, 10000),
                 'nett' => $faker->randomFloat(2, 100, 10000),
+                'documents' => [
+                    [
+                        'name' => 'Document 1',
+                        'date' => Carbon::now(),
+                    ],
+                    [
+                        'name' => 'Document 2',
+                        'date' => Carbon::now(),
+                    ]
+                ],
+                'demands_received' => [
+                    [
+                        'title' => 'Title 1',
+                        'hs_code' => 'Hs Code 1',
+                        'qty' => 10,
+                        'price' => 1,
+                        'total' => 10,
+                    ]
+                ]
             ]);
 
 

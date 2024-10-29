@@ -169,7 +169,8 @@ class ConsignmentController extends Controller
              "description" => 'required|max:255',
              "invoice_value" => 'required|max:255',
              "currency" => 'required|max:255',
-             "machine_number" => 'required|max:255',
+             "data" => 'required',
+            //  "machine_number" => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -186,11 +187,12 @@ class ConsignmentController extends Controller
             "lcbtitno" => $request->lcbtitno,
             "description" => $request->description,
             "invoice_value" => $request->invoice_value,
+            "total_quantity" => $request->total_quantity,
             "currency" => $request->currency,
-            "machine_number" => $request->machine_number,
             "job_date" => Carbon::now(),
             'status' => 1,
             'created_by' => Auth::user()->id,
+            "demands_received" => $request->data ? json_encode($request->data) : null,
         ]);
 
         return redirect('/admin/consignments/'.Crypt::encryptString($Consignment->id).'/edit')
@@ -282,21 +284,27 @@ class ConsignmentController extends Controller
         $model->lcbtitno = $request->lcbtitno;
         $model->description = $request->description;
         $model->invoice_value = $request->invoice_value;
+        $model->total_quantity = $request->total_quantity;
         $model->currency = $request->currency;
-        $model->machine_number = $request->machine_number;
-
+      
+        $model->demands_received = $request->data ? json_encode($request->data) : null;
 
         $model->your_ref = $request->your_ref;
+        $model->machine_number = $request->machine_number;
         $model->port = $request->port;
         $model->eiffino = $request->eiffino;
         $model->import_exporter_messers = $request->import_exporter_messers;
         $model->consignee_by_to = $request->consignee_by_to;
         $model->freight = $request->freight;
         $model->ins_rs = $request->ins_rs;
+        $model->landing_charges = $request->landing_charges;
         $model->us = $request->us;
         $model->lc_no = $request->lc_no;
+        $model->lc_date = $request->lc_date;
         $model->vessel = $request->vessel;
         $model->igmno = $request->igmno;
+        $model->igm_date = $request->igm_date;
+        $model->bl_awb_date = $request->bl_awb_date;
         $model->port_of_shippment = $request->port_of_shippment;
         $model->country_origion = $request->country_origion;
         $model->rate_of_exchange = $request->rate_of_exchange;
@@ -304,11 +312,10 @@ class ConsignmentController extends Controller
         $model->due_date = $request->due_date;
         $model->gross = $request->gross;
         $model->nett = $request->nett;
-        $model->demands_received = $request->data ? json_encode($request->data) : null;
+      
+        
         $model->documents = $request->documents ? json_encode($request->documents) : null;
-
         $model->save();
-
 
         return back()->with('success','Record Updated');
 

@@ -45,4 +45,11 @@ static public function get_job_number_with_prefix(){
 
 
 
+static public function CreateChallanIntimation(){
+
+
+}
+
+
+
 }
