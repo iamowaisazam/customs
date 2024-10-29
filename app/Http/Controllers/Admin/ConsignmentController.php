@@ -168,6 +168,7 @@ class ConsignmentController extends Controller
              "lcbtitno" => 'required|max:255',
              "description" => 'required|max:255',
              "invoice_value" => 'required|max:255',
+             "total_quantity" => 'required|max:255',
              "currency" => 'required|max:255',
              "data" => 'required',
             //  "machine_number" => 'required|max:255',
@@ -310,6 +311,10 @@ class ConsignmentController extends Controller
         $model->rate_of_exchange = $request->rate_of_exchange;
         $model->master_agent = $request->master_agent;
         $model->due_date = $request->due_date;
+
+        $model->no_of_packages = $request->no_of_packages;
+        $model->index_no = $request->index_no;
+
         $model->gross = $request->gross;
         $model->nett = $request->nett;
       

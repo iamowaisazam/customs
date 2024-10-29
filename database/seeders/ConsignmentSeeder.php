@@ -36,6 +36,7 @@ class ConsignmentSeeder extends Seeder
                 "customer_id" =>  Customer::inRandomOrder()->first()->id,
                 "lcbtitno" =>  $faker->randomNumber(6),
                 "description" => $faker->sentence,
+                "total_quantity" => 10,
                 "invoice_value" => $faker->randomFloat(2, 100, 10000),
                 "currency" => 'USD',
                 "machine_number" => $faker->randomNumber(6),
@@ -65,6 +66,8 @@ class ConsignmentSeeder extends Seeder
                 'rate_of_exchange' => $faker->randomFloat(2, 100, 10000),
                 'master_agent' => $faker->name,
                 'due_date' => $faker->dateTimeBetween('-1 year', 'now'),
+                'no_of_packages' => 1,
+                'index_no' => 1,
                 'gross' => $faker->randomFloat(2, 100, 10000),
                 'nett' => $faker->randomFloat(2, 100, 10000),
                 'documents' => json_encode([

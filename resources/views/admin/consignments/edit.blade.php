@@ -247,6 +247,14 @@ foreach ($documents as $value) {
 
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label class="form-label">Total Quantity</label>
+                        <input readonly value="{{$model->total_quantity}}" 
+                        class="form-control" placeholder="Total Quantity">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
                         <label class="form-label">Invoice Value</label>
                         <input readonly value="{{$model->invoice_value}}" 
                         class="form-control" placeholder="Invoice Value">
@@ -446,6 +454,28 @@ foreach ($documents as $value) {
 
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label class="form-label">No Of Packages</label>
+                        <input value="{{$model->no_of_packages}}" name="no_of_packages" 
+                        class="form-control" placeholder="No of Packages">
+                        @if($errors->has('no_of_packages'))
+                         <p class="text-danger" >{{ $errors->first('no_of_packages') }}</p>
+                        @endif 
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Index No</label>
+                        <input  value="{{$model->index_no}}" name="index_no" 
+                        class="form-control" placeholder="Index No">
+                        @if($errors->has('index_no'))
+                         <p class="text-danger" >{{ $errors->first('index_no') }}</p>
+                        @endif 
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
                         <label class="form-label">Gross Weight</label>
                         <input required type="number"  value="{{$model->gross}}" name="gross" 
                         class="form-control" placeholder="Gross">
@@ -465,9 +495,7 @@ foreach ($documents as $value) {
                         @endif 
                     </div>
                 </div>
-
-
-
+                
                   <div class="col-md-12 text-center">
                       <button type="submit" class="btn btn-info">Submit</button>
                   </div>
@@ -508,7 +536,7 @@ foreach ($documents as $value) {
                         <div class="form-group">
                             <label for="Date">Due Date</label>
                             <div class="input-group">
-                                <input required type="date" 
+                                <input  type="date" 
                                 value="{{$item->date}}"
                                 name="documents[{{$key}}][date]" class="form-control" />
                                 <div class="document_remove_btn input-group-append">
@@ -556,7 +584,6 @@ foreach ($documents as $value) {
 <script>
     $(document).ready(function() {
 
-             
             $('.document_rows').on('click','.document_remove_btn', function () {
                 $(this).parent().parent().parent().parent().remove();
             });
@@ -577,8 +604,7 @@ foreach ($documents as $value) {
                             <div class="form-group">
                                 <label for="Date">Date</label>
                                 <div class="input-group">
-                                    <input required type="date" 
-                                    value="$ {{$item->date}}"
+                                    <input type="date" 
                                     name="documents[${un}][date]" class="form-control" />
                                     <div class="document_remove_btn input-group-append">
                                         <button class="btn btn-danger text-white" type="button">

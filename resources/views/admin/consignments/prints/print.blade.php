@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>DELIVERY CHALLAN</title>
+    <title>CONSIGNMENT</title>
 
     <link href="{{asset('admin/assets/css/style.css')}}" rel="stylesheet">
     <style>
@@ -106,34 +106,30 @@
     </div>
 
        @include('admin.consignments.prints.consignment')
-       {{-- <div style="height: 20px" ></div> --}}
-
+      
 
        @if( $data)
-      <div class="mt-3 px-3" >
-        
-        <h6 class=" text-center sub-heading" style="border: 1px solid;
-        font-weight: bold;padding: 11px 0px;" >Amount Demand And Received With Date Against This Consignment
- </h6>
+      <div class="mt-3 px-3" >  
+        <h6 class=" text-center sub-heading" style="border: 1px solid; font-weight: bold;padding: 11px 0px;" >Amount Demand And Received With Date Against This Consignment </h6>
 
           <table class="mt-4 table table-bordered" >
             <thead>
               <tr>
                 <th class="text-center" >Title</th>
-                <th class="text-center" >Demand</th>
-                <th class="text-center" >Received</th>
-                <th class="text-center" >Pending</th>
-                <th class="text-center" >Date</th>
+                <th class="text-center" >Hs Code</th>
+                <th class="text-center" >Qty</th>
+                <th class="text-center" >Price</th>
+                <th class="text-center" >Total</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($data as $key => $item)
               <tr>
                   <td class="text-center" >{{$item->title}}</td>
-                  <td class="text-center">{{$item->demand}}</td>
-                  <td class="text-center">{{$item->received}}</td>
-                  <td class="text-center">{{$item->pending}}</td>
-                  <td class="text-center">{{date('d-m-Y', strtotime($item->date))}}</td>
+                  <td class="text-center">{{$item->hs_code}}</td>
+                  <td class="text-center">{{$item->qty}}</td>
+                  <td class="text-center">{{$item->price}}</td>
+                  <td class="text-center">{{$item->total}}</td>
               </tr>
               @endforeach
             </tbody>
