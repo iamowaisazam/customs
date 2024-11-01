@@ -20,19 +20,20 @@ class Consignment extends Model
         'job_number',
         'job_number_prefix',
         'customer_id',
-        'blawbno',
-        'lcbtitno',
-        'description',
+        'exporter_id',
         'invoice_value',
         'total_quantity',
         'currency',
+        'blawbno',
+        'lcbtitno',
+        'description',
         'machine_number',
         'job_date',
         'your_ref',
         'port',
+        'port_of_shippment',
         'eiffino',
         'import_exporter_messers',
-        'consignee_by_to',
         'freight',
         'ins_rs',
         'us',
@@ -41,19 +42,19 @@ class Consignment extends Model
         'igm_date',
         'bl_awb_date',
         'landing_charges',
+        'package_type',
         'no_of_packages',
         'index_no',
         'consignment_date',
         'vessel',
         'igmno',
-        'port_of_shippment',
         'country_origion',
         'rate_of_exchange',
         'master_agent',
+        'other_agent_agent',
         'due_date',
         'gross',
         'nett',
-        'demands_received',
         'documents',
         'status',
         'created_by',
@@ -79,7 +80,7 @@ class Consignment extends Model
     
     public function exporter()
     {
-        return $this->belongsTo(User::class, 'exporter_id');
+        return $this->belongsTo(Exporter::class, 'exporter_id');
     }
 
 

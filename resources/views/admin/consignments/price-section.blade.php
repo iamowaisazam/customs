@@ -17,6 +17,7 @@
     }
 
     $products = App\Models\Product::where('status',1)->get();
+    
 ?>
 
  <section class="consignment-price card">
@@ -52,6 +53,10 @@
 
         const products = @json($products);
         const items = @json($data);
+        const units = @json($units);
+
+        console.log(units);
+        
 
         let consignment_price = $('.consignment-price');
         
@@ -98,16 +103,24 @@
                 pOptions += `<option ${selected} value="${element.id}">${element.name}-${element.sku}</option>`;
             });
 
+            let ounits = '';
+            units.forEach(u => {
+                let selected = u == data.unit ? 'selected' : '';
+                console.log(data.unit);
+                
+                ounits += `<option ${selected} value="${u}">${u}</option>`;
+            });
 
             let template = `
                 <div class="row">
+                    <input type="hidden" value="${data.id ?? ''}" name="data[${un}][id]" />
                     <div class="col-sm-3 nopadding">
                         <div class="form-group">
                             <label for="title">Item Name</label><br>
                             <select name="data[${un}][product_id]" class="form-control js-example-basic-single">${pOptions}</select>
                         </div>
                     </div>
-                    <div class="col-sm-3 nopadding">
+                    <div class="col-sm-2 nopadding">
                         <div class="form-group">
                             <label for="Description">Description</label>
                             <input class="form-control" 
@@ -119,6 +132,12 @@
                             <label for="Quantity">Quantity</label>
                             <input type="number" class="qty form-control" 
                             name="data[${un}][qty]" value="${data.qty}"  />
+                        </div>
+                    </div>
+                      <div class="col-sm-1 nopadding">
+                        <div class="form-group">
+                            <label for="title">Unit</label><br>
+                            <select name="data[${un}][unit]" class="form-control">${ounits}</select>
                         </div>
                     </div>
                     <div class="col-sm-2 nopadding">
@@ -152,11 +171,13 @@
 
         items.forEach(element => {
             renderTemplate({
+                id:element.id,
                 product_id:element.product_id,
                 description:element.description,
                 qty:element.qty,
                 price:element.price,
                 total:element.total,
+                unit:element.unit,
             });
         });
        

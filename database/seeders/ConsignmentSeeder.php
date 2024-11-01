@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Country;
 use App\Enums\Currency;
+use App\Enums\PackageType;
+use App\Enums\Unit;
 use App\Models\Consignment;
 use App\Models\Customer;
 use App\Models\Exporter;
@@ -42,35 +45,26 @@ class ConsignmentSeeder extends Seeder
                 "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
             ]);
 
-            $total_quantity = 0;
-            $invoice_value = 0;
-
+        
             $items = [];
             foreach (range(1,3) as $value) {
                 $product = Product::inRandomOrder()->first();
                 $qty = $faker->randomNumber(2);
                 array_push($items,[
+                    'id' => null,
                     'product_id' => $product->id,
                     'consignment_id' => $job->id,
                     'name' => $product->name,
                     'description' => $product->description,
                     'price' => $product->price,
                     'qty' => $qty,
-                    'unit' => $product->unit,
+                    'unit' => collect(Unit::DATA)->random(),
                     'total' => $product->price * $qty,
                 ]);
-
-                $total_quantity += $qty;
-                $invoice_value += $product->price * $qty;
             }
 
-
             ConsigmentUtility::update_consignment_item($job->id,$items);
-            $job->total_quantity = $total_quantity;
-            $job->invoice_value = $invoice_value;
-            $job->save();
-
-
+          
             ConsigmentUtility::update_consignment($job->id,[
                 "lcbtitno" =>  $faker->randomNumber(6),
                 "description" => $faker->sentence,
@@ -78,15 +72,13 @@ class ConsignmentSeeder extends Seeder
                 "job_date" => $faker->dateTimeBetween('-1 year', 'now'),
                 'your_ref' => $faker->name,
                 
-                'port' => $faker->randomNumber(6),
-                'port_of_shippment' => $faker->randomNumber(6),
+                'port' => collect(json_decode(ConsigmentUtility::get_setting('ports')))->random(),
+                'port_of_shippment' => collect(json_decode(ConsigmentUtility::get_setting('ports')))->random(),
 
-                'eiffino' => 'eiffino',
-                'import_exporter_messers' => 'messers',
-                
+                'eiffino' => 'eiffino', 
                 'freight' => $faker->randomNumber(6),
                 'ins_rs' => 'ins_rs',
-                'landing_charges' => 10,
+                'landing_charges' => 1,
                 'us' => 'us',
                 'lc_no' => $faker->randomNumber(6),
                 'lc_date' => Carbon::now(),
@@ -96,14 +88,14 @@ class ConsignmentSeeder extends Seeder
                 "blawbno" => $faker->randomNumber(6),
                 "bl_awb_date" => Carbon::now(),
                 
-                'country_origion' => 'Pakistan',
+                'country_origion' => collect(Country::DATA)->random()['name'],
                 'rate_of_exchange' => $faker->randomFloat(2, 100, 10000),
                 'master_agent' => $faker->name,
                 'other_agent_agent' => $faker->name,
                 'due_date' => $faker->dateTimeBetween('-1 year', 'now'),
-                'package_type' => 'DRUM',
-                'no_of_packages' => 1,
-                'index_no' => 1,
+                'package_type' => collect(PackageType::DATA)->random(),
+                'no_of_packages' => $faker->randomNumber(6),
+                'index_no' => $faker->randomNumber(6),
                 'gross' => $faker->randomFloat(2, 100, 10000),
                 'nett' => $faker->randomFloat(2, 100, 10000),
                 'documents' => json_encode([

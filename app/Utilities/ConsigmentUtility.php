@@ -4,6 +4,8 @@ namespace App\Utilities;
 
 use App\Models\Consignment;
 use App\Models\ConsignmentItem;
+use App\Models\Product;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,49 +69,53 @@ static public function create_job($data){
 
 
 static public function update_consignment_item($id,$data){
-    
 
+    
+    $qty = 0;
+    $total = 0; 
     if(!empty($data)){
         $ids = array_column($data,'id');
         foreach($data as $key => $item){
-          
-
-            if(isset($item['id'])){
+            $product = Product::find($item['product_id']);
+            if($item['id']){
                 ConsignmentItem::where('id',$item['id'])->update([
                     'product_id' => $item['product_id'],
-                    'consignment_id' => $item['consignment_id'],
-                    'name' => $item['name'],
+                    'consignment_id' =>$id,
+                    'name' => $product->name,
                     'description' => $item['description'],
                     'price' => $item['price'],
                     'qty' => $item['qty'],
                     'unit' => $item['unit'],
-                    'total' => $item['total'],
-                    'updated_at' => Carbon::now(),
+                    'total' => $item['qty'] * $item['price'],
                 ]);
             }else{
                $new_record = ConsignmentItem::create([
                     'product_id' => $item['product_id'],
-                    'consignment_id' => $item['consignment_id'],
-                    'name' => $item['name'],
+                    'consignment_id' => $id,
+                    'name' =>  $product->name,
                     'description' => $item['description'],
                     'price' => $item['price'],
                     'qty' => $item['qty'],
                     'unit' => $item['unit'],
-                    'total' => $item['total'],
+                    'total' => $item['qty'] * $item['price'],
                     'status' => 1,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ]);
                 array_push($ids,$new_record->id);
             }
+
+            $qty += $item['qty'];
+            $total += $item['qty'] * $item['price'];
         }
+
         ConsignmentItem::where('consignment_id',$id)->whereNotIn('id',$ids)->delete();
     }else{
         ConsignmentItem::where('consignment_id',$id)->delete();
     }
 
-    ConsignmentItem::where('consignment_id',$id)->update([
 
+    Consignment::where('id',$id)->update([
+          "invoice_value" => $total,
+          "total_quantity" => $qty,
     ]);
 
 }
@@ -129,7 +135,6 @@ static public function update_consignment($id,$data){
         'port' => $data['port'],
         'port_of_shippment' => $data['port'],
         'eiffino' => $data['eiffino'],
-        'import_exporter_messers' => $data['import_exporter_messers'],
 
         'freight' => $data['freight'],
         'ins_rs' => $data['ins_rs'],
@@ -164,6 +169,18 @@ static public function CreateChallanIntimation(){
 
 
 }
+
+static public function get_setting($name){
+
+    $res = Setting::select('value')->where('field',$name)->first();
+    if($res){
+      return $res->value;
+    }else{
+       return false;         
+    }
+}
+
+
 
 
 

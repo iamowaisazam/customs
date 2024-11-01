@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Currency;
+use App\Enums\PackageType;
+use App\Enums\Unit;
 use App\Http\Controllers\Controller;
 use App\Models\Consignment;
 use App\Models\Customer;
@@ -148,6 +150,7 @@ class ConsignmentController extends Controller
             'customers' => Customer::where('status',1)->get(),
             'exporters' => Exporter::where('status',1)->get(),
             'currencies' => Currency::DATA,
+            'units' => array_values(Unit::DATA),
             'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
         ];
 
@@ -162,8 +165,6 @@ class ConsignmentController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        
         $validator = Validator::make($request->all(), [
              "job_number" => 'required|max:255',
              "customer_id" => 'required|max:255',
@@ -178,16 +179,15 @@ class ConsignmentController extends Controller
                 ->withInput();
         }
 
-        dd($request->all());
+        $req = $request->all();
+        $req['created_by'] = Auth::user()->id;
 
-       $job = ConsigmentUtility::create_job($request->all());
+        // dd($req);
+        $job = ConsigmentUtility::create_job($req);
 
+       ConsigmentUtility::update_consignment_item($job->id,$request->data);
 
-
-       
-
-       
-
+       dd($request->all());
 
        
     //    Consignment::create([
@@ -227,9 +227,74 @@ class ConsignmentController extends Controller
             'customers' => Customer::where('status',1)->get(),
             'model' => $model,
             'currencies' => Currency::DATA,
+            'package_types' => PackageType::DATA,
+            'units' => array_values(Unit::DATA),
+            'exporters' => Exporter::where('status',1)->get(),
         ];
 
         return view('admin.consignments.edit',$data);
+    }
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function update(Request $request,$id)
+    {
+        $id = Crypt::decryptString($id);
+        $model = Consignment::find($id);
+        if($model == false){  
+           return back()->with('error','Record Not Found');
+        }
+
+        // dd($request->all());
+
+        ConsigmentUtility::update_consignment_item($id,$request->data);
+
+
+        $model->customer_id = $request->customer_id;
+        $model->blawbno = $request->blawbno;
+        $model->lcbtitno = $request->lcbtitno;
+        $model->description = $request->description;
+        
+        $model->currency = $request->currency;
+      
+
+        $model->your_ref = $request->your_ref;
+        $model->machine_number = $request->machine_number;
+        $model->port = $request->port;
+        $model->eiffino = $request->eiffino;
+    
+        $model->freight = $request->freight;
+        $model->ins_rs = $request->ins_rs;
+        $model->landing_charges = $request->landing_charges;
+        $model->us = $request->us;
+        $model->lc_no = $request->lc_no;
+        $model->lc_date = $request->lc_date;
+        $model->vessel = $request->vessel;
+        $model->igmno = $request->igmno;
+        $model->igm_date = $request->igm_date;
+        $model->bl_awb_date = $request->bl_awb_date;
+        $model->port_of_shippment = $request->port_of_shippment;
+        $model->country_origion = $request->country_origion;
+        $model->rate_of_exchange = $request->rate_of_exchange;
+        $model->master_agent = $request->master_agent;
+        $model->other_agent_agent = $request->other_agent;
+        $model->due_date = $request->due_date;
+
+        $model->no_of_packages = $request->no_of_packages;
+        $model->index_no = $request->index_no;
+
+        $model->gross = $request->gross;
+        $model->nett = $request->nett;
+      
+        
+        $model->documents = $request->documents ? json_encode($request->documents) : null;
+        $model->save();
+
+        return back()->with('success','Record Updated');
+
     }
 
     /**
@@ -277,64 +342,7 @@ class ConsignmentController extends Controller
 
     
 
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function update(Request $request,$id)
-    {
-        $id = Crypt::decryptString($id);
-        $model = Consignment::find($id);
-        if($model == false){  
-           return back()->with('error','Record Not Found');
-        }
-
-        $model->customer_id = $request->customer_id;
-        $model->blawbno = $request->blawbno;
-        $model->lcbtitno = $request->lcbtitno;
-        $model->description = $request->description;
-        $model->invoice_value = $request->invoice_value;
-        $model->total_quantity = $request->total_quantity;
-        $model->currency = $request->currency;
-      
-        $model->demands_received = $request->data ? json_encode($request->data) : null;
-
-        $model->your_ref = $request->your_ref;
-        $model->machine_number = $request->machine_number;
-        $model->port = $request->port;
-        $model->eiffino = $request->eiffino;
-        $model->import_exporter_messers = $request->import_exporter_messers;
-        $model->consignee_by_to = $request->consignee_by_to;
-        $model->freight = $request->freight;
-        $model->ins_rs = $request->ins_rs;
-        $model->landing_charges = $request->landing_charges;
-        $model->us = $request->us;
-        $model->lc_no = $request->lc_no;
-        $model->lc_date = $request->lc_date;
-        $model->vessel = $request->vessel;
-        $model->igmno = $request->igmno;
-        $model->igm_date = $request->igm_date;
-        $model->bl_awb_date = $request->bl_awb_date;
-        $model->port_of_shippment = $request->port_of_shippment;
-        $model->country_origion = $request->country_origion;
-        $model->rate_of_exchange = $request->rate_of_exchange;
-        $model->master_agent = $request->master_agent;
-        $model->due_date = $request->due_date;
-
-        $model->no_of_packages = $request->no_of_packages;
-        $model->index_no = $request->index_no;
-
-        $model->gross = $request->gross;
-        $model->nett = $request->nett;
-      
-        
-        $model->documents = $request->documents ? json_encode($request->documents) : null;
-        $model->save();
-
-        return back()->with('success','Record Updated');
-
-    }
+     
 
 
      /**
