@@ -149,6 +149,7 @@
          }
     </style>
     @yield('css')
+    @stack('css')
 </head>
 <body class="skin-blue fixed-layout">
     

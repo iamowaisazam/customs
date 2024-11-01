@@ -62,38 +62,22 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="form-label"> BL/AWB No </label>
-                                <input value="{{old('blawbno')}}" 
-                                name="blawbno" class="form-control" placeholder="BL/AWB No ">
-                                @if($errors->has('blawbno'))
-                                 <p class="text-danger" >{{ $errors->first('blawbno') }}</p>
+                                <label class="form-label">Exporter</label>
+                                <select name="exporter_id" class="form-control" >
+                                    <option value="">Select exporter</option>
+                                    @foreach ($exporters as $item)
+                                        <option @if(old('exporter_id') == $item->id) selecred @endif value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                                @if($errors->has('exporter_id'))
+                                 <p class="text-danger" >{{ $errors->first('exporter_id') }}</p>
                                 @endif 
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="form-label"> LC/BT/IT No </label>
-                                <input value="{{old('lcbtitno')}}" name="lcbtitno" 
-                                 class="form-control" placeholder="LC/BT/IT No">
-                                @if($errors->has('lcbtitno'))
-                                 <p class="text-danger" >{{ $errors->first('lcbtitno') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label class="form-label"> Description </label>
-                                <input value="{{old('description')}}" name="description" 
-                                 class="form-control" placeholder="Description">
-                                @if($errors->has('description'))
-                                 <p class="text-danger" >{{ $errors->first('description') }}</p>
-                                @endif 
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
+              
+                  
+                        <div class="d-none col-md-4">
                             <div class="form-group">
                                 <label class="form-label"> Invoice Value </label>
                                 <input readonly required min="1" type="number" value="{{old('invoice_value')}}" name="invoice_value" 
@@ -104,7 +88,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="d-none col-md-4">
                             <div class="form-group">
                                 <label class="form-label"> Total Quantity </label>
                                 <input readonly required min="1" type="number" value="{{old('total_quantity')}}" name="total_quantity" 
@@ -129,11 +113,16 @@
                             </div>
                         </div>  
                     </div>
+
+                    
               </div>
         </section>
     </div>
 
     <div class="col-lg-12">
+        @if($errors->has('data'))
+           <p class="text-danger text-center" >{{ $errors->first('data') }}</p>
+        @endif 
         @include('admin.consignments.price-section')
     </div>
 

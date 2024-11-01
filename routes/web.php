@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
 
      Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard']);
+     Route::get('/admin/dashboard/products', [App\Http\Controllers\Admin\DashboardController::class, 'products']);
 
      Route::post('/admin/status', [App\Http\Controllers\Admin\DashboardController::class, 'status']);
   
@@ -75,7 +76,8 @@ Route::middleware(['auth'])->group(function () {
      
       Route::get('/admin/consignments/view/{id}', [App\Http\Controllers\Admin\ConsignmentController::class,'view']);
       Route::resource('/admin/consignments', App\Http\Controllers\Admin\ConsignmentController::class);
-     
+      Route::resource('masters', App\Http\Controllers\Admin\MasterController::class);
+
       Route::resource('/admin/delivery-challans',App\Http\Controllers\Admin\DeliveryChallanController::class);
       Route::resource('/admin/delivery-intimations',App\Http\Controllers\Admin\DeliveryIntimationController::class);
 

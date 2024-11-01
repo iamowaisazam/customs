@@ -147,9 +147,7 @@ foreach ($documents as $value) {
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        @include('admin.consignments.price-section') 
-                    </div>
+                
 
                     <div class="col-md-12 text-center">
                         <button type="submit" class="btn btn-info">Submit</button>
@@ -157,6 +155,10 @@ foreach ($documents as $value) {
                 </div> 
             </div>
         </section>
+    </div>
+
+    <div class="col-12">
+        @include('admin.consignments.price-section') 
     </div>
     
     <div class="col-lg-12">

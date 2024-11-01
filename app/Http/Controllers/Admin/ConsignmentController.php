@@ -6,6 +6,7 @@ use App\Enums\Currency;
 use App\Http\Controllers\Controller;
 use App\Models\Consignment;
 use App\Models\Customer;
+use App\Models\Exporter;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -145,6 +146,7 @@ class ConsignmentController extends Controller
 
         $data = [
             'customers' => Customer::where('status',1)->get(),
+            'exporters' => Exporter::where('status',1)->get(),
             'currencies' => Currency::DATA,
             'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
         ];
@@ -160,18 +162,14 @@ class ConsignmentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         
         $validator = Validator::make($request->all(), [
              "job_number" => 'required|max:255',
              "customer_id" => 'required|max:255',
-             "blawbno" => 'required|max:255',
-             "lcbtitno" => 'required|max:255',
-             "description" => 'required|max:255',
-             "invoice_value" => 'required|max:255',
-             "total_quantity" => 'required|max:255',
+             "exporter_id" => 'required|max:255',
              "currency" => 'required|max:255',
              "data" => 'required',
-            //  "machine_number" => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -180,21 +178,33 @@ class ConsignmentController extends Controller
                 ->withInput();
         }
 
-       $Consignment = Consignment::create([
-            "job_number" => ConsigmentUtility::get_job_number(),
-            "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
-            "customer_id" => $request->customer_id,
-            "blawbno" => $request->blawbno,
-            "lcbtitno" => $request->lcbtitno,
-            "description" => $request->description,
-            "invoice_value" => $request->invoice_value,
-            "total_quantity" => $request->total_quantity,
-            "currency" => $request->currency,
-            "job_date" => Carbon::now(),
-            'status' => 1,
-            'created_by' => Auth::user()->id,
-            "demands_received" => $request->data ? json_encode($request->data) : null,
-        ]);
+        dd($request->all());
+
+       $job = ConsigmentUtility::create_job($request->all());
+
+
+
+       
+
+       
+
+
+       
+    //    Consignment::create([
+    //         "job_number" => ConsigmentUtility::get_job_number(),
+    //         "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
+    //         "customer_id" => $request->customer_id,
+    //         "blawbno" => $request->blawbno,
+    //         "lcbtitno" => $request->lcbtitno,
+    //         "description" => $request->description,
+    //         "invoice_value" => $request->invoice_value,
+    //         "total_quantity" => $request->total_quantity,
+    //         "currency" => $request->currency,
+    //         "job_date" => Carbon::now(),
+    //         'status' => 1,
+    //         'created_by' => Auth::user()->id,
+    //         "demands_received" => $request->data ? json_encode($request->data) : null,
+    //     ]);
 
         return redirect('/admin/consignments/'.Crypt::encryptString($Consignment->id).'/edit')
         ->with('success','Record Created Success'); 

@@ -66,10 +66,22 @@ class Consignment extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function Items()
+    {
+        return $this->hasMany(ConsignmentItem::class, 'consignment_id');
+    }
+
     public function challan()
     {
         return $this->hasOne(Challan::class, 'consignment_id');
     }
+
+    
+    public function exporter()
+    {
+        return $this->belongsTo(User::class, 'exporter_id');
+    }
+
 
     
 

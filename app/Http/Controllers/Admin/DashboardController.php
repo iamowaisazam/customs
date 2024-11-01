@@ -146,6 +146,26 @@ class DashboardController extends Controller
         
     }
 
+    public function products(Request $request)
+    {
+
+        $search = $request->input('search');
+        $data = Product::where('name', 'LIKE', "%$search%")
+                    ->orWhere('sku', 'LIKE', "%$search%")
+                    ->limit(20)
+                    ->get();
+        $data = $data->map(function ($item) {
+            
+            return [
+                'id' => $item->id,
+                'text' => $item->name.'-'.$item->sku
+            ];
+        });
+
+
+        return response()->json($data->all());
+    }
+
 
 
     

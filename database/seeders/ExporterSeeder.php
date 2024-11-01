@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
-use App\Models\Product;
+use App\Models\Exporter;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
 
 
-class ProductSeeder extends Seeder
+class ExporterSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,27 +24,27 @@ class ProductSeeder extends Seeder
     {
 
         $faker = Faker::create();
-        Product::select('*')->delete();
+    
+        foreach(range(1,50) as $key => $data){
 
-        foreach(range(1,100) as $key => $data){
+            $name =  $faker->name;
+            $email = strtolower(str_replace(' ', '',$name)).'@gmail.com';
 
-            Product::create([
-                'name' => $faker->company,
-                'description' => $faker->sentence,
-                'sku' => $faker->randomNumber(6),
-                'unit' => 'PCS',
-                'price' =>  $faker->randomNumber(2),
+            Exporter::create([
+                'company_name' => $faker->company,
+                'name' => $name,
+                'email' => $email,
+                'phone' => $faker->phoneNumber,
                 'status' => 1,
                 'created_by' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
 
+
+
         }
 
 
     }
-
-
-
 }
