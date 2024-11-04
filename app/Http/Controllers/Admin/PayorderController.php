@@ -185,49 +185,7 @@ class PayorderController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-             "job_number" => 'required|max:255',
-             "customer_id" => 'required|max:255',
-             "exporter_id" => 'required|max:255',
-             "currency" => 'required|max:255',
-             "data" => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $req = $request->all();
-        $req['created_by'] = Auth::user()->id;
-
-        // dd($req);
-        $job = ConsigmentUtility::create_job($req);
-
-       ConsigmentUtility::update_consignment_item($job->id,$request->data);
-
-       dd($request->all());
-
        
-    //    Consignment::create([
-    //         "job_number" => ConsigmentUtility::get_job_number(),
-    //         "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
-    //         "customer_id" => $request->customer_id,
-    //         "blawbno" => $request->blawbno,
-    //         "lcbtitno" => $request->lcbtitno,
-    //         "description" => $request->description,
-    //         "invoice_value" => $request->invoice_value,
-    //         "total_quantity" => $request->total_quantity,
-    //         "currency" => $request->currency,
-    //         "job_date" => Carbon::now(),
-    //         'status' => 1,
-    //         'created_by' => Auth::user()->id,
-    //         "demands_received" => $request->data ? json_encode($request->data) : null,
-    //     ]);
-
-        return redirect('/admin/consignments/'.Crypt::encryptString($Consignment->id).'/edit')
-        ->with('success','Record Created Success'); 
     }
 
      /**
@@ -242,7 +200,6 @@ class PayorderController extends Controller
         if($model == false){  
             return back()->with('error','Record Not Found');
          }
-
 
          $data = [
             'customers' => Customer::where('status',1)->get(),
@@ -266,22 +223,21 @@ class PayorderController extends Controller
 
         // dd($request->all());
 
-        
         $id = Crypt::decryptString($id);
         $model = Payorder::find($id);
         if($model == false){  
            return back()->with('error','Record Not Found');
         }
 
-        
-        PayorderUtility::update($id,
-        [
-            "date" => Carbon::now(),
-            "consignment_id" => $request->consignment_id,
-            "items" => $request->items,
-            "footer" => $request->footer,
-            "created_by" => Auth::user(),
-        ]);
+    
+        $model->date = Carbon::now();
+        $model->consignment_id = $request->consignment_id;
+        $model->items = json_encode($request->items);
+        $model->footer = json_encode($request->footer);
+        $model->created_by = Auth::user()->id;
+        $model->consignment_details = json_encode([]);
+        $model->save();
+    
 
       
 

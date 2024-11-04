@@ -114,7 +114,7 @@
 
 
     @if(Auth::user()->permission('delivery-challans.list') || Auth::user()->permission('delivery-challans.create'))
-        <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-challans/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+        <li class="d-none" ><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-challans/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
             <i class="mdi mdi-border-all"></i>
             <span class="hide-menu">Delivery Challans</span></a>
             <ul aria-expanded="false" class="collapse {{ request()->is('admin/delivery-challans/*') ? 'in' : '' }}">
@@ -135,7 +135,7 @@
 
 
     @if(Auth::user()->permission('delivery-intimation.list') || Auth::user()->permission('delivery-intimation.create'))
-    <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-intimations/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+    <li class="d-none" ><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-intimations/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
         <i class="mdi mdi-border-all"></i>
         <span class="hide-menu">Delivery Intimation</span></a>
         <ul aria-expanded="false" class="collapse {{ request()->is('admin/delivery-intimations/*') ? 'in' : '' }}">

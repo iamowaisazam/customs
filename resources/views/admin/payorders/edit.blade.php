@@ -116,7 +116,7 @@ $consignment = $model->consignment;
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">DLAP FEE:</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->dlap_fee ?? ''}}" name="items[{{$key}}][dlap_feee]" 
+                            <input type="number" style="width: 150px;" value="{{$order_item->dlap_feee ?? ''}}" name="items[{{$key}}][dlap_feee]" 
                             class="dlap_feee form-control" placeholder="DLAP FEE" />    
                         </div>
                         <div class="d-flex justify-content-between" >

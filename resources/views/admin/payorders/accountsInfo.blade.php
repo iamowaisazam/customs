@@ -9,18 +9,18 @@
                 <div class="col-md-5 nopadding">
                     <div class="form-group">
                         <label>Account</label>
-                        <input value="Dues" name="footer[${un}][title]" 
+                        <input value="Dues" name="footer[17307485][title]" 
                         class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-2 nopadding">
                         <label>Amount</label>
-                        <input readonly value="" name="footer[${un}][amount]" class="gtotal form-control" />
+                        <input readonly value="" name="footer[17307485][amount]" class="gtotal form-control" />
                 </div>
                 <div class="col-md-5 nopadding">
                     <div class="form-group">
                         <label>Pay Order In Favor OF</label>
-                            <input value="" name="footer[${un}][company]" 
+                            <input value="" name="footer[17307485][company]" 
                             class="form-control" />
                     </div>
                 </div>
