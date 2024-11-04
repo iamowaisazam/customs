@@ -77,8 +77,8 @@ class ConsignmentSeeder extends Seeder
 
                 'eiffino' => 'eiffino', 
                 'freight' => $faker->randomNumber(6),
-                'ins_rs' => 'ins_rs',
-                'landing_charges' => 1,
+                'ins_rs' => $faker->randomNumber(6),
+                'landing_charges' => $faker->randomNumber(6),
                 'us' => 'us',
                 'lc_no' => $faker->randomNumber(6),
                 'lc_date' => Carbon::now(),

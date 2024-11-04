@@ -156,6 +156,28 @@
      </li>
     @endif
 
+    @if(Auth::user()->permission('delivery-intimation.list') || Auth::user()->permission('delivery-intimation.create'))
+    <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/payorders/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+        <i class="mdi mdi-border-all"></i>
+        <span class="hide-menu">Payorders</span></a>
+        <ul aria-expanded="false" class="collapse {{ request()->is('admin/payorders/*') ? 'in' : '' }}">
+
+            @if(Auth::user()->permission('delivery-intimation.create'))
+            <li><a class="{{ request()->is('admin/payorders/create') ? 'active' : ''}}"  
+                href="{{URL::to('admin/payorders/create')}}">Create Payorders</a>
+            </li>
+            @endif
+            
+            @if(Auth::user()->permission('delivery-intimation.list'))
+            <li><a 
+                class="{{ request()->is('admin/payorders/*') && request()->is('admin/payorders/create') == false  ? 'active' : '' }}" 
+                href="{{URL::to('admin/payorders')}}">View Payorders</a>
+            </li>
+            @endif
+        </ul>
+     </li>
+    @endif
+
     
 
     @if(Auth::user()->permission('settings.menu'))

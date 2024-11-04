@@ -29,9 +29,7 @@ return new class extends Migration
             $table->string('invoice_value')->nullable();
             $table->string('total_quantity')->nullable();
             $table->string('currency')->nullable();
-
             
-
             $table->string('blawbno')->nullable();
             $table->string('lcbtitno')->nullable();
             $table->text('description')->nullable();
@@ -44,16 +42,15 @@ return new class extends Migration
             $table->string('port_of_shippment')->nullable();
             $table->string('eiffino')->nullable();
 
-            $table->string('import_exporter_messers')->nullable();
-            $table->string('freight')->nullable();
-            $table->string('ins_rs')->nullable();
+            $table->integer('freight')->default(0);
+            $table->integer('ins_rs')->default(0);
             $table->string('us')->nullable();
             $table->string('lc_no')->nullable();
 
             $table->timestamp('lc_date')->nullable();
             $table->timestamp('igm_date')->nullable();
             $table->timestamp('bl_awb_date')->nullable();
-            $table->string('landing_charges')->nullable();
+            $table->integer('landing_charges')->default(0);
 
             $table->string('package_type')->nullable();
             $table->string('no_of_packages')->nullable();
@@ -64,12 +61,12 @@ return new class extends Migration
             $table->string('igmno')->nullable();
            
             $table->string('country_origion')->nullable();
-            $table->string('rate_of_exchange')->nullable();
+            $table->integer('rate_of_exchange')->default(0);
             $table->string('master_agent')->nullable();
             $table->string('other_agent_agent')->nullable();
             $table->string('due_date')->nullable();
-            $table->string('gross')->nullable();
-            $table->string('nett')->nullable();
+            $table->integer('gross')->default(0);
+            $table->integer('nett')->default(0);
 
             $table->text('documents')->nullable();
 

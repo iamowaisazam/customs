@@ -9,12 +9,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Consignment;
 use App\Models\Customer;
 use App\Models\Exporter;
+use App\Models\Payorder;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Utilities\ConsigmentUtility;
+use App\Utilities\PayorderUtility;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Mpdf\Tag\Select;
 
-class ConsignmentController extends Controller
+class PayorderController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -46,7 +48,8 @@ class ConsignmentController extends Controller
 
         if($request->ajax()){
 
-            $query = Consignment::join('customers','customers.id','=','consignments.customer_id');
+            $query = Payorder::join('consignments','consignments.id','=','payorders.consignment_id')
+            ->join('customers','customers.id','=','consignments.customer_id');
 
             //Search
             if($request->has('status') && $request->status != ''){
@@ -69,8 +72,6 @@ class ConsignmentController extends Controller
                 $query->where('consignments.lc_no',$request->lc_no);
             }
 
-            
-
             $search = $request->get('search');
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
@@ -83,12 +84,15 @@ class ConsignmentController extends Controller
             $count = $query->count();
             $users = $query->skip($request->start)
             ->select([
-                'consignments.*',
+                'payorders.*',
+                'consignments.job_number_prefix',
+                'consignments.invoice_value',
+                'consignments.lc_no',
                 'customers.customer_name',
                 'customers.company_name',
             ])
             ->take($request->length)
-            ->orderBy('consignments.id','desc')
+            ->orderBy('payorders.id','desc')
             ->get();
 
             $data = [];
@@ -96,31 +100,31 @@ class ConsignmentController extends Controller
 
                 $action = '<div class="text-end">';
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
 
-                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">Print</a>';
+                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'">Print</a>';
 
-                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/consignments/view/'.Crypt::encryptString($value->id)).'">View</a>';
+                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/payorders/view/'.Crypt::encryptString($value->id)).'">View</a>';
                 
                 $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
                 $action .= '</div>';
 
                 $status = $value->status ? 'checked' : '';
-                
 
                 array_push($data,[
                     $value->id,
                     $value->job_number_prefix,
-                    $value->customer->company_name,
-                    $value->customer->customer_name,
+                    $value->company_name,
+                    $value->customer_name,
                     $value->invoice_value,
                     $value->lc_no,
                     "<div class='switchery-demo'>
                      <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
                     </div>",
                     $action,
-                ]);        
+                ]);
+
             }
 
             return response()->json([
@@ -131,8 +135,12 @@ class ConsignmentController extends Controller
             ]);
         }
 
-        return view('admin.consignments.index');
+        return view('admin.payorders.index');
+
     }
+
+    
+
 
     /**
      * Create a new controller instance.
@@ -177,11 +185,32 @@ class ConsignmentController extends Controller
 
         $req = $request->all();
         $req['created_by'] = Auth::user()->id;
+
+        // dd($req);
         $job = ConsigmentUtility::create_job($req);
 
        ConsigmentUtility::update_consignment_item($job->id,$request->data);
 
-        return redirect('/admin/consignments/'.Crypt::encryptString($job->id).'/edit')
+       dd($request->all());
+
+       
+    //    Consignment::create([
+    //         "job_number" => ConsigmentUtility::get_job_number(),
+    //         "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
+    //         "customer_id" => $request->customer_id,
+    //         "blawbno" => $request->blawbno,
+    //         "lcbtitno" => $request->lcbtitno,
+    //         "description" => $request->description,
+    //         "invoice_value" => $request->invoice_value,
+    //         "total_quantity" => $request->total_quantity,
+    //         "currency" => $request->currency,
+    //         "job_date" => Carbon::now(),
+    //         'status' => 1,
+    //         'created_by' => Auth::user()->id,
+    //         "demands_received" => $request->data ? json_encode($request->data) : null,
+    //     ]);
+
+        return redirect('/admin/consignments/'.Crypt::encryptString($Consignment->id).'/edit')
         ->with('success','Record Created Success'); 
     }
 
@@ -192,7 +221,8 @@ class ConsignmentController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        $model = Consignment::find(Crypt::decryptString($id));
+        
+        $model = PayOrder::find(Crypt::decryptString($id));
         if($model == false){  
             return back()->with('error','Record Not Found');
          }
@@ -207,7 +237,7 @@ class ConsignmentController extends Controller
             'exporters' => Exporter::where('status',1)->get(),
         ];
 
-        return view('admin.consignments.edit',$data);
+        return view('admin.payorders.edit',$data);
     }
 
     /**
@@ -217,56 +247,27 @@ class ConsignmentController extends Controller
      */
     public function update(Request $request,$id)
     {
+
+        // dd($request->all());
+
+        
         $id = Crypt::decryptString($id);
-        $model = Consignment::find($id);
+        $model = Payorder::find($id);
         if($model == false){  
            return back()->with('error','Record Not Found');
         }
 
-        // dd($request->all());
-
-        ConsigmentUtility::update_consignment_item($id,$request->data);
-
-
-        $model->customer_id = $request->customer_id;
-        $model->blawbno = $request->blawbno;
-        $model->lcbtitno = $request->lcbtitno;
-        $model->description = $request->description;
         
-        $model->currency = $request->currency;
+        PayorderUtility::update($id,
+        [
+            "date" => Carbon::now(),
+            "consignment_id" => $request->consignment_id,
+            "items" => $request->items,
+            "footer" => $request->footer,
+            "created_by" => Auth::user(),
+        ]);
+
       
-
-        $model->your_ref = $request->your_ref;
-        $model->machine_number = $request->machine_number;
-        $model->port = $request->port;
-        $model->eiffino = $request->eiffino;
-    
-        $model->freight = $request->freight;
-        $model->ins_rs = $request->ins_rs;
-        $model->landing_charges = $request->landing_charges;
-        $model->us = $request->us;
-        $model->lc_no = $request->lc_no;
-        $model->lc_date = $request->lc_date;
-        $model->vessel = $request->vessel;
-        $model->igmno = $request->igmno;
-        $model->igm_date = $request->igm_date;
-        $model->bl_awb_date = $request->bl_awb_date;
-        $model->port_of_shippment = $request->port_of_shippment;
-        $model->country_origion = $request->country_origion;
-        $model->rate_of_exchange = $request->rate_of_exchange;
-        $model->master_agent = $request->master_agent;
-        $model->other_agent_agent = $request->other_agent;
-        $model->due_date = $request->due_date;
-
-        $model->no_of_packages = $request->no_of_packages;
-        $model->index_no = $request->index_no;
-
-        $model->gross = $request->gross;
-        $model->nett = $request->nett;
-      
-        
-        $model->documents = $request->documents ? json_encode($request->documents) : null;
-        $model->save();
 
         return back()->with('success','Record Updated');
 
@@ -316,8 +317,6 @@ class ConsignmentController extends Controller
 
 
     
-
-     
 
 
      /**

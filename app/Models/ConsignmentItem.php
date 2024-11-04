@@ -29,6 +29,11 @@ class ConsignmentItem extends Model
         'updated_at',
     ];
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
 
     
 

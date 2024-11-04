@@ -1,8 +1,21 @@
 <?php
 
-
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\ConsignmentController;
+use App\Http\Controllers\Admin\CustomerController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DeliveryChallanController;
+use App\Http\Controllers\Admin\DeliveryIntimationController;
+use App\Http\Controllers\Admin\FilemanagerController;
+use App\Http\Controllers\Admin\MasterController;
+use App\Http\Controllers\Admin\PayorderController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VendorController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,78 +35,67 @@ Route::get('/',function(){
 
 
 //Admin
-Route::get('/', [App\Http\Controllers\Admin\AuthController::class, 'login']);
-Route::get('/admin/login', [App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login');
-Route::post('/admin/login_submit', [App\Http\Controllers\Admin\AuthController::class, 'login_submit']);
+Route::get('/', [AuthController::class, 'login']);
+Route::get('/admin/login', [AuthController::class, 'login'])->name('login');
+Route::post('/admin/login_submit', [AuthController::class, 'login_submit']);
 
 
 
 Route::middleware(['auth'])->group(function () {
   
  
-  Route::get('/admin/logout', [App\Http\Controllers\Admin\AuthController::class, 'logout']);
+  Route::get('/admin/logout', [AuthController::class, 'logout']);
+  Route::get('/admin/changepassword', [DashboardController::class, 'changepassword']);
+  Route::post('/admin/changepassword_submit', [DashboardController::class, 'changepassword_submit']);
 
-  Route::get('/admin/changepassword', [App\Http\Controllers\Admin\DashboardController::class, 'changepassword']);
-  
-  Route::post('/admin/changepassword_submit', [App\Http\Controllers\Admin\DashboardController::class, 'changepassword_submit']);
+  Route::get('/admin/dashboard', [DashboardController::class, 'dashboard']);
+  Route::get('/admin/dashboard/products', [DashboardController::class, 'products']);
+  Route::post('/admin/status', [DashboardController::class, 'status']);
 
-
-
-     Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard']);
-     Route::get('/admin/dashboard/products', [App\Http\Controllers\Admin\DashboardController::class, 'products']);
-
-     Route::post('/admin/status', [App\Http\Controllers\Admin\DashboardController::class, 'status']);
-  
-      
-      
-      
-    
 
       //Users
-      Route::get('/admin/users/index', [App\Http\Controllers\Admin\UserController::class, 'index']);
-      Route::get('/admin/users/create', [App\Http\Controllers\Admin\UserController::class, 'create']);
-      Route::post('/admin/users/store', [App\Http\Controllers\Admin\UserController::class, 'store']);
-      Route::get('/admin/users/edit/{id}', [App\Http\Controllers\Admin\UserController::class, 'edit']);
-      Route::post('/admin/users/update/{id}', [App\Http\Controllers\Admin\UserController::class, 'update']);
-      Route::get('/admin/users/delete/{id}', [App\Http\Controllers\Admin\UserController::class, 'delete']);
-      Route::get('admin/profile', [App\Http\Controllers\Admin\UserController::class, 'profile']);
-      Route::post('admin/profile-update', [App\Http\Controllers\Admin\UserController::class, 'profile_update']);
-  
+      Route::get('/admin/users/index',[UserController::class, 'index']);
+      Route::get('/admin/users/create',[UserController::class, 'create']);
+      Route::post('/admin/users/store',[UserController::class, 'store']);
+      Route::get('/admin/users/edit/{id}',[UserController::class, 'edit']);
+      Route::post('/admin/users/update/{id}',[UserController::class, 'update']);
+      Route::get('/admin/users/delete/{id}',[UserController::class, 'delete']);
+      Route::get('admin/profile',[UserController::class, 'profile']);
+      Route::post('admin/profile-update',[UserController::class, 'profile_update']);
 
       //Roles
-      Route::get('/admin/roles/index', [App\Http\Controllers\Admin\RoleController::class, 'index']);
-      Route::get('/admin/roles/create', [App\Http\Controllers\Admin\RoleController::class, 'create']);
-      Route::post('/admin/roles/store', [App\Http\Controllers\Admin\RoleController::class, 'store']);
-      Route::get('/admin/roles/edit/{id}', [App\Http\Controllers\Admin\RoleController::class, 'edit']);
-      Route::post('/admin/roles/update/{id}', [App\Http\Controllers\Admin\RoleController::class, 'update']);
-      Route::get('/admin/roles/delete/{id}', [App\Http\Controllers\Admin\RoleController::class, 'delete']);
+      Route::get('/admin/roles/index', [RoleController::class, 'index']);
+      Route::get('/admin/roles/create', [RoleController::class, 'create']);
+      Route::post('/admin/roles/store', [RoleController::class, 'store']);
+      Route::get('/admin/roles/edit/{id}', [RoleController::class, 'edit']);
+      Route::post('/admin/roles/update/{id}', [RoleController::class, 'update']);
+      Route::get('/admin/roles/delete/{id}', [RoleController::class, 'delete']);
 
-    
-      
       //Modules
-      Route::resource('/admin/customers', App\Http\Controllers\Admin\CustomerController::class);
-      Route::resource('/admin/vendors', App\Http\Controllers\Admin\VendorController::class);
+      Route::resource('/admin/customers',CustomerController::class);
+      Route::resource('/admin/vendors',VendorController::class);
      
-      Route::get('/admin/consignments/view/{id}', [App\Http\Controllers\Admin\ConsignmentController::class,'view']);
-      Route::resource('/admin/consignments', App\Http\Controllers\Admin\ConsignmentController::class);
-      Route::resource('masters', App\Http\Controllers\Admin\MasterController::class);
+      Route::get('/admin/consignments/view/{id}',[ConsignmentController::class,'view']);
+      Route::resource('/admin/consignments',ConsignmentController::class);
+      Route::resource('masters',MasterController::class);
+      Route::resource('/admin/delivery-challans',DeliveryChallanController::class);
+      Route::resource('/admin/delivery-intimations',DeliveryIntimationController::class);
 
-      Route::resource('/admin/delivery-challans',App\Http\Controllers\Admin\DeliveryChallanController::class);
-      Route::resource('/admin/delivery-intimations',App\Http\Controllers\Admin\DeliveryIntimationController::class);
+      Route::resource('/admin/payorders',PayorderController::class);
 
-      
-  //filemanager
-    Route::get('/admin/filemanager/search', [App\Http\Controllers\Admin\FilemanagerController::class, 'search']);
-    Route::get('/admin/filemanager', [App\Http\Controllers\Admin\FilemanagerController::class, 'index']);
-    Route::get('admin/filemanager/create',[App\Http\Controllers\Admin\FilemanagerController::class,'create']);
-    Route::post('admin/filemanager/store',[App\Http\Controllers\Admin\FilemanagerController::class,'store']);
-    Route::get('admin/filemanager/edit/{id}',[App\Http\Controllers\Admin\FilemanagerController::class,'edit']);
-    Route::post('admin/filemanager/update/{id}',[App\Http\Controllers\Admin\FilemanagerController::class,'update']);
-    Route::get('admin/filemanager/delete/{id}',[App\Http\Controllers\Admin\FilemanagerController::class,'delete']);
 
-  //Settings
-    Route::get('admin/settings/edit', [App\Http\Controllers\Admin\SettingController::class, 'edit']);
-    Route::post('admin/settings/update', [App\Http\Controllers\Admin\SettingController::class, 'update']);
+    //filemanager
+      Route::get('/admin/filemanager/search', [FilemanagerController::class, 'search']);
+      Route::get('/admin/filemanager', [FilemanagerController::class, 'index']);
+      Route::get('admin/filemanager/create',[FilemanagerController::class,'create']);
+      Route::post('admin/filemanager/store',[FilemanagerController::class,'store']);
+      Route::get('admin/filemanager/edit/{id}',[FilemanagerController::class,'edit']);
+      Route::post('admin/filemanager/update/{id}',[FilemanagerController::class,'update']);
+      Route::get('admin/filemanager/delete/{id}',[FilemanagerController::class,'delete']);
+
+   //Settings
+    Route::get('admin/settings/edit',[SettingController::class, 'edit']);
+    Route::post('admin/settings/update',[SettingController::class, 'update']);
 
 
 

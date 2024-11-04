@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\DeliveryIntimation;
+use App\Models\Payorder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             ExporterSeeder::class,
             ConsignmentSeeder::class,
+            PayorderSeeder::class,
             // DeliveryChallanSeeder::class,
             // DeliveryIntimationSeeder::class,
             // VendorSeeder::class,

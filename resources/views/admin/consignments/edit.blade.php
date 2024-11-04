@@ -179,7 +179,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Your REF</label>
-                        <input required value="{{$model->your_ref}}" name="your_ref" 
+                        <input  value="{{$model->your_ref}}" name="your_ref" 
                         class="form-control" placeholder="Your REF">
                         @if($errors->has('your_ref'))
                          <p class="text-danger" >{{ $errors->first('your_ref') }}</p>
@@ -230,7 +230,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">EIF/FI NO</label>
-                        <input required value="{{$model->eiffino}}" name="eiffino" 
+                        <input  value="{{$model->eiffino}}" name="eiffino" 
                         class="form-control" placeholder="EIF/FI NO">
                         @if($errors->has('eiffino'))
                          <p class="text-danger" >{{ $errors->first('eiffino') }}</p>
@@ -241,7 +241,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Frieght in FC</label>
-                        <input required value="{{$model->freight}}" name="freight" 
+                        <input required type="number" value="{{$model->freight}}" name="freight" 
                         class="form-control" placeholder="Freight">
                         @if($errors->has('freight'))
                          <p class="text-danger" >{{ $errors->first('freight') }}</p>
@@ -252,7 +252,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Insurance In PKR</label>
-                        <input required value="{{$model->ins_rs}}" name="ins_rs" 
+                        <input required type="number" value="{{$model->ins_rs}}" name="ins_rs" 
                         class="form-control" placeholder="Ins Rs">
                         @if($errors->has('ins_rs'))
                          <p class="text-danger" >{{ $errors->first('ins_rs') }}</p>
@@ -285,7 +285,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">LC/BT/IT No</label>
-                        <input required  value="{{$model->lcbtitno}}" name="lcbtitno" 
+                        <input value="{{$model->lcbtitno}}" name="lcbtitno" 
                         class="form-control" placeholder="LC/BT/IT No">
                         @if($errors->has('lcbtitno'))
                          <p class="text-danger" >{{ $errors->first('lcbtitno') }}</p>
@@ -296,7 +296,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">LC no</label>
-                        <input required  value="{{$model->lc_no}}" name="lc_no" 
+                        <input value="{{$model->lc_no}}" name="lc_no" 
                         class="form-control" placeholder="LC no">
                         @if($errors->has('lc_no'))
                          <p class="text-danger" >{{ $errors->first('lc_no') }}</p>
@@ -307,7 +307,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">LC Date</label>
-                        <input required type="date"  value="{{ \Carbon\Carbon::parse($model->lc_date)->format('Y-m-d') }}" name="lc_date" 
+                        <input  type="date"  value="{{ \Carbon\Carbon::parse($model->lc_date)->format('Y-m-d') }}" name="lc_date" 
                         class="form-control" placeholder="LC Date">
                         @if($errors->has('lc_date'))
                          <p class="text-danger" >{{ $errors->first('lc_date') }}</p>
@@ -318,7 +318,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Vessel / Flight Name</label>
-                        <input required value="{{$model->vessel}}" name="vessel" 
+                        <input  value="{{$model->vessel}}" name="vessel" 
                         class="form-control" placeholder="Vessel">
                         @if($errors->has('vessel'))
                          <p class="text-danger" >{{ $errors->first('vessel') }}</p>
@@ -329,7 +329,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">IGM No</label>
-                        <input required value="{{$model->igmno}}" name="igmno" 
+                        <input  value="{{$model->igmno}}" name="igmno" 
                         class="form-control" placeholder="IGM No">
                         @if($errors->has('igmno'))
                          <p class="text-danger" >{{ $errors->first('igmno') }}</p>
@@ -340,7 +340,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">IGM Date</label>
-                        <input required type="date"  value="{{ \Carbon\Carbon::parse($model->igm_date)->format('Y-m-d') }}" name="igm_date" 
+                        <input  type="date"  value="{{ \Carbon\Carbon::parse($model->igm_date)->format('Y-m-d') }}" name="igm_date" 
                         class="form-control" placeholder="IGM Date">
                         @if($errors->has('igm_date'))
                          <p class="text-danger" >{{ $errors->first('igm_date') }}</p>
@@ -359,7 +359,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">BL/AWB Date</label>
-                        <input required type="date" 
+                        <input  type="date" 
                         value="{{ \Carbon\Carbon::parse($model->bl_awb_date)->format('Y-m-d') }}" name="bl_awb_date" 
                         class="form-control" placeholder="BL/AWB Date">
                         @if($errors->has('bl_awb_date'))
@@ -390,7 +390,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Rate Of Exchange</label>
-                        <input required type="number"  value="{{$model->rate_of_exchange}}" name="rate_of_exchange" 
+                        <input  type="number"  value="{{$model->rate_of_exchange}}" name="rate_of_exchange" 
                         class="form-control" placeholder="Rate Of Exchange">
                         @if($errors->has('rate_of_exchange'))
                          <p class="text-danger" >{{ $errors->first('rate_of_exchange') }}</p>
@@ -401,7 +401,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Master Agent</label>
-                        <input required  value="{{$model->master_agent}}" name="master_agent" 
+                        <input   value="{{$model->master_agent}}" name="master_agent" 
                         class="form-control" placeholder="Master Agent">
                         @if($errors->has('master_agent'))
                          <p class="text-danger" >{{ $errors->first('master_agent') }}</p>
@@ -412,7 +412,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Freight Agent</label>
-                        <input required  value="{{$model->other_agent_agent}}" name="other_agent" 
+                        <input   value="{{$model->other_agent_agent}}" name="other_agent" 
                         class="form-control" placeholder="Freight Agent">
                         @if($errors->has('other_agent'))
                          <p class="text-danger" >{{ $errors->first('other_agent') }}</p>
@@ -423,7 +423,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Arival Date</label>
-                        <input required type="date"  value="{{ \Carbon\Carbon::parse($model->due_date)->format('Y-m-d') }}" name="due_date" 
+                        <input  type="date"  value="{{ \Carbon\Carbon::parse($model->due_date)->format('Y-m-d') }}" name="due_date" 
                         class="form-control" placeholder="Arival Date">
                         @if($errors->has('due_date'))
                          <p class="text-danger" >{{ $errors->first('due_date') }}</p>
@@ -471,7 +471,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Gross Weight</label>
-                        <input required type="number"  value="{{$model->gross}}" name="gross" 
+                        <input  type="number"  value="{{$model->gross}}" name="gross" 
                         class="form-control" placeholder="Gross">
                         @if($errors->has('gross'))
                          <p class="text-danger" >{{ $errors->first('gross') }}</p>
@@ -482,7 +482,7 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Net Weight</label>
-                        <input required type="number"  value="{{$model->nett}}" name="nett" 
+                        <input  type="number"  value="{{$model->nett}}" name="nett" 
                         class="form-control" placeholder="Nett">
                         @if($errors->has('nett'))
                          <p class="text-danger" >{{ $errors->first('nett') }}</p>
