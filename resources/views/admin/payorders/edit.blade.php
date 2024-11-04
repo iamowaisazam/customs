@@ -45,21 +45,20 @@ $consignment = $model->consignment;
        @foreach ($consignment->items as $key => $item)
           <?php 
 
+        //   dd($consignment->items);
+
             $order_item = array_values(array_filter(json_decode($model->items) ?? [], function($data) use($item) { return $data->product_id ?? '' == $item->product_id; }))[0] ?? null;
+
+            //   $order_item = [];
               
         
-              $product_total = $item->total;
-              $invoice_value = $consignment->invoice_value;
-
               $freight = intval($consignment->freight);
-             
-              $frieght_rate = ($product_total / $invoice_value) * $freight;
+              $frieght_rate = ($item->total / $consignment->invoice_value) * $freight;
+              $after_frieght = $frieght_rate + $item->total;
+
+              $landing_charges = ( $item->total / 100) * 1;
               
-              $after_frieght = $frieght_rate + $product_total;
-
-
-              $landing_charges = ($consignment->landing_charges / $invoice_value) * 100;
-              $asset_value = $invoice_value + $landing_charges + $after_frieght + $consignment->ins_rs; 
+              $asset_value = $consignment->rate_of_exchange + $after_frieght + $landing_charges + $consignment->ins_rs; 
 
 
         ?>
