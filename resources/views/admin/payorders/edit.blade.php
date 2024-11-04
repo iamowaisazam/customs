@@ -78,25 +78,32 @@ $consignment = $model->consignment;
                             placeholder="Custom Duty" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Sale Tax :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->sale_tax ?? ''}}" name="items[{{$key}}][sale_tax]" class="sale_tax form-control" placeholder="Sale Tax" />  
+                            <label class="form-label">Additional C.D :</label>
+                            <input type="number" style="width: 150px;" value="{{$order_item->cd ?? ''}}" name="items[{{$key}}][cd]" class="cd form-control" placeholder="Additional C.D" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">R.D :</label>
                             <input type="number" style="width: 150px;" value="{{$order_item->rd ?? ''}}" name="items[{{$key}}][rd]" class="rd items form-control" placeholder="R.D" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Additional C.D :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->cd ?? ''}}" name="items[{{$key}}][cd]" class="cd form-control" placeholder="Additional C.D" />
+                            <label class="form-label">Sale Tax :</label>
+                            <input type="number" style="width: 150px;" value="{{$order_item->sale_tax ?? ''}}" name="items[{{$key}}][sale_tax]" class="sale_tax form-control" placeholder="Sale Tax" />  
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Additional S.T :</label>
                             <input type="number" style="width: 150px;" value="{{$order_item->st ?? ''}}" name="items[{{$key}}][st]" class="st form-control" placeholder="Additional S.T" />
                         </div>
+
+                        <div class="d-flex justify-content-between" >
+                            <label class="form-label">Income Tax :</label>
+                            <input type="number" style="width: 150px;" value="{{$order_item->it ?? ''}}" name="items[{{$key}}][it]" class="it form-control" placeholder="Income Tax" />
+                        </div>
+
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">ETO :</label>
                             <input type="number" style="width: 150px;" value="{{$order_item->eto ?? ''}}" name="items[{{$key}}][eto]" placeholder="ETO" class="eto form-control" placeholder="ETO" />
                         </div>
+
                         <div class="d-flex justify-content-between" >
                             <label class="stan_duty form-label">STAN DUTY :</label>
                             <input type="number" style="width: 150px;" value="{{$order_item->stan_duty ?? ''}}" 
@@ -181,75 +188,80 @@ $consignment = $model->consignment;
 
         function calculate(){
 
-            
             let gtotal = 0;
 
             $('.payorder_items').children().each(function() {
+                
                 subtotal = 0;
                 
                 let element = $(this);
-                let total_gif = element.find('.total_gif').val() || 0;
 
-
-                let custom_duty = element.find('.custom_duty').val() || 0;
-                let sale_tax = element.find('.sale_tax').val() || 0;
-                let rd = element.find('.rd').val() || 0;
-                let cd = element.find('.cd').val() || 0;
-                let st = element.find('.st').val() || 0;
-                let eto = element.find('.eto').val() || 0;
-                let stan_duty = element.find('.stan_duty').val() || 0;
-                let psw_fee = element.find('.psw_fee').val() || 0;
-                let dlap_feee = element.find('.dlap_feee').val() || 0;
-                let total  = element.find('.total').val() || 0;
-
+                let total_gif = parseFloat(element.find('.total_gif').val()) || 0;
+                let it = parseFloat(element.find('.it').val()) || 0;
+                let custom_duty = parseFloat(element.find('.custom_duty').val()) || 0;
+                let sale_tax = parseFloat(element.find('.sale_tax').val()) || 0;
+                let rd = parseFloat(element.find('.rd').val()) || 0;
+                let cd = parseFloat(element.find('.cd').val()) || 0;
+                let st = parseFloat(element.find('.st').val()) || 0;
+                let eto = parseFloat(element.find('.eto').val()) || 0;
+                let stan_duty = parseFloat(element.find('.stan_duty').val()) || 0;
+                let psw_fee = parseFloat(element.find('.psw_fee').val()) || 0;
+                let dlap_feee = parseFloat(element.find('.dlap_feee').val()) || 0;
+                let total  = parseFloat(element.find('.total').val()) || 0;
 
                 subtotal += parseFloat(total_gif) || 0;
+                
 
-
-                if(custom_duty > 0){
+                // if(custom_duty > 0){
                    let custom_duty_calc = (custom_duty / total_gif) * 100;
                    subtotal += custom_duty_calc;
-                }
+                // }
 
-                if(sale_tax > 0){
-                   sale_tax_calc = (sale_tax / total_gif) * 100;
+                // if(cd > 0){
+                   let cd_calc = (cd / total_gif) * 100;
+                   subtotal += cd_calc;
+                // }
+
+                // if(rd > 0){
+                   let rd_calc = (rd / total_gif) * 100;
+                   subtotal += rd_calc;
+                // }
+
+                // if(sale_tax > 0){
+                   sale_tax_calc = total_gif + custom_duty_calc + cd_calc + rd_calc; 
+                   sale_tax_calc = (sale_tax / sale_tax_calc) * 100;
                    subtotal += sale_tax_calc;
-                }
+                // }
 
-                if(rd > 0){
-                    rdcalc = (rd / total_gif) * 100;
-                    subtotal += rdcalc;
-                }
+                // if(st > 0){
+                   st_calc = total_gif + custom_duty_calc + cd_calc + rd_calc; 
+                   st_calc = (st / st_calc) * 100;
+                   subtotal += st_calc;
+                // }
 
-                if(cd > 0){
-                    cdcalc = (cd / total_gif) * 100;
-                    subtotal += cdcalc;
-                }
+                // if(it > 0){
+                   it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
+                   it_calc = (it / it_calc) * 100;
+                   subtotal += it_calc;
+                // }
 
-                if(st > 0){
-                    stcalc = (st / total_gif) * 100;
-                    subtotal += stcalc;
-                }
-
-                if(eto > 0){
+                // if(eto > 0){
                     etocalc = (eto / total_gif) * 100;
                     subtotal += etocalc;
-                }
+                // }
 
-                if(stan_duty > 0){
-                    stan_dutycalc = (stan_duty / total_gif) * 100;
-                    subtotal += stan_dutycalc;
-                }
+                // if(stan_duty > 0){
+                    subtotal += stan_duty;
+                // }
 
-                if(psw_fee > 0){
-                    psw_feecalc = (psw_fee / total_gif) * 100;
-                    subtotal += psw_feecalc;
-                }
+                // if(psw_fee > 0){
+                    subtotal += psw_fee;
+                // }
 
-                if(dlap_feee > 0){
-                    dlap_feeecalc = (dlap_feee / total_gif) * 100;
-                    subtotal += dlap_feeecalc;
-                }
+                // if(dlap_feee > 0){
+                    subtotal += dlap_feee;
+                // }
+
 
                 element.find('.total').val(subtotal.toFixed(2));
                 gtotal += subtotal;
