@@ -48,7 +48,7 @@ class PayorderController extends Controller
 
         if($request->ajax()){
 
-            $query = Payorder::join('consignments','consignments.id','=','payorders.consignment_id')
+            $query = Payorder::Leftjoin('consignments','consignments.id','=','payorders.consignment_id')
             ->join('customers','customers.id','=','consignments.customer_id');
 
             //Search
@@ -135,7 +135,11 @@ class PayorderController extends Controller
             ]);
         }
 
-        return view('admin.payorders.index');
+
+        $consignments = Consignment::all();
+
+
+        return view('admin.payorders.index',compact('consignments'));
 
     }
 
@@ -147,18 +151,30 @@ class PayorderController extends Controller
      *
      * @return void
      */
-    public function create()
+    public function create(Request $request)
     {
 
-        $data = [
-            'customers' => Customer::where('status',1)->get(),
-            'exporters' => Exporter::where('status',1)->get(),
-            'currencies' => Currency::DATA,
-            'units' => array_values(Unit::DATA),
-            'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
-        ];
+        $model = Consignment::where('id',$request->consignment_id)->first();
+        if($model == false){  
+            return back()->with('error','Record Not Found');
+        }
 
-        return view('admin.consignments.create',$data);
+        if(Payorder::where('consignment_id',$request->consignment_id)->first()){
+            return back()->with('error','Payorder Already Generated');
+        }
+
+
+        $model = Payorder::create([
+            "consignment_details" => json_encode([]),
+            "date" => Carbon::now(),
+            "consignment_id" => $request->consignment_id,
+            "items" => json_encode([]),
+            "footer" => json_encode([]),
+            "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
+        ]);
+
+        return redirect('admin/payorders/'.Crypt::encryptString($model->id).'/edit');
+
     }
 
 
@@ -327,7 +343,7 @@ class PayorderController extends Controller
     public function destroy($id)
     {
 
-        $data = Consignment::find(Crypt::decryptString($id));
+        $data = Payorder::find(Crypt::decryptString($id));
         if($data == false){
             return response()->json(['message' => 'Record Not Found'],400);
         }else{

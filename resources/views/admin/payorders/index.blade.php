@@ -19,6 +19,14 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
      float: right;
     }
 
+    .select2-container{
+      width: 100%!important;
+    }
+
+    .select2-dropdown {
+      z-index: 1069!important;
+    }
+
 </style>
 @endsection
 
@@ -108,7 +116,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <h4 class="mb-0 text-white">Payorders</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a class="btn btn-primary" href="{{URL::to('admin/payorders/create')}}">Create New </a>
+                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button>
                         </div>
                     </div>
                 </header>
@@ -133,6 +141,36 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 </div>
             </section>
          </div>
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{URL::to('admin/payorders/create')}}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create PayOrder</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <select name="consignment_id" class="form-control">
+                                @foreach ($consignments as $consignment)
+                                  <option value="{{$consignment->id}}">{{$consignment->job_number_prefix}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+             </form>
+            </div>
+        </div>
+
+   
+
 @endsection
 
 @section('js')
@@ -143,6 +181,8 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
        <script>
         $(function () {
+
+            $('.js-example-basic-single').select2();
           
             var application_table = $('.mydatatable').DataTable({
             processing: true,

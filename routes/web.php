@@ -75,13 +75,22 @@ Route::middleware(['auth'])->group(function () {
       Route::resource('/admin/customers',CustomerController::class);
       Route::resource('/admin/vendors',VendorController::class);
      
+      //Consignment 
       Route::get('/admin/consignments/view/{id}',[ConsignmentController::class,'view']);
       Route::resource('/admin/consignments',ConsignmentController::class);
-      Route::resource('masters',MasterController::class);
-      Route::resource('/admin/delivery-challans',DeliveryChallanController::class);
-      Route::resource('/admin/delivery-intimations',DeliveryIntimationController::class);
 
+      //Delivery Challans
+      Route::resource('/admin/delivery-challans',DeliveryChallanController::class);
+      
+      //Delivry Intimations
+      Route::resource('/admin/delivery-intimations',DeliveryIntimationController::class);
+      
+      //Pyorders
       Route::resource('/admin/payorders',PayorderController::class);
+
+
+      Route::resource('masters',MasterController::class);
+     
 
 
     //filemanager

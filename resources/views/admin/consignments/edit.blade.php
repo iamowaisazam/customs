@@ -4,6 +4,8 @@
     .invalid-feedback{
       display: block;
    }
+
+  
 </style>
 @endsection
 
