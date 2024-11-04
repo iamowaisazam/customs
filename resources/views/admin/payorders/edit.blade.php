@@ -56,7 +56,7 @@ $consignment = $model->consignment;
               $frieght_rate = ($item->total / $consignment->invoice_value) * $freight;
               $after_frieght = $frieght_rate + $item->total;
 
-              $landing_charges = ( $item->total / 100) * 1;
+              $landing_charges = ( $item->total / 100) * $consignment->landing_charges;
               
               $asset_value = $consignment->rate_of_exchange + $after_frieght + $landing_charges + $consignment->ins_rs; 
 
@@ -156,6 +156,9 @@ $consignment = $model->consignment;
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Assets value : (PKR)</label>
                             <input readonly style="width: 150px;" value="{{number_format($asset_value,2)}}" name="items[{{$key}}][total_gif]" class="total_gif form-control" placeholder="Assets value" />
+
+                            <input type="hidden" value="{{$asset_value}}" class="total_gif_value" />
+
                          </div>
                       </div>
                     </div>
@@ -167,7 +170,7 @@ $consignment = $model->consignment;
 
     @include('admin.payorders.accountsInfo')
 
-    <div class="col-md-12 text-center">
+    <div class="pb-5 pt-3 col-md-12 text-center">
         <button type="submit" class="btn btn-info">Submit</button>
     </div>
 
@@ -195,7 +198,8 @@ $consignment = $model->consignment;
                 
                 let element = $(this);
 
-                let total_gif = parseFloat(element.find('.total_gif').val()) || 0;
+                let total_gif = parseFloat(element.find('.total_gif_value').val()) || 0;
+
                 let it = parseFloat(element.find('.it').val()) || 0;
                 let custom_duty = parseFloat(element.find('.custom_duty').val()) || 0;
                 let sale_tax = parseFloat(element.find('.sale_tax').val()) || 0;
@@ -212,40 +216,41 @@ $consignment = $model->consignment;
                 
 
                 // if(custom_duty > 0){
-                   let custom_duty_calc = (custom_duty / total_gif) * 100;
+                   let custom_duty_calc = ( total_gif / 100) * custom_duty;
                    subtotal += custom_duty_calc;
+                //    debugger
                 // }
 
                 // if(cd > 0){
-                   let cd_calc = (cd / total_gif) * 100;
+                   let cd_calc = (total_gif / 100) * cd;
                    subtotal += cd_calc;
                 // }
 
                 // if(rd > 0){
-                   let rd_calc = (rd / total_gif) * 100;
+                   let rd_calc = (total_gif / 100) * rd;
                    subtotal += rd_calc;
                 // }
 
                 // if(sale_tax > 0){
                    sale_tax_calc = total_gif + custom_duty_calc + cd_calc + rd_calc; 
-                   sale_tax_calc = (sale_tax / sale_tax_calc) * 100;
+                   sale_tax_calc = (sale_tax_calc / 100) * sale_tax;
                    subtotal += sale_tax_calc;
                 // }
 
                 // if(st > 0){
                    st_calc = total_gif + custom_duty_calc + cd_calc + rd_calc; 
-                   st_calc = (st / st_calc) * 100;
+                   st_calc = (st_calc / 100) * st;
                    subtotal += st_calc;
                 // }
 
                 // if(it > 0){
                    it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
-                   it_calc = (it / it_calc) * 100;
+                   it_calc = (it_calc / 100) * it;
                    subtotal += it_calc;
                 // }
 
                 // if(eto > 0){
-                    etocalc = (eto / total_gif) * 100;
+                    etocalc = (total_gif  / 100) * eto;
                     subtotal += etocalc;
                 // }
 
@@ -261,6 +266,8 @@ $consignment = $model->consignment;
                     subtotal += dlap_feee;
                 // }
 
+                // console.log(subtotal);
+                
 
                 element.find('.total').val(subtotal.toFixed(2));
                 gtotal += subtotal;

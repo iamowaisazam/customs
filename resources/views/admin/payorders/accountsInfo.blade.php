@@ -4,23 +4,27 @@
             <h4 class="mb-0 text-white">Accounts</h4>
         </header>
         <div class="card-body">
+            <?php 
+            $header = json_decode($model->header);    
+            // dd($header);
+            ?>
 
-            <div class="row row_id_${un}">
+            <div class="row">
                 <div class="col-md-5 nopadding">
                     <div class="form-group">
                         <label>Account</label>
-                        <input value="Dues" name="footer[17307485][title]" 
+                        <input value="Dues" name="header[title]" value="{{$header->title ?? ''}}"
                         class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-2 nopadding">
                         <label>Amount</label>
-                        <input readonly value="" name="footer[17307485][amount]" class="gtotal form-control" />
+                        <input readonly value="{{$header->amount ?? ''}}" name="header[amount]" class="gtotal form-control" />
                 </div>
                 <div class="col-md-5 nopadding">
                     <div class="form-group">
                         <label>Pay Order In Favor OF</label>
-                            <input value="" name="footer[17307485][company]" 
+                            <input value="{{$header->company ?? ''}}" name="header[company]" 
                             class="form-control" />
                     </div>
                 </div>

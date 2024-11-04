@@ -29,6 +29,7 @@ class PayorderUtility
             "consignment_id" => $data['consignment_id'],
             "items" => json_encode($data['items']),
             "footer" => json_encode($data['footer']),
+            "header" => json_encode([]),
             "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
         ]);
 

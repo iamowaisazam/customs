@@ -19,6 +19,7 @@ class Payorder extends Model
         'footer',
         'items',
         'date',
+        'header',
         'status',
         'created_by',
         'created_at',

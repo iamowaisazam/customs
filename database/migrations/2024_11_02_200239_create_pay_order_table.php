@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('consignment_details')->nullable();
             $table->text('footer')->nullable();
             $table->text('items')->nullable();
+            $table->text('header')->nullable();
 
             $table->timestamp('date')->nullable();
             $table->integer('status')->default(1);

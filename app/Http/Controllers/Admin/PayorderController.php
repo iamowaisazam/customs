@@ -168,6 +168,7 @@ class PayorderController extends Controller
             "consignment_details" => json_encode([]),
             "date" => Carbon::now(),
             "consignment_id" => $request->consignment_id,
+            "header" => json_encode([]),
             "items" => json_encode([]),
             "footer" => json_encode([]),
             "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
@@ -233,6 +234,7 @@ class PayorderController extends Controller
         $model->date = Carbon::now();
         $model->consignment_id = $request->consignment_id;
         $model->items = json_encode($request->items);
+        $model->header = json_encode($request->header);
         $model->footer = json_encode($request->footer);
         $model->created_by = Auth::user()->id;
         $model->consignment_details = json_encode([]);
@@ -306,7 +308,6 @@ class PayorderController extends Controller
             $data->delete();
             return response()->json(['message' => 'Record Not Deleted'],200);
         }
-
 
     }
 
