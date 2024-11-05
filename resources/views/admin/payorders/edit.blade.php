@@ -58,7 +58,8 @@ $consignment = $model->consignment;
 
               $landing_charges = ( $item->total / 100) * $consignment->landing_charges;
               
-              $asset_value = $consignment->rate_of_exchange + $after_frieght + $landing_charges + $consignment->ins_rs; 
+              $rate_exchange = $consignment->rate_of_exchange * $after_frieght;
+              $asset_value = $rate_exchange + $after_frieght + $landing_charges + $consignment->ins_rs; 
 
 
         ?>
@@ -94,8 +95,8 @@ $consignment = $model->consignment;
                         </div>
 
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Income Tax :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->it ?? ''}}" name="items[{{$key}}][it]" class="it form-control" placeholder="Income Tax" />
+                            <label class=" form-label">Income Tax :</label>
+                            <input type="number" style="width: 150px;" value="{{$order_item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
                         </div>
 
                         <div class="d-flex justify-content-between" >
@@ -104,7 +105,7 @@ $consignment = $model->consignment;
                         </div>
 
                         <div class="d-flex justify-content-between" >
-                            <label class="stan_duty form-label">STAN DUTY :</label>
+                            <label class=" form-label">STAN DUTY :</label>
                             <input type="number" style="width: 150px;" value="{{$order_item->stan_duty ?? ''}}" 
                             name="items[{{$key}}][stan_duty]" class="stan_duty form-control" placeholder="STAN DUTY" 
                             />    
@@ -200,7 +201,7 @@ $consignment = $model->consignment;
 
                 let total_gif = parseFloat(element.find('.total_gif_value').val()) || 0;
 
-                let it = parseFloat(element.find('.it').val()) || 0;
+                let it = parseFloat(element.find('.income_tax').val()) || 0;
                 let custom_duty = parseFloat(element.find('.custom_duty').val()) || 0;
                 let sale_tax = parseFloat(element.find('.sale_tax').val()) || 0;
                 let rd = parseFloat(element.find('.rd').val()) || 0;
@@ -280,7 +281,7 @@ $consignment = $model->consignment;
         }
 
 
-        $('.custom_duty,.sale_tax,.rd,.cd,.st,.eto,.stan_duty,.psw_fee,.dlap_feee').change(function (e) { 
+        $('.custom_duty,.sale_tax,.rd,.income_tax,.cd,.st,.eto,.stan_duty,.psw_fee,.dlap_feee').change(function (e) { 
             calculate();
         });
 
