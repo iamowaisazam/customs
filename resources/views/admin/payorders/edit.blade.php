@@ -59,7 +59,7 @@ $consignment = $model->consignment;
               $landing_charges = ( $item->total / 100) * $consignment->landing_charges;
               
               $rate_exchange = $consignment->rate_of_exchange * $after_frieght;
-              $asset_value = $rate_exchange + $after_frieght + $landing_charges + $consignment->ins_rs; 
+              $asset_value = $rate_exchange + $landing_charges + $consignment->ins_rs; 
 
 
         ?>
