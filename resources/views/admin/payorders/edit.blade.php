@@ -96,7 +96,7 @@ $consignment = $model->consignment;
 
                         <div class="d-flex justify-content-between" >
                             <label class=" form-label">Income Tax :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
+                            <input type="text" readonly style="width: 150px;" value="{{$order_item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
                         </div>
 
                         <div class="d-flex justify-content-between" >
@@ -198,10 +198,11 @@ $consignment = $model->consignment;
                 subtotal = 0;
                 
                 let element = $(this);
+                debugger
 
                 let total_gif = parseFloat(element.find('.total_gif_value').val()) || 0;
 
-                let it = parseFloat(element.find('.income_tax').val()) || 0;
+                let income_tax = element.find('.income_tax');
                 let custom_duty = parseFloat(element.find('.custom_duty').val()) || 0;
                 let sale_tax = parseFloat(element.find('.sale_tax').val()) || 0;
                 let rd = parseFloat(element.find('.rd').val()) || 0;
@@ -217,9 +218,10 @@ $consignment = $model->consignment;
                 
 
                 // if(custom_duty > 0){
+                
                    let custom_duty_calc = ( total_gif / 100) * custom_duty;
                    subtotal += custom_duty_calc;
-                //    debugger
+                   
                 // }
 
                 // if(cd > 0){
@@ -246,8 +248,9 @@ $consignment = $model->consignment;
 
                 // if(it > 0){
                    it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
-                   it_calc = (it_calc / 100) * it;
                    subtotal += it_calc;
+                   income_tax.val(it_calc);
+
                 // }
 
                 // if(eto > 0){
