@@ -198,8 +198,7 @@ $consignment = $model->consignment;
                 subtotal = 0;
                 
                 let element = $(this);
-                debugger
-
+            
                 let total_gif = parseFloat(element.find('.total_gif_value').val()) || 0;
 
                 let income_tax = element.find('.income_tax');
@@ -246,12 +245,16 @@ $consignment = $model->consignment;
                    subtotal += st_calc;
                 // }
 
-                // if(it > 0){
+                
+                if(custom_duty_calc > 0 || cd_calc > 0 || rd_calc > 0 || sale_tax_calc> 0 || st_calc){
                    it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
-                   subtotal += it_calc;
+                   subtotal += it_calc;   
                    income_tax.val(it_calc);
+                }else{
+                    income_tax.val(0);
+                }
 
-                // }
+        
 
                 // if(eto > 0){
                     etocalc = (total_gif  / 100) * eto;
