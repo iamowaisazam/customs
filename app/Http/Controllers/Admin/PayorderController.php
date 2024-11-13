@@ -7,6 +7,7 @@ use App\Enums\PackageType;
 use App\Enums\Unit;
 use App\Http\Controllers\Controller;
 use App\Models\Consignment;
+use App\Models\ConsignmentItem;
 use App\Models\Customer;
 use App\Models\Exporter;
 use App\Models\Payorder;
@@ -69,15 +70,15 @@ class PayorderController extends Controller
             }
 
             if($request->has('lc_no') && $request->lc_no != ''){
-                $query->where('consignments.lc_no',$request->lc_no);
+                // $query->where('consignments.lc_no',$request->lc_no);
             }
 
             $search = $request->get('search');
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
                    $s->where('customers.customer_name','like','%'.$search.'%')
-                   ->orwhere('customers.company_name','like','%'.$search.'%')
-                   ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
+                   ->orwhere('customers.company_name','like','%'.$search.'%');
+                //    ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
                });
             }
             
@@ -87,7 +88,7 @@ class PayorderController extends Controller
                 'payorders.*',
                 'consignments.job_number_prefix',
                 'consignments.invoice_value',
-                'consignments.lc_no',
+                // 'consignments.lc_no',
                 'customers.customer_name',
                 'customers.company_name',
             ])
@@ -118,7 +119,7 @@ class PayorderController extends Controller
                     $value->company_name,
                     $value->customer_name,
                     $value->invoice_value,
-                    $value->lc_no,
+                    '',
                     "<div class='switchery-demo'>
                      <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
                     </div>",
@@ -208,7 +209,6 @@ class PayorderController extends Controller
             'currencies' => Currency::DATA,
             'package_types' => PackageType::DATA,
             'units' => array_values(Unit::DATA),
-            'exporters' => Exporter::where('status',1)->get(),
         ];
 
         return view('admin.payorders.edit',$data);
@@ -230,12 +230,24 @@ class PayorderController extends Controller
            return back()->with('error','Record Not Found');
         }
 
+        foreach ($request->items as $value) {
+            ConsignmentItem::where('id',$value['id'])->update([
+                'custom_duty' => $value['custom_duty'],
+                'a_custom_duty' => $value['a_custom_duty'],
+                'rd' => $value['rd'],
+                'it' => $value['it'],
+                'saletax' => $value['saletax'],
+                'a_saletax' => $value['a_saletax'],
+                'after_duties'=> 0
+            ]);
+        }
+
     
         $model->date = Carbon::now();
         $model->consignment_id = $request->consignment_id;
-        $model->items = json_encode($request->items);
+        // $model->items = json_encode($request->items);
         $model->header = json_encode($request->header);
-        $model->footer = json_encode($request->footer);
+        // $model->footer = json_encode($request->footer);
         $model->created_by = Auth::user()->id;
         $model->consignment_details = json_encode([]);
         $model->save();

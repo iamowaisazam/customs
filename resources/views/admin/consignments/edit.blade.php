@@ -41,7 +41,7 @@ foreach ($documents as $value) {
     </div>
 </div>
 
-<form method="post" action="{{URL::to('admin/consignments')}}/{{Crypt::encryptString($model->id)}}" >
+<form method="post" action="{{URL::to('admin/consignments')}}/{{$model ? Crypt::encryptString($model->id) : 'create'}}" >
     @csrf
     @method('PUT')
 
@@ -57,7 +57,7 @@ foreach ($documents as $value) {
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Job Number (Auto)</label>
-                            <input readonly type="text" value="{{$model->job_number_prefix}}" name="job_number" 
+                            <input readonly type="text" @if($model) value="{{$model->job_number_prefix}}" @else value="{{$job_number}}" @endif name="job_number" 
                             class="form-control" placeholder="Job Number">
                             @if($errors->has('job_number'))
                              <p class="text-danger" >{{ $errors->first('job_number') }}</p>
@@ -71,7 +71,7 @@ foreach ($documents as $value) {
                             <select name="customer_id" class="form-control" >
                                 <option value="">Select Consignee</option>
                                 @foreach ($customers as $item)
-                                    <option @if($item->id == $model->customer_id) selected @endif value="{{$item->id}}">{{$item->company_name}}</option>
+                                    <option @if($model && $item->id == $model->customer_id) selected @endif value="{{$item->id}}">{{$item->company_name}}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('customer_id'))
@@ -82,15 +82,11 @@ foreach ($documents as $value) {
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Consignee by / To</label>
-                            <select name="exporter_id" class="form-control" >
-                                <option value="">Select Consignee by / To</option>
-                                @foreach ($exporters as $item)
-                                    <option @if($model->exporter_id == $item->id) selected @endif value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('exporter_id'))
-                             <p class="text-danger" >{{ $errors->first('exporter_id') }}</p>
+                            <label class="form-label">Exporter Company Name</label>
+                            <input @if($model) value="{{$model->exporter}}" @endif name="exporter" 
+                            class="form-control" placeholder="Exporter Company Name">
+                            @if($errors->has('exporter'))
+                             <p class="text-danger" >{{ $errors->first('exporter') }}</p>
                             @endif 
                         </div>
                     </div>
@@ -100,7 +96,7 @@ foreach ($documents as $value) {
                             <label class="form-label">Select Invoice Currency</label>
                             <select class="form-control" name="currency">
                                 @foreach ($currencies as $cr)
-                                <option @if($model->currency == $cr['code']) selected @endif value="{{$cr['code']}}">{{$cr['code']}}</option>
+                                <option @if($model && $model->currency == $cr['code']) selected @endif value="{{$cr['code']}}">{{$cr['code']}}</option>
                                @endforeach
                             </select>
                             @if($errors->has('currency'))
@@ -120,6 +116,8 @@ foreach ($documents as $value) {
     <div class="col-12">
         @include('admin.consignments.price-section') 
     </div>
+
+    @if($model)
     
     <div class="col-lg-12">
         <section class="card">
@@ -148,9 +146,8 @@ foreach ($documents as $value) {
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label">Consignee by / To</label>
-                        <input readonly value="{{$model->exporter->name}}" 
-                        name="consignee_by_to" class="form-control">
+                        <label class="form-label">Exporter Company Name</label>
+                        <input readonly value="{{$model->exporter}}"  class="form-control">
                     </div>
                 </div>
 
@@ -180,11 +177,11 @@ foreach ($documents as $value) {
                 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label">Your REF</label>
-                        <input  value="{{$model->your_ref}}" name="your_ref" 
-                        class="form-control" placeholder="Your REF">
-                        @if($errors->has('your_ref'))
-                         <p class="text-danger" >{{ $errors->first('your_ref') }}</p>
+                        <label class="form-label">PO Number</label>
+                        <input  value="{{$model->po_number}}" name="po_number" 
+                        class="form-control" placeholder="PO Number">
+                        @if($errors->has('po_number'))
+                         <p class="text-danger" >{{ $errors->first('po_number') }}</p>
                         @endif 
                     </div>
                 </div>
@@ -262,21 +259,11 @@ foreach ($documents as $value) {
                     </div>
                 </div>
 
+     
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label">Landing Charges (%)</label>
-                        <input required type="number"  value="{{$model->landing_charges == '' ? $_s['landing_charges'] : $model->landing_charges }}" name="landing_charges" 
-                        class="form-control" placeholder="Landing Charges">
-                        @if($errors->has('landing_charges'))
-                         <p class="text-danger" >{{ $errors->first('landing_charges') }}</p>
-                        @endif 
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label">FC (Foreign Currency)</label>
-                        <input  value="{{$model->us}}" name="us" 
+                        <label class="form-label">Insurance In FC</label>
+                        <input readonly  value="{{$model->insurance_in_fc}}" name="insurance_in_fc" 
                         class="form-control" placeholder="FC (Foreign Currency)">
                         @if($errors->has('us'))
                          <p class="text-danger" >{{ $errors->first('us') }}</p>
@@ -286,22 +273,11 @@ foreach ($documents as $value) {
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label">LC/BT/IT No</label>
-                        <input value="{{$model->lcbtitno}}" name="lcbtitno" 
-                        class="form-control" placeholder="LC/BT/IT No">
-                        @if($errors->has('lcbtitno'))
-                         <p class="text-danger" >{{ $errors->first('lcbtitno') }}</p>
-                        @endif 
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label">LC no</label>
-                        <input value="{{$model->lc_no}}" name="lc_no" 
-                        class="form-control" placeholder="LC no">
-                        @if($errors->has('lc_no'))
-                         <p class="text-danger" >{{ $errors->first('lc_no') }}</p>
+                        <label class="form-label">Lc / Bt / TT No</label>
+                        <input value="{{$model->ttno}}" name="ttno" 
+                        class="form-control" placeholder="Lc / Bt / TT No">
+                        @if($errors->has('ttno'))
+                         <p class="text-danger" >{{ $errors->first('ttno') }}</p>
                         @endif 
                     </div>
                 </div>
@@ -346,6 +322,17 @@ foreach ($documents as $value) {
                         class="form-control" placeholder="IGM Date">
                         @if($errors->has('igm_date'))
                          <p class="text-danger" >{{ $errors->first('igm_date') }}</p>
+                        @endif 
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Index No</label>
+                        <input  value="{{$model->index_no}}" name="index_no" 
+                        class="form-control" placeholder="Index No">
+                        @if($errors->has('index_no'))
+                         <p class="text-danger" >{{ $errors->first('index_no') }}</p>
                         @endif 
                     </div>
                 </div>
@@ -461,11 +448,24 @@ foreach ($documents as $value) {
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="form-label">Index No</label>
-                        <input  value="{{$model->index_no}}" name="index_no" 
-                        class="form-control" placeholder="Index No">
-                        @if($errors->has('index_no'))
-                         <p class="text-danger" >{{ $errors->first('index_no') }}</p>
+                        <label class="form-label">Shipment No</label>
+                        <input  value="{{$model->shipment_number}}" name="shipment_number" 
+                        class="form-control" placeholder="Shipment No">
+                        @if($errors->has('shipment_number'))
+                         <p class="text-danger" >{{ $errors->first('shipment_number') }}</p>
+                        @endif 
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Mode Of Shipment</label>
+                        <select class="form-control" name="mode_of_shipment" >
+                            <option @if($model->mode_of_shipment == 'by_sea') selected @endif value="by_sea">By Sea</option>
+                            <option @if($model->mode_of_shipment == 'by_air') selected @endif value="by_air">By Air</option>
+                        </select>
+                        @if($errors->has('mode_of_shipment'))
+                         <p class="text-danger" >{{ $errors->first('mode_of_shipment') }}</p>
                         @endif 
                     </div>
                 </div>
@@ -562,6 +562,8 @@ foreach ($documents as $value) {
    @endif
 
 
+
+   @endif
 </div>
 
 </form>
@@ -608,6 +610,20 @@ foreach ($documents as $value) {
                         </div>
                     </div>`);
         });
+
+
+
+        $('input[name=ins_rs],input[name=rate_of_exchange]').change(function (e) { 
+            debugger
+            
+            let ins = parseFloat($('input[name=ins_rs]').val()) ?? 0;
+            let exc = parseFloat($('input[name=rate_of_exchange]').val()) ?? 0;
+
+            $('input[name=insurance_in_fc]').val(ins / exc);
+
+            
+        });
+
 
     });
 </script>

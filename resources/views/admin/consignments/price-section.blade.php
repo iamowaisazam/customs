@@ -16,7 +16,6 @@
         $data = [];
     }
 
-    $products = App\Models\Product::where('status',1)->get();
     
 ?>
 
@@ -51,12 +50,13 @@
 <script>
     $(document).ready(function() {
 
-        const products = @json($products);
         const items = @json($data);
         const units = @json($units);
 
-        console.log(units);
-        
+        console.log('====================================');
+        console.log(items);
+        console.log('====================================');
+
 
         let consignment_price = $('.consignment-price');
         
@@ -97,17 +97,9 @@
 
             let un = getRandomUniqueNumber();
 
-            let pOptions = '';
-            products.forEach(element => {
-                let selected = element.id == data.product_id ? 'selected' : '';
-                pOptions += `<option ${selected} value="${element.id}">${element.name}-${element.sku}</option>`;
-            });
-
             let ounits = '';
             units.forEach(u => {
                 let selected = u == data.unit ? 'selected' : '';
-                console.log(data.unit);
-                
                 ounits += `<option ${selected} value="${u}">${u}</option>`;
             });
 
@@ -117,14 +109,15 @@
                     <div class="col-sm-3 nopadding">
                         <div class="form-group">
                             <label for="title">Item Name</label><br>
-                            <select name="data[${un}][product_id]" class="form-control js-example-basic-single">${pOptions}</select>
+                            <input class="form-control" 
+                            name="data[${un}][name]"value="${data.name ?? ''}" />
                         </div>
                     </div>
                     <div class="col-sm-2 nopadding">
                         <div class="form-group">
-                            <label for="Description">Description</label>
+                            <label for="hs_code">Hs Code</label>
                             <input class="form-control" 
-                            name="data[${un}][description]"value="${data.description ?? ''}" />
+                            name="data[${un}][hs_code]"value="${data.hs_code ?? ''}" />
                         </div>
                     </div>
                     <div class="col-sm-2 nopadding">
@@ -172,8 +165,8 @@
         items.forEach(element => {
             renderTemplate({
                 id:element.id,
-                product_id:element.product_id,
-                description:element.description,
+                name:element.name,
+                hs_code:element.hs_code,
                 qty:element.qty,
                 price:element.price,
                 total:element.total,

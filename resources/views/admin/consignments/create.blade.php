@@ -60,19 +60,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Exporter</label>
-                                <select name="exporter_id" class="form-control" >
-                                    <option value="">Select exporter</option>
-                                    @foreach ($exporters as $item)
-                                        <option @if(old('exporter_id') == $item->id) selected @endif value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
-                                @if($errors->has('exporter_id'))
-                                 <p class="text-danger" >{{ $errors->first('exporter_id') }}</p>
-                                @endif 
+                                <label class="form-label">Exporter Company Name</label>
+                                <input readonly value=""  class="form-control">
                             </div>
+                            @if($errors->has('exporter'))
+                                <p class="text-danger" >{{ $errors->first('exporter') }}</p>
+                            @endif 
                         </div>
 
                         <div class="col-md-4">

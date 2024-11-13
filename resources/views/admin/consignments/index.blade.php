@@ -108,7 +108,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <h4 class="mb-0 text-white">Consignment & Job Creation List</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a class="btn btn-primary" href="{{URL::to('admin/consignments/create')}}">Create New </a>
+                            <a class="btn btn-primary" href="{{URL::to('admin/consignments/create/edit')}}">Create New </a>
                         </div>
                     </div>
                 </header>

@@ -20,11 +20,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             PermissionSeeder::class,
-            ProductSeeder::class,
             CustomerSeeder::class,
-            ExporterSeeder::class,
-            ConsignmentSeeder::class,
-            PayorderSeeder::class,
+            // ConsignmentSeeder::class,
+            // PayorderSeeder::class,
             // DeliveryChallanSeeder::class,
             // DeliveryIntimationSeeder::class,
             // VendorSeeder::class,

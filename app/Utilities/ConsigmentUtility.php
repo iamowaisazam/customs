@@ -35,11 +35,11 @@ static public function get_job_number(){
 static public function get_job_number_with_prefix(){
 
     $Consignment = Consignment::select(['id','job_number','job_number_prefix'])
-    ->orderBy('job_number','desc')->first();
+    ->orderBy('job_number','desc')->get();
 
-    if($Consignment){
+    if(count($Consignment) > 0){
         
-        $maxJobNumber = $Consignment->job_number + 1;
+        $maxJobNumber = intval($Consignment->first()->job_number) + 1;
         return $maxJobNumber.'/34-24';
 
     }else{

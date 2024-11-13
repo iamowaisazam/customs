@@ -4,6 +4,11 @@
     .invalid-feedback{
       display: block;
    }
+
+   .duties_label{
+    width: 117px;
+
+   }
 </style>
 @endsection
 
@@ -44,85 +49,60 @@ $consignment = $model->consignment;
        
        @foreach ($consignment->items as $key => $item)
           <?php 
+              $frieght_rate = ($item->total / $consignment->invoice_value) * intval($consignment->freight);
 
-        //   dd($consignment->items);
+              $rate_exchange = $consignment->rate_of_exchange * $item->total;
 
-            $order_item = array_values(array_filter(json_decode($model->items) ?? [], function($data) use($item) { return $data->product_id ?? '' == $item->product_id; }))[0] ?? null;
+              $ins =  ($item->total / $consignment->invoice_value) * intval($consignment->ins_rs);
 
-            //   $order_item = [];
-              
-        
-              $freight = intval($consignment->freight);
-              $frieght_rate = ($item->total / $consignment->invoice_value) * $freight;
-              $after_frieght = $frieght_rate + $item->total;
+              $landing_charges = ( $item->total / 100) * 1;
 
-              $landing_charges = ( $item->total / 100) * $consignment->landing_charges;
-              
-              $rate_exchange = $consignment->rate_of_exchange * $after_frieght;
-              $asset_value = $rate_exchange + $landing_charges + $consignment->ins_rs; 
-
-
+              $asset_value = $frieght_rate + $rate_exchange + $landing_charges + $ins; 
         ?>
 
         <section class="card  ">
             <header class="card-header bg-info">
-                  <h4 class="mb-0 text-white">{{$item->product->name}} ({{$item->product->sku}})</h4>
+                  <h4 class="mb-0 text-white">{{$item->name}} ({{$item->hs_code}})</h4>
             </header>
             <div class="card-body">
-                <input type="hidden" name="items[{{$key}}][product_id]" value="{{$item->product_id}}"  >
+                <input type="hidden" name="items[{{$key}}][id]" value="{{$item->id}}"  />
                 <div class="row">
                     <div class="col-md-6">
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Custom Duty :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->custom_duty ?? ''}}" name="items[{{$key}}][custom_duty]" class="custom_duty form-control" 
-                            placeholder="Custom Duty" />
+                            <label class="duties_label form-label">Custom Duty :</label>
+                            <input type="number" style="width: 150px;" value="{{$item->custom_duty ?? ''}}" name="items[{{$key}}][custom_duty]" class="custom_duty form-control"  />
+                            <input style="width: 150px;" readonly class="custom_duty_label form-control" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Additional C.D :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->cd ?? ''}}" name="items[{{$key}}][cd]" class="cd form-control" placeholder="Additional C.D" />
+                            <label class="duties_label form-label">Additional C.D :</label>
+                            <input type="number" style="width: 150px;" value="{{$item->a_custom_duty ?? ''}}" name="items[{{$key}}][a_custom_duty]" class="cd form-control" placeholder="Additional C.D" />
+                            <input style="width: 150px;" readonly class="cd_label form-control" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">R.D :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->rd ?? ''}}" name="items[{{$key}}][rd]" class="rd items form-control" placeholder="R.D" />
+                            <label class="duties_label form-label">R.D :</label>
+                            <input type="number" style="width: 150px;" value="{{$item->rd ?? ''}}" name="items[{{$key}}][rd]" class="rd items form-control" placeholder="R.D" />
+                            <input style="width: 150px;" readonly class="rd_label form-control" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Sale Tax :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->sale_tax ?? ''}}" name="items[{{$key}}][sale_tax]" class="sale_tax form-control" placeholder="Sale Tax" />  
+                            <label class="duties_label form-label">Sale Tax :</label>
+                            <input type="number" style="width: 150px;" value="{{$item->saletax ?? ''}}" name="items[{{$key}}][saletax]" class="sale_tax form-control" placeholder="Sale Tax" />
+                            <input style="width: 150px;" readonly class="sale_tax_label form-control" />  
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Additional S.T :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->st ?? ''}}" name="items[{{$key}}][st]" class="st form-control" placeholder="Additional S.T" />
-                        </div>
-
-                        <div class="d-flex justify-content-between" >
-                            <label class=" form-label">Income Tax :</label>
-                            <input type="text" readonly style="width: 150px;" value="{{$order_item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
-                        </div>
-
-                        <div class="d-flex justify-content-between" >
-                            <label class="form-label">ETO :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->eto ?? ''}}" name="items[{{$key}}][eto]" placeholder="ETO" class="eto form-control" placeholder="ETO" />
+                            <label class="duties_label form-label">Additional S.T :</label>
+                            <input type="number" style="width: 150px;" value="{{$item->a_saletax ?? ''}}" name="items[{{$key}}][a_saletax]" class="st form-control" placeholder="Additional S.T" />
+                            <input style="width: 150px;" readonly class="st_label form-control" />
                         </div>
 
                         <div class="d-flex justify-content-between" >
-                            <label class=" form-label">STAN DUTY :</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->stan_duty ?? ''}}" 
-                            name="items[{{$key}}][stan_duty]" class="stan_duty form-control" placeholder="STAN DUTY" 
-                            />    
+                            <label class="duties_label form-label">Income Tax :</label>
+                            <input type="text" readonly style="width: 150px;" value="{{$item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
                         </div>
+                        
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">PSW FEE:</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->psw_fee ?? ''}}" name="items[{{$key}}][psw_fee]" class="psw_fee form-control" placeholder="PSW FEE" />    
-                        </div>
-                        <div class="d-flex justify-content-between" >
-                            <label class="form-label">DLAP FEE:</label>
-                            <input type="number" style="width: 150px;" value="{{$order_item->dlap_feee ?? ''}}" name="items[{{$key}}][dlap_feee]" 
-                            class="dlap_feee form-control" placeholder="DLAP FEE" />    
-                        </div>
-                        <div class="d-flex justify-content-between" >
-                            <label class="form-label">Total :</label>
-                            <input readonly style="width: 150px;" value="{{$order_item->total ?? ''}}" 
-                            name="items[{{$key}}][total]"class="total form-control"/>
+                            <label class="duties_label form-label">Total :</label>
+                            <input readonly style="width: 150px;" value="{{$item->after_duties ?? ''}}" 
+                            name="items[{{$key}}][after_duties]"class="total form-control"/>
                         </div>
                     </div>
 
@@ -139,16 +119,16 @@ $consignment = $model->consignment;
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Value :</label>
                             <input readonly style="width: 150px;" 
-                            value="{{number_format( $after_frieght,2)}}" 
+                            value="{{number_format( $frieght_rate + $item->total,2)}}" 
                             name="items[{{$key}}][value]" class="form-control" placeholder="Value" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Exchange Rate :</label>
-                            <input readonly style="width: 150px;" value="{{$consignment->rate_of_exchange}}" name="items[{{$key}}][exchange_rate]" class="form-control" placeholder="Exchange Rate" />
+                            <input readonly style="width: 150px;" value="{{$rate_exchange}}" name="items[{{$key}}][exchange_rate]" class="form-control" placeholder="Exchange Rate" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">INS. Memo : PKR</label>
-                            <input readonly style="width: 150px;" value="{{$consignment->ins_rs}}" name="items[{{$key}}][ins_memo]" class="form-control" placeholder="INS. Memo" />
+                            <input readonly style="width: 150px;" value="{{number_format($ins,2)}}" name="items[{{$key}}][ins_memo]" class="form-control" placeholder="INS. Memo" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Landing Charges : PKR</label>
@@ -207,10 +187,6 @@ $consignment = $model->consignment;
                 let rd = parseFloat(element.find('.rd').val()) || 0;
                 let cd = parseFloat(element.find('.cd').val()) || 0;
                 let st = parseFloat(element.find('.st').val()) || 0;
-                let eto = parseFloat(element.find('.eto').val()) || 0;
-                let stan_duty = parseFloat(element.find('.stan_duty').val()) || 0;
-                let psw_fee = parseFloat(element.find('.psw_fee').val()) || 0;
-                let dlap_feee = parseFloat(element.find('.dlap_feee').val()) || 0;
                 let total  = parseFloat(element.find('.total').val()) || 0;
 
                 subtotal += parseFloat(total_gif) || 0;
@@ -220,61 +196,46 @@ $consignment = $model->consignment;
                 
                    let custom_duty_calc = ( total_gif / 100) * custom_duty;
                    subtotal += custom_duty_calc;
-                   
+                   element.find('.custom_duty_label').val(custom_duty_calc);
                 // }
 
                 // if(cd > 0){
                    let cd_calc = (total_gif / 100) * cd;
                    subtotal += cd_calc;
+                   element.find('.cd_label').val(cd_calc);
                 // }
 
                 // if(rd > 0){
                    let rd_calc = (total_gif / 100) * rd;
                    subtotal += rd_calc;
+                   element.find('.rd_label').val(rd_calc);
                 // }
 
                 // if(sale_tax > 0){
                    sale_tax_calc = total_gif + custom_duty_calc + cd_calc + rd_calc; 
                    sale_tax_calc = (sale_tax_calc / 100) * sale_tax;
                    subtotal += sale_tax_calc;
+                   element.find('.sale_tax_label').val(sale_tax_calc);
                 // }
 
                 // if(st > 0){
                    st_calc = total_gif + custom_duty_calc + cd_calc + rd_calc; 
                    st_calc = (st_calc / 100) * st;
                    subtotal += st_calc;
+                   element.find('.st_label').val(st_calc);
                 // }
 
                 
                 if(custom_duty_calc > 0 || cd_calc > 0 || rd_calc > 0 || sale_tax_calc> 0 || st_calc){
                    it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
+                   it_calc = (it_calc / 100) * 1;
                    subtotal += it_calc;   
                    income_tax.val(it_calc);
+                //    element.find('.income_tax_label').val(it_calc);
                 }else{
                     income_tax.val(0);
+                    // element.find('.income_tax_label').val(0);
                 }
-
-        
-
-                // if(eto > 0){
-                    etocalc = (total_gif  / 100) * eto;
-                    subtotal += etocalc;
-                // }
-
-                // if(stan_duty > 0){
-                    subtotal += stan_duty;
-                // }
-
-                // if(psw_fee > 0){
-                    subtotal += psw_fee;
-                // }
-
-                // if(dlap_feee > 0){
-                    subtotal += dlap_feee;
-                // }
-
-                // console.log(subtotal);
-                
 
                 element.find('.total').val(subtotal.toFixed(2));
                 gtotal += subtotal;
@@ -282,7 +243,6 @@ $consignment = $model->consignment;
             });
 
             $('.gtotal').val(gtotal.toFixed(2));
-
 
         }
 

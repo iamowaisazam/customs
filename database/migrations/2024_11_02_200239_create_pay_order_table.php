@@ -24,6 +24,13 @@ return new class extends Migration
             $table->text('items')->nullable();
             $table->text('header')->nullable();
 
+
+            $table->double('stan_duty')->default(0);
+            $table->double('pswe')->default(0); 
+            $table->double('ocap')->default(0); 
+            $table->double('total')->default(0);
+            
+
             $table->timestamp('date')->nullable();
             $table->integer('status')->default(1);
             $table->integer('created_by')->nullable();

@@ -16,17 +16,24 @@ class ConsignmentItem extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'product_id',
+        'id',
         'consignment_id',
         'name',
-        'description',
+        'hs_code',
         'price',
         'qty',
         'unit',
         'total',
         'status',
+        'custom_duty',
+        'a_custom_duty',
+        'rd',
+        'it',
+        'saletax',
+        'a_saletax',
+        'after_duties',
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
 
     public function product()

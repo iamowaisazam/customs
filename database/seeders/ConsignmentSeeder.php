@@ -7,6 +7,7 @@ use App\Enums\Currency;
 use App\Enums\PackageType;
 use App\Enums\Unit;
 use App\Models\Consignment;
+use App\Models\ConsignmentItem;
 use App\Models\Customer;
 use App\Models\Exporter;
 use App\Models\Product;
@@ -32,64 +33,43 @@ class ConsignmentSeeder extends Seeder
         
         $faker = Faker::create();
         Consignment::select('*')->delete();
+        ConsignmentItem::select('*')->delete();
 
 
         foreach(range(1,20) as $key => $data){
-
-            $job = ConsigmentUtility::create_job([
+            
+            $job = Consignment::create([
+                "job_number" => ConsigmentUtility::get_job_number(),
+                "job_number_prefix" => ConsigmentUtility::get_job_number_with_prefix(),
                 "customer_id" =>  Customer::inRandomOrder()->first()->id,
-                "exporter_id" =>  Exporter::inRandomOrder()->first()->id,
+                "exporter" =>  $faker->name,
                 "invoice_value" => 0,
                 "total_quantity" => 0,
                 "currency" => 'USD',
-                "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
-            ]);
+                "job_date" => Carbon::now(),
+                'freight' => $faker->randomNumber(2),
+                'ins_rs' => $faker->randomNumber(2),
+                'landing_charges' => 1,
+                'rate_of_exchange' => $faker->randomNumber(2),
+                'us' => 1,
 
-        
-            $items = [];
-            foreach (range(1,3) as $value) {
-                $product = Product::inRandomOrder()->first();
-                $qty = $faker->randomNumber(2);
-                array_push($items,[
-                    'id' => null,
-                    'product_id' => $product->id,
-                    'consignment_id' => $job->id,
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'qty' => $qty,
-                    'unit' => collect(Unit::DATA)->random(),
-                    'total' => $product->price * $qty,
-                ]);
-            }
-
-            ConsigmentUtility::update_consignment_item($job->id,$items);
-          
-            ConsigmentUtility::update_consignment($job->id,[
-                "lcbtitno" =>  $faker->randomNumber(6),
-                "description" => $faker->sentence,
+                "lcbtitno" =>  $faker->randomNumber(2),
+                "lcbtttno" =>  $faker->randomNumber(2),
                 "machine_number" => $faker->randomNumber(6),
-                "job_date" => $faker->dateTimeBetween('-1 year', 'now'),
-                'your_ref' => $faker->name,
+                'po_number' => $faker->name,
+                'mode_of_shipment' => 'by-sea',
+                'shipment_number' => $faker->randomNumber(2),
                 
                 'port' => collect(json_decode(ConsigmentUtility::get_setting('ports')))->random(),
                 'port_of_shippment' => collect(json_decode(ConsigmentUtility::get_setting('ports')))->random(),
-
                 'eiffino' => 'eiffino', 
-                'freight' => $faker->randomNumber(6),
-                'ins_rs' => $faker->randomNumber(6),
-                'landing_charges' => $faker->randomNumber(6),
-                'us' => 'us',
-                'lc_no' => $faker->randomNumber(6),
                 'lc_date' => Carbon::now(),
                 'vessel' => 'vessel',
                 'igmno' => 'igmno',
                 'igm_date' => Carbon::now(),
                 "blawbno" => $faker->randomNumber(6),
                 "bl_awb_date" => Carbon::now(),
-                
                 'country_origion' => collect(Country::DATA)->random()['name'],
-                'rate_of_exchange' => $faker->randomFloat(2, 100, 10000),
                 'master_agent' => $faker->name,
                 'other_agent_agent' => $faker->name,
                 'due_date' => $faker->dateTimeBetween('-1 year', 'now'),
@@ -108,18 +88,47 @@ class ConsignmentSeeder extends Seeder
                         'date' => Carbon::now(),
                     ]
                 ]),
+                'status' => 1,
+                "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
             ]);
 
-           
+                $total_qty = 0;
+                $total = 0;
+                foreach (range(1,3) as $value) {
+
+                    $qty = $faker->randomNumber(2);
+                    $price = $faker->randomNumber(2);
+                    ConsignmentItem::create([
+                        'consignment_id' => $job->id,
+                        'name' => 'Name',
+                        'hs_code' => $faker->randomNumber(6),
+                        'price' => $faker->randomNumber(6),
+                        'qty' => $qty,
+                        'unit' => collect(Unit::DATA)->random(),
+                        'total' => $price * $qty,
+                    ]);
+                    $total_qty += $qty;
+                    $total += $price * $qty;
+                }
+
+
+                $job->invoice_value = $total;
+                $job->total_quantity = $total_qty;
+                $job->us = $job->ins_rs / $job-> rate_of_exchange;
+                $job->save();
 
         }
 
-    
-     
-
-
-
-
+        
+        
 
     }
+
+
+
+
+
+
+
+
 }

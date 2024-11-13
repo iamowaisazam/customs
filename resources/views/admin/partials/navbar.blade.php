@@ -98,7 +98,7 @@
                 
                 @if(Auth::user()->permission('jobs-consignment.create'))
                 <li><a class="{{ request()->is('admin/consignments/create') ? 'active' : ''}}"  
-                    href="{{URL::to('admin/consignments/create')}}">Create Consignment</a>
+                    href="{{URL::to('admin/consignments/create/edit')}}">Create Consignment</a>
                 </li>
                 @endif
 
