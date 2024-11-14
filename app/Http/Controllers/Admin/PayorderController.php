@@ -245,11 +245,16 @@ class PayorderController extends Controller
     
         $model->date = Carbon::now();
         $model->consignment_id = $request->consignment_id;
-        // $model->items = json_encode($request->items);
+        $model->eto = $request->eto;
+        $model->stan_duty = $request->stan_duty;
+        $model->psw_fee = $request->psw_fee;
+        $model->drap_fee = $request->drap_fee;
+
         $model->header = json_encode($request->header);
-        // $model->footer = json_encode($request->footer);
+        $model->footer = json_encode($request->footer);
         $model->created_by = Auth::user()->id;
         $model->consignment_details = json_encode([]);
+
         $model->save();
     
 

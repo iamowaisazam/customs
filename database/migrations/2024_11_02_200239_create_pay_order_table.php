@@ -26,8 +26,10 @@ return new class extends Migration
 
 
             $table->double('stan_duty')->default(0);
-            $table->double('pswe')->default(0); 
-            $table->double('ocap')->default(0); 
+            $table->double('psw_fee')->default(0); 
+            $table->double('eto')->default(0); 
+            $table->double('drap_fee')->default(0); 
+            
             $table->double('total')->default(0);
             
 

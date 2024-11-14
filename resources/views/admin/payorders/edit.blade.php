@@ -96,7 +96,8 @@ $consignment = $model->consignment;
 
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Income Tax :</label>
-                            <input type="text" readonly style="width: 150px;" value="{{$item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
+                            <input type="number" style="width: 150px;" value="{{$item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
+                            <input readonly style="width: 150px;"  class="income_tax_label form-control" />
                         </div>
                         
                         <div class="d-flex justify-content-between" >
@@ -146,6 +147,47 @@ $consignment = $model->consignment;
                 </div>
          </section>
        @endforeach
+
+
+       <div class="accounts col-lg-12">
+        <section class="card">
+            <header class="card-header bg-info">
+                <h4 class="mb-0 text-white">Additional Duties</h4>
+            </header>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">ETO</label>
+                            <input name="eto" type="number" value="{{$model->eto}}" class="eto form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Stan Duty</label>
+                            <input name="stan_duty"  type="number"  value="{{$model->stan_duty}}" class="stan_duty form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">PSW Fee</label>
+                            <input name="psw_fee"  type="number"  value="{{$model->psw_fee}}" class="psw_fee form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">DRAP Fee</label>
+                            <input name="drap_fee"  type="number" value="{{$model->drap_fee}}" class="drap_fee form-control" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+       </div>
+
+
     </div>
     
 
@@ -181,7 +223,7 @@ $consignment = $model->consignment;
             
                 let total_gif = parseFloat(element.find('.total_gif_value').val()) || 0;
 
-                let income_tax = element.find('.income_tax');
+                let income_tax = parseFloat(element.find('.income_tax').val()) || 0;
                 let custom_duty = parseFloat(element.find('.custom_duty').val()) || 0;
                 let sale_tax = parseFloat(element.find('.sale_tax').val()) || 0;
                 let rd = parseFloat(element.find('.rd').val()) || 0;
@@ -227,14 +269,13 @@ $consignment = $model->consignment;
 
                 
                 if(custom_duty_calc > 0 || cd_calc > 0 || rd_calc > 0 || sale_tax_calc> 0 || st_calc){
+               
                    it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
-                   it_calc = (it_calc / 100) * 1;
+                   it_calc = (it_calc / 100) * income_tax;
                    subtotal += it_calc;   
-                   income_tax.val(it_calc);
-                //    element.find('.income_tax_label').val(it_calc);
+                   element.find('.income_tax_label').val(it_calc);
                 }else{
-                    income_tax.val(0);
-                    // element.find('.income_tax_label').val(0);
+                    element.find('.income_tax_label').val(0);
                 }
 
                 element.find('.total').val(subtotal.toFixed(2));
@@ -242,6 +283,11 @@ $consignment = $model->consignment;
             
             });
 
+            gtotal += parseFloat($('.eto').val()) || 0;
+            gtotal += parseFloat($('.stan_duty').val()) || 0;
+            gtotal += parseFloat($('.psw_fee').val()) || 0;
+            gtotal += parseFloat($('.drap_fee').val()) || 0;
+            
             $('.gtotal').val(gtotal.toFixed(2));
 
         }
