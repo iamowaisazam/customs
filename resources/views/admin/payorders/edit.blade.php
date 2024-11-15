@@ -60,7 +60,7 @@ $consignment = $model->consignment;
               $landing_charges = ( $item->total / 100) * 1;
 
               $asset_value = $rate_exchange + $landing_charges + $ins; 
-        ?>
+          ?>
 
         <section class="card  ">
             <header class="card-header bg-info">
@@ -218,7 +218,8 @@ $consignment = $model->consignment;
             let gtotal = 0;
 
             $('.payorder_items').children().each(function() {
-                
+
+
                 subtotal = 0;
                 
                 let element = $(this);
@@ -230,11 +231,7 @@ $consignment = $model->consignment;
                 let sale_tax = parseFloat(element.find('.sale_tax').val()) || 0;
                 let rd = parseFloat(element.find('.rd').val()) || 0;
                 let cd = parseFloat(element.find('.cd').val()) || 0;
-                let st = parseFloat(element.find('.st').val()) || 0;
-                let total  = parseFloat(element.find('.total').val()) || 0;
-
-                subtotal += parseFloat(total_gif) || 0;
-                
+                let st = parseFloat(element.find('.st').val()) || 0;                
 
                 // if(custom_duty > 0){
                 
@@ -281,8 +278,10 @@ $consignment = $model->consignment;
                 }
 
                 element.find('.total').val(subtotal.toFixed(2));
-                gtotal += subtotal;
             
+            
+
+                gtotal += subtotal;
             });
 
             gtotal += parseFloat($('.eto').val()) || 0;
