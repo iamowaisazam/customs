@@ -48,16 +48,18 @@ $consignment = $model->consignment;
         <div class="col-12 payorder_items">
        
        @foreach ($consignment->items as $key => $item)
+
           <?php 
               $frieght_rate = ($item->total / $consignment->invoice_value) * intval($consignment->freight);
 
-              $rate_exchange = $consignment->rate_of_exchange * $item->total;
+              $value = $frieght_rate + $item->total;
+              $rate_exchange = $consignment->rate_of_exchange * $value;
 
               $ins =  ($item->total / $consignment->invoice_value) * intval($consignment->ins_rs);
 
               $landing_charges = ( $item->total / 100) * 1;
 
-              $asset_value = $frieght_rate + $rate_exchange + $landing_charges + $ins; 
+              $asset_value = $rate_exchange + $landing_charges + $ins; 
         ?>
 
         <section class="card  ">
