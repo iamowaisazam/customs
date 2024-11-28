@@ -133,7 +133,9 @@ class DeliveryChallanController extends Controller
             ]);
         }
 
-        return view('admin.delivery-challans.index');
+        $consignments = Consignment::all();
+
+        return view('admin.delivery-challans.index',compact('consignments'));
 
     }
 
@@ -222,13 +224,13 @@ class DeliveryChallanController extends Controller
     public function show(Request $request,$id)
     {
 
-        $model = Challan::find(Crypt::decryptString($id));
-        if($model == false){  
-          return back()->with('error','Record Not Found');
-        }
+        // $model = Challan::find(Crypt::decryptString($id));
+        // if($model == false){  
+        //   return back()->with('error','Record Not Found');
+        // }
 
         $data = [
-            'model' => $model,
+            // 'model' => $model,
         ];
 
         return view('admin.delivery-challans.print',$data);

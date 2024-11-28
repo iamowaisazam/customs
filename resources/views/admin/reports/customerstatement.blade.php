@@ -23,13 +23,13 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Delivery Challans</h4>
+            <h4 class="text-themecolor">Customer Statement</h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Delivery Challans</li>
+                    <li class="breadcrumb-item active">Job Status</li>
                 </ol>
             </div>
         </div>
@@ -103,10 +103,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 <header class="card-header bg-info">
                     <div class="row">
                         <div class="col-md-6 align-self-center">
-                            <h4 class="mb-0 text-white" >Delivery Challans List</h4>
+                            <h4 class="mb-0 text-white">Customer Statement</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button>
+                            {{-- <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button> --}}
                         </div>
                     </div>
                 </header>
@@ -115,62 +115,69 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <thead>
                         <tr class="">
                             <th>#</th>
-                            <th>Challan Date</th>
-                            <th>Job Number</th>
-                            <th>Company Name</th>
-                            <th>Customer Name</th>
-                            <th>Invoice value </th>
-                            <th>LC Number</th>
-                            <th class="text-center">Action</th>
+                            <th class="text-center">Job</th>
+                            <th>Po Number</th>
+                            <th>BL Number</th>
+                            <th class="text-center" >LC/BT/TT Number</th>
+                            <th>Item Name</th>
+                            <th>Quantity </th>
+                            <th>Item Amount </th>
+                            <th>Arrival Date</th>
+                            <th>Arrived Date</th>
+                            <th>Remaining Document</th>
+                            <th>Remarks</th>
+
                         </tr>
-                        </thead>
+                     </thead>
                     <tbody>
                         <tr>
-                            <td>#</td>
-                            <td>26/11/2024</td>
-                            <td>1/34-24</td>
-                            <td>Company Name</td>
-                            <td>Customer Name</td>
-                            <td>100 </td>
-                            <td>003</td>
-                            <td class="text-center">
-                                <div class="text-end">
-                                    <a class="mx-1 btn btn-success" href="{{URL::to('admin/delivery-challans/1')}}">Print</a>
-                                    <a class="mx-1 btn btn-danger" href="#">Delete</a>
-                                </div>
-                            </td>
-                          </tr>                             
+                            <td>1</th>
+                            <td>20/123</td>
+                            <td>0123</td>
+                            <td>0143</td>
+                            <td>0234</td>
+                            <td>Item Name, Item Name, Item Name 3</td>
+                            <td>50,100,20 </td>
+                            <td>10,30,50</td>
+                            <td>24-5-2024</td>
+                            <td class="bg-danger" >28-11-2024</td>
+                            <td>Doc 1, Doc 2, Doc 3</td>
+                            <td>Remarks</td>
+                          </tr>
+                          <tr>
+                            <td>2</th>
+                            <td>20/123</td>
+                            <td>0123</td>
+                            <td>0143</td>
+                            <td>0234</td>
+                            <td>Item Name, Item Name, Item Name 3</td>
+                            <td>50,100,20 </td>
+                            <td>10,30,50</td>
+                            <td>24-5-2024</td>
+                            <td class="bg-danger" >28-11-2024</td>
+                            <td>Doc 1, Doc 2, Doc 3</td>
+                            <td>Remarks</td>
+                          </tr>
+                          <tr>
+                            <td>3</th>
+                            <td>20/123</td>
+                            <td>0123</td>
+                            <td>0143</td>
+                            <td>0234</td>
+                            <td>Item Name, Item Name, Item Name 3</td>
+                            <td>50,100,20 </td>
+                            <td>10,30,50</td>
+                            <td>24-5-2024</td>
+                            <td class="bg-danger" >28-11-2024</td>
+                            <td>Doc 1, Doc 2, Doc 3</td>
+                            <td>Remarks</td>
+                          </tr>
                          </tbody>
                         </table>
                     </div>
                 </div>
             </section>
          </div>
-
-
-         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form action="{{URL::to('admin/delivery-challans/1')}}">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Create Delivry Challan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <select name="consignment_id" class="form-control">
-                                @foreach ($consignments as $consignment)
-                                  <option value="{{$consignment->id}}">{{$consignment->job_number_prefix}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create</button>
-                        </div>
-                    </div>
-             </form>
-            </div>
-        </div>
 @endsection
 
 @section('js')

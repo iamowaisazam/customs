@@ -7,96 +7,39 @@
     >DELIVERY INTIMATION</h6>
 </div>
 
+
+<div class="mb-2 pt-3 description px-3" > 
+    <p>Company Name | Item Name , Item Name 2 , Item Name 3 | Gross Weight | Total Invoice Value </p>
+</div>
+
 <div class="mb-4 pt-3 description px-3" > 
-    <p>Dear {{$model->challan->consignment->customer->company_name}}</p>
-    <p>{{$model->message}}</p>
+    <p>Dear  Company Name</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi ea iusto consectetur deleniti, quas sapiente. Hic nobis facere quae sed similique, quaerat et ab non officiis in repudiandae quidem! Magnam.</p>
 </div>
 
  <div class="px-3">
-
-<table class="table table-bordered" >
-    <tr>
-        <th>Job Number:</th>
-        <td>{{$model->challan->consignment->job_number_prefix}}</td>
-        <th>Date:</th>
-        <td>{{date('d-m-Y', strtotime($model->challan->consignment->created_at))}}</td>
-    </tr>
-    <tr>
-        <th>Your REF:</th>  
-        <td>{{$model->challan->consignment->your_ref}}</td> 
-        <th>Date:</th>  
-        <td>{{date('d-m-Y', strtotime($model->challan->consignment->created_at))}}</td> 
-    </tr>
-    <tr>
-        <th>Port:</th>  
-        <td>{{$model->challan->consignment->port}}</td>
-        <th>EIF / FI NO:</th>  
-        <td>{{$model->challan->consignment->eiffino}}</td> 
-    </tr>
-    <tr>
-        <th>Import / Exporter Messers:</th>  
-        <td>{{$model->challan->consignment->import_exporter_messers}}</td> 
-        <th>Consignee by / To:</th>  
-        <td>{{$model->challan->consignment->consignee_by_to}}</td> 
-    </tr>
-    <tr>
-        <th>Invoice Value:</span>  
-        <td>{{$model->challan->consignment->invoice_value}}</td> 
-        <th>Invoice Currency:</th>  
-        <td>{{$model->challan->consignment->currency}}</td> 
-    </tr>
-    <tr>
-        <th>Freight:</th>  
-        <td>{{$model->challan->consignment->freight}}</td> 
-        <th>Ins Rs:</th>  
-        <td>{{$model->challan->consignment->ins_rs}}</td>
-    </tr>
-    <tr>
-        <th>US $:</th>  
-        <td>{{$model->challan->consignment->us}}</td> 
-        <th>LC no:	</th>  
-        <td>{{$model->challan->consignment->lc_no}}</td> 
-    </tr>
-    <tr>   
-        <th>Date:</th>  
-        <td>{{date('d-m-Y', strtotime($model->challan->consignment->created_at))}}</td> 
-        <th>Vessel:</th>  
-        <td>{{$model->challan->consignment->vessel}}</td> 
-    </tr>
-    <tr>   
-        <th>IGM No:</th>  
-        <td>{{$model->challan->consignment->igmno}}</td> 
-        <th>Date:</th>  
-        <td>{{date('d-m-Y', strtotime($model->challan->consignment->created_at))}}</td> 
-    </tr> 
-    <tr>  
-        <th>BL/AWB No:</th>  
-        <td>{{$model->challan->consignment->blawbno}}</td> 
-        <th>Date:</th>  
-        <td>{{date('d-m-Y', strtotime($model->challan->consignment->created_at))}}</td> 
-    </tr> 
-    <tr>    
-        <th>Port of shippment:</th>  
-        <td>{{$model->challan->consignment->port_of_shippment}}</td> 
-        <th>Country Origion:</th>  
-        <td>{{$model->challan->consignment->country_origion}}</td> 
-    </tr> 
-    <tr>     
-        <th>Rate Of Exchange:</th>  
-        <td>{{$model->challan->consignment->rate_of_exchange}}</td> 
-        <th>Master Agent:</th>  
-        <td>{{$model->challan->consignment->master_agent}}</td> 
-    </tr> 
-    <tr>    
-        <th>Due Date:</th>  
-        <td>{{date('d-m-Y', strtotime($model->challan->consignment->due_date))}}</td> 
-        <th>Net:</th>  
-        <td>{{$model->challan->consignment->nett}}</td> 
-    </tr> 
-    <tr>   
-        <th>Gross:</th>  
-        <td>{{$model->challan->consignment->gross}}</td> 
-    </tr>
-
-</table>
+    <table class="table table-bordered" >
+        <tr>
+            <th>Item Name:</th>  
+            <td>Item 1 , Item 2 , Item 2</td> 
+            <th>Quantity:</th>  
+            <td>300</td> 
+        </tr>
+        <tr>
+            <th>Date:</th>  
+            <td>12/13/2024</td>
+            <th>Expected Time Of Arrival:</th>  
+            <td>12/13/2024</td>
+        </tr>
+        <tr>
+            <th>Location :</th>  
+            <td>Location 1</td> 
+            <th>PO Number:</th>
+            <td>12313</td> 
+        </tr>
+        <tr>
+            <th>Job Number:</th>
+            <td>012123</td> 
+        </tr>
+    </table>
  </div>

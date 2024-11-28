@@ -61,7 +61,7 @@
                 </li>
                 @endif
                 @if(Auth::user()->permission('customers.statement'))
-                <li><a href="#" >View Customers Statements</a></li>
+                <li><a href="{{URL::to('admin/customerstatement')}}" >View Customers Statements</a></li>
                 @endif
             </ul>
         </li>
@@ -112,74 +112,36 @@
         </li>
     @endif
 
+    <li><a class="waves-effect waves-dark {{ request()->is('admin/payorders/*') ? 'active' : '' }}" href="{{URL::to('admin/payorders')}}" aria-expanded="false">
+      <i class="mdi mdi-border-all"></i>
+      <span class="hide-menu">Payorders</span></a>
+    </li>
 
-    @if(Auth::user()->permission('delivery-challans.list') || Auth::user()->permission('delivery-challans.create'))
-        <li class="d-none" ><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-challans/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
-            <i class="mdi mdi-border-all"></i>
-            <span class="hide-menu">Delivery Challans</span></a>
-            <ul aria-expanded="false" class="collapse {{ request()->is('admin/delivery-challans/*') ? 'in' : '' }}">
-                @if(Auth::user()->permission('delivery-challans.create'))
-                <li><a class="{{ request()->is('admin/delivery-challans/create') ? 'active' : ''}}"  
-                    href="{{URL::to('admin/delivery-challans/create')}}">Create Challans</a>
-                </li>
-                @endif
-                
-                @if(Auth::user()->permission('delivery-challans.list'))
-                <li><a class="{{ request()->is('admin/delivery-challans/*') && request()->is('admin/delivery-challans/create') == false  ? 'active' : '' }}" 
-                    href="{{URL::to('admin/delivery-challans')}}">View Challans</a>
-                </li>
-                @endif
-            </ul>
-        </li>
+    @if(Auth::user()->permission('delivery-challans.list') || Auth::user()->permission('delivery-challans.create'))<li><a class="waves-effect waves-dark {{ request()->is('admin/delivery-challans/*') ? 'active' : '' }} " href="{{URL::to('admin/delivery-challans')}}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span class="hide-menu">Delivery Challans</span></a></li>
     @endif
 
 
-    @if(Auth::user()->permission('delivery-intimation.list') || Auth::user()->permission('delivery-intimation.create'))
-    <li class="d-none" ><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/delivery-intimations/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+    @if(Auth::user()->permission('delivery-intimation.list'))
+    <li><a class="waves-effect waves-dark {{ request()->is('admin/delivery-intimations/*') ? 'active' : '' }}" href="{{URL::to('admin/delivery-intimations')}}" aria-expanded="false">
         <i class="mdi mdi-border-all"></i>
         <span class="hide-menu">Delivery Intimation</span></a>
-        <ul aria-expanded="false" class="collapse {{ request()->is('admin/delivery-intimations/*') ? 'in' : '' }}">
-
-            @if(Auth::user()->permission('delivery-intimation.create'))
-            <li><a class="{{ request()->is('admin/delivery-intimations/create') ? 'active' : ''}}"  
-                href="{{URL::to('admin/delivery-intimations/create')}}">Create Intimation</a>
-            </li>
-            @endif
-            
-            @if(Auth::user()->permission('delivery-intimation.list'))
-            <li><a 
-                class="{{ request()->is('admin/delivery-intimations/*') && request()->is('admin/delivery-intimations/create') == false  ? 'active' : '' }}" 
-                href="{{URL::to('admin/delivery-intimations')}}">View Intimation</a>
-            </li>
-            @endif
-        </ul>
      </li>
     @endif
 
-    @if(Auth::user()->permission('delivery-intimation.list') || Auth::user()->permission('delivery-intimation.create'))
-    <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/payorders/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+    {{-- @if(Auth::user()->permission('payorders.list')) --}}
+   
+    {{-- @endif --}}
+
+    <li><a class="waves-effect waves-dark {{ request()->is('admin/jobtracking') ? 'active' : '' }}" href="{{URL::to('admin/jobtracking')}}" aria-expanded="false">
         <i class="mdi mdi-border-all"></i>
-        <span class="hide-menu">Payorders</span></a>
-        <ul aria-expanded="false" class="collapse {{ request()->is('admin/payorders/*') ? 'in' : '' }}">
-
-            @if(Auth::user()->permission('delivery-intimation.create'))
-            <li><a class="{{ request()->is('admin/payorders/create') ? 'active' : ''}}"  
-                href="{{URL::to('admin/payorders/create')}}">Create Payorders</a>
-            </li>
-            @endif
-            
-            @if(Auth::user()->permission('delivery-intimation.list'))
-            <li><a 
-                class="{{ request()->is('admin/payorders/*') && request()->is('admin/payorders/create') == false  ? 'active' : '' }}" 
-                href="{{URL::to('admin/payorders')}}">View Payorders</a>
-            </li>
-            @endif
-        </ul>
+        <span class="hide-menu">Job Tracking</span></a>
      </li>
-    @endif
 
+     <li><a class="waves-effect waves-dark {{ request()->is('admin/jobstatus') ? 'active' : '' }}" href="{{URL::to('admin/jobstatus')}}" aria-expanded="false">
+        <i class="mdi mdi-border-all"></i>
+        <span class="hide-menu">Job Status</span></a>
+     </li>
     
-
     @if(Auth::user()->permission('settings.menu'))
         <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
             <i class="ti-settings"></i>

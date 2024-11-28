@@ -232,7 +232,7 @@
       
                       <div class="col-md-3">
                           <div class="form-group">
-                              <label class="form-label">Nett</label>
+                              <label class="form-label">Net</label>
                               <input readonly required type="number" value="{{$model->nett}}"  class="form-control" />
                           </div>
                       </div>

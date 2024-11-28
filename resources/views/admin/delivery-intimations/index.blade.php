@@ -106,7 +106,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <h4 class="mb-0 text-white" >Delivery Intimations List</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a class="btn btn-primary" href="{{URL::to('admin/delivery-intimations/create')}}">Create New </a>
+                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button>
                         </div>
                     </div>
                 </header>
@@ -114,24 +114,81 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
                                         <tr class="">
-                                            <th>#</th>
                                             <th>Intimation Date</th>
                                             <th>Job Number</th>
                                             <th>Company Name</th>
                                             <th>Customer Name</th>
                                             <th>Invoice value </th>
-                                            <th>LC Number</th>
-                                            <th>Status</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                      </thead>
                                     <tbody>
-                             </tbody>
-                        </table>
+                                        <tr>
+                                            <td>26/11/2024</td>
+                                            <td>1/34-24</td>
+                                            <td>Company Name</td>
+                                            <td>Customer Name</td>
+                                            <td>100 </td>
+                                            <td class="text-center">
+                                                <div class="text-end">
+                                                    <a class="mx-1 btn btn-success" href="{{URL::to('/admin/delivery-intimations/1')}}">Print</a>
+                                                    <a class="mx-1 btn btn-danger" href="#">Delete</a>
+                                                </div>
+                                            </td>
+                                          </tr>  
+                                    </tbody>
+                                </table>
+                            </div>
+                    </section>
+               </div>
+           </div>
+
+           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{URL::to('/admin/delivery-intimations/1')}}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delivery Intimation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <div class="form-group mb-2">
+                                <label for="Job">Job</label>
+                                <select name="consignment_id" class="form-control">
+                                    @foreach ($consignments as $consignment)
+                                      <option value="{{$consignment->id}}">{{$consignment->job_number_prefix}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-2">
+                               <label for="Description">Description</label>
+                              <textarea placeholder="Description" class="mt-2 form-control"></textarea>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="Estimated Date & Time">Estimated Date & Time</label>
+                                <input class="form-control" type="date" />
+                             </div>
+
+                             <div class="form-group mb-2">
+                                <label for="Location">Location</label>
+                                <select name="location" class="form-control" >
+                                    <option>Location 1</option>
+                                    <option>Location 2</option>
+                                    <option>Location 3</option>
+                                </select>
+                             </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
                     </div>
-                </div>
-            </section>
-         </div>
+             </form>
+            </div>
+        </div>
 @endsection
 
 @section('js')
@@ -153,22 +210,22 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             // scrollY: '500px',
             autoWidth: false, 
             dom: 'lirtp',
-            serverSide: true,
+            // serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
-            ajax: {
-                url: "{{URL::to('admin/delivery-intimations')}}",
-                type: "GET",
-                data: function ( d ) {  
+            // ajax: {
+            //     url: "{{URL::to('admin/delivery-intimations')}}",
+            //     type: "GET",
+            //     data: function ( d ) {  
 
-                    d.job_number = $('input[name=job_number]').val();
-                    d.company_name = $('input[name=company_name]').val();
-                    d.customer_name = $('input[name=customer_name]').val();
-                    d.lc_no = $('input[name=lc_no]').val();
-                    d.status = $('select[name=status]').val();
-                    d.search = $('input[name=search]').val();
+            //         d.job_number = $('input[name=job_number]').val();
+            //         d.company_name = $('input[name=company_name]').val();
+            //         d.customer_name = $('input[name=customer_name]').val();
+            //         d.lc_no = $('input[name=lc_no]').val();
+            //         d.status = $('select[name=status]').val();
+            //         d.search = $('input[name=search]').val();
 
-                }
-            },
+            //     }
+            // },
             initComplete: function () {                
             }
         });
@@ -181,11 +238,11 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
        
         $(".search_btn").click(e =>{ 
-            application_table.draw();
+            // application_table.draw();
         });
 
         $('input[name=search]').change(function (e) { 
-            application_table.draw();
+            // application_table.draw();
         });
 
 
@@ -246,12 +303,12 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 error:function (response) {
                     
                     $.toast({
-                    heading: response?.responseJSON?.message ? response?.responseJSON?.message : 'Something Went Wrong',
-                    position: 'top-right',
-                    loaderBg: '#ff6849',
-                    icon: 'error',
-                    hideAfter: 3500,
-                    stack: 6,
+                        heading: response?.responseJSON?.message ? response?.responseJSON?.message : 'Something Went Wrong',
+                        position: 'top-right',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 3500,
+                        stack: 6,
                     });
                 },
             });

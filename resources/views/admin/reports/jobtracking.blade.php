@@ -23,13 +23,13 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 @section('content')
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Delivery Challans</h4>
+            <h4 class="text-themecolor">Job Tracking</h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Delivery Challans</li>
+                    <li class="breadcrumb-item active">Job Tracking</li>
                 </ol>
             </div>
         </div>
@@ -83,6 +83,17 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label>User</label>
+                                <select name="user" class="form-control" >
+                                    <option value="">Select User</option>
+                                    <option value="1">Owais</option>
+                                    <option value="0">Faraz</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label>Search</label>
                                 <input class="form-control" name="search" />
                             </div>
@@ -103,10 +114,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 <header class="card-header bg-info">
                     <div class="row">
                         <div class="col-md-6 align-self-center">
-                            <h4 class="mb-0 text-white" >Delivery Challans List</h4>
+                            <h4 class="mb-0 text-white">Job Tracking</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button>
+                            {{-- <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button> --}}
                         </div>
                     </div>
                 </header>
@@ -115,62 +126,68 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <thead>
                         <tr class="">
                             <th>#</th>
-                            <th>Challan Date</th>
-                            <th>Job Number</th>
-                            <th>Company Name</th>
-                            <th>Customer Name</th>
-                            <th>Invoice value </th>
-                            <th>LC Number</th>
-                            <th class="text-center">Action</th>
+                            <th>User</th>
+                            <th class="text-center">Job</th>
+                            <th>Consignment </th>
+                            <th>Payorder</th>
+                            <th class="text-center" >DC</th>
+                            <th>Intimation</th>
+                            <th>Payment</th>
+                            <th>Progress</th>
                         </tr>
-                        </thead>
+                     </thead>
                     <tbody>
                         <tr>
-                            <td>#</td>
-                            <td>26/11/2024</td>
-                            <td>1/34-24</td>
-                            <td>Company Name</td>
-                            <td>Customer Name</td>
-                            <td>100 </td>
-                            <td>003</td>
-                            <td class="text-center">
-                                <div class="text-end">
-                                    <a class="mx-1 btn btn-success" href="{{URL::to('admin/delivery-challans/1')}}">Print</a>
-                                    <a class="mx-1 btn btn-danger" href="#">Delete</a>
-                                </div>
-                            </td>
-                          </tr>                             
+                                <td>1</td>
+                                <td>Faraz</td>
+                                <td>OS-001</td>
+                                <td>10-12-2024</td>
+                                <td>10-12-2024</td>
+                                <td>10-12-2024</td>
+                                <td>10-12-2024</td>
+                                <td></td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                          </tr>
+                          <tr>
+                                <td>2</td>
+                                <td>Owais</td>
+                                <td>OS-002</td>
+                                <td>10-12-2024</td>
+                                <td>10-12-2024</td>
+                                <td>10-12-2024</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                          </tr> 
+                          <tr>
+                                <td>3</td>
+                                <td>Faraz</td>
+                                <td>OS-002</td>
+                                <td><span class="badge bg-success rounded-pill">Complete</span></td>
+                                <td><span class="badge bg-success rounded-pill">Complete</span></td>
+                                <td><span class="badge bg-danger rounded-pill">Uncomplete</span></td>
+                                <td><span class="badge bg-danger rounded-pill">Uncomplete</span></td>
+                                <td><span class="badge bg-danger rounded-pill">Uncomplete</span></td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                          </tr>          
                          </tbody>
                         </table>
                     </div>
                 </div>
             </section>
          </div>
-
-
-         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form action="{{URL::to('admin/delivery-challans/1')}}">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Create Delivry Challan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <select name="consignment_id" class="form-control">
-                                @foreach ($consignments as $consignment)
-                                  <option value="{{$consignment->id}}">{{$consignment->job_number_prefix}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create</button>
-                        </div>
-                    </div>
-             </form>
-            </div>
-        </div>
 @endsection
 
 @section('js')

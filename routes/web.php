@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DeliveryIntimationController;
 use App\Http\Controllers\Admin\FilemanagerController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PayorderController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
@@ -88,7 +89,9 @@ Route::middleware(['auth'])->group(function () {
       //Pyorders
       Route::resource('/admin/payorders',PayorderController::class);
 
-
+      Route::get('/admin/customerstatement',[ReportController::class,'customerstatement']);
+      Route::get('/admin/jobtracking',[ReportController::class,'jobtracking']);
+      Route::get('/admin/jobstatus',[ReportController::class,'jobstatus']);
       Route::resource('masters',MasterController::class);
      
 

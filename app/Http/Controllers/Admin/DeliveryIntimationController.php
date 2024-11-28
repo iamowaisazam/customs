@@ -135,7 +135,9 @@ class DeliveryIntimationController extends Controller
             ]);
         }
 
-        return view('admin.delivery-intimations.index');
+        $consignments = Consignment::all();
+
+        return view('admin.delivery-intimations.index',compact('consignments'));
 
     }
 
@@ -219,13 +221,13 @@ class DeliveryIntimationController extends Controller
     public function show(Request $request,$id)
     {
 
-        $model = DeliveryIntimation::find(Crypt::decryptString($id));
-        if($model == false){  
-          return back()->with('error','Record Not Found');
-        }
+        // $model = DeliveryIntimation::find(Crypt::decryptString($id));
+        // if($model == false){  
+        //   return back()->with('error','Record Not Found');
+        // }
 
         $data = [
-            'model' => $model,
+            // 'model' => $model,
         ];
 
         return view('admin.delivery-intimations.print',$data);
