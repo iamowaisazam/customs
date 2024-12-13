@@ -53,11 +53,13 @@ $consignment = $model->consignment;
               $frieght_rate = ($item->total / $consignment->invoice_value) * intval($consignment->freight);
 
               $value = $frieght_rate + $item->total;
+
               $rate_exchange = $consignment->rate_of_exchange * $value;
 
               $ins =  ($item->total / $consignment->invoice_value) * intval($consignment->ins_rs);
-
-              $landing_charges = ( $item->total / 100) * 1;
+              
+              $l = $rate_exchange + $ins;
+              $landing_charges = ( $l / 100) * 1;
 
               $asset_value = $rate_exchange + $landing_charges + $ins; 
           ?>
@@ -126,15 +128,15 @@ $consignment = $model->consignment;
                             name="items[{{$key}}][value]" class="form-control" placeholder="Value" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Exchange Rate :</label>
+                            <label class="form-label">Invoice Value : (PKR)</label>
                             <input readonly style="width: 150px;" value="{{$rate_exchange}}" name="items[{{$key}}][exchange_rate]" class="form-control" placeholder="Exchange Rate" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">INS. Memo : PKR</label>
+                            <label class="form-label">Insurance : (PKR)</label>
                             <input readonly style="width: 150px;" value="{{number_format($ins,2)}}" name="items[{{$key}}][ins_memo]" class="form-control" placeholder="INS. Memo" />
                         </div>
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Landing Charges : PKR</label>
+                            <label class="form-label">Landing Charges (1%) : PKR</label>
                             <input readonly style="width: 150px;" value="{{number_format($landing_charges,2)}}" name="items[{{$key}}][landing_charges]" class="form-control" placeholder="Landing Charges" />
                         </div>
                         <div class="d-flex justify-content-between" >
