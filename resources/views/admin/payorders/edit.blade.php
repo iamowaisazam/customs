@@ -57,8 +57,11 @@ $consignment = $model->consignment;
               $rate_exchange = $consignment->rate_of_exchange * $value;
 
               $ins =  ($item->total / $consignment->invoice_value) * intval($consignment->ins_rs);
+            
               
               $l = $rate_exchange + $ins;
+            //   dd($l);
+
               $landing_charges = ( $l / 100) * 1;
 
               $asset_value = $rate_exchange + $landing_charges + $ins; 
@@ -129,7 +132,7 @@ $consignment = $model->consignment;
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Invoice Value : (PKR)</label>
-                            <input readonly style="width: 150px;" value="{{$rate_exchange}}" name="items[{{$key}}][exchange_rate]" class="form-control" placeholder="Exchange Rate" />
+                            <input readonly style="width: 150px;" value="{{number_format($rate_exchange,2)}}" name="items[{{$key}}][exchange_rate]" class="form-control" placeholder="Exchange Rate" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="form-label">Insurance : (PKR)</label>
