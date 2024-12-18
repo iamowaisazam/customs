@@ -38,7 +38,7 @@ CONST DATA = array(
             'print',
             'delete',
         ],
-        'jobs-payorders' => [
+        'payorders' => [
             'list',
             'create',
             'edit',

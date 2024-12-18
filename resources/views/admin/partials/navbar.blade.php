@@ -112,10 +112,13 @@
         </li>
     @endif
 
-    <li><a class="waves-effect waves-dark {{ request()->is('admin/payorders/*') ? 'active' : '' }}" href="{{URL::to('admin/payorders')}}" aria-expanded="false">
-      <i class="mdi mdi-border-all"></i>
-      <span class="hide-menu">Payorders</span></a>
-    </li>
+    @if(Auth::user()->permission('payorders.list'))
+        <li><a class="waves-effect waves-dark {{ request()->is('admin/payorders/*') ? 'active' : '' }}" href="{{URL::to('admin/payorders')}}" aria-expanded="false">
+            <i class="mdi mdi-border-all"></i>
+            <span class="hide-menu">Payorders</span>
+          </a>
+        </li>
+    @endif
 
     @if(Auth::user()->permission('delivery-challans.list') || Auth::user()->permission('delivery-challans.create'))<li><a class="waves-effect waves-dark {{ request()->is('admin/delivery-challans/*') ? 'active' : '' }} " href="{{URL::to('admin/delivery-challans')}}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span class="hide-menu">Delivery Challans</span></a></li>
     @endif
