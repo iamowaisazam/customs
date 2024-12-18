@@ -9,25 +9,16 @@ class DeliveryIntimation extends Model
 {
     protected $table = 'delivery_intimations';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'id',
-        'message',
-        'person_name',
-        'challan_id',
-        'status',
-        'created_by',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
     public function challan()
     {
         return $this->belongsTo(Challan::class, 'challan_id');
+    }
+
+    public function payorder()
+    {   
+        return $this->belongsTo(Payorder::class,'payorder_id');
     }
 
   

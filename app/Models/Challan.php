@@ -15,25 +15,12 @@ class Challan extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'id',
-        'customer_id',
-        'consignment_id',
-        'status',
-        'created_by',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
-
-    public function consignment()
+    public function payorder()
     {
         
-        return $this->belongsTo(Consignment::class, 'consignment_id');
+        return $this->belongsTo(Payorder::class,'payorder_id');
     }
 
     public function intimation()

@@ -49,11 +49,21 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/admin/changepassword', [DashboardController::class, 'changepassword']);
   Route::post('/admin/changepassword_submit', [DashboardController::class, 'changepassword_submit']);
 
-  Route::get('/admin/dashboard', [DashboardController::class, 'dashboard']);
-  Route::get('/admin/dashboard/products', [DashboardController::class, 'products']);
-  Route::post('/admin/status', [DashboardController::class, 'status']);
+      Route::get('/admin/dashboard', [DashboardController::class, 'dashboard']);
+     
+      Route::post('/admin/status', [DashboardController::class, 'status']);
 
+      //select
+      Route::get('/admin/dashboard/jobnumber', [DashboardController::class, 'jobnumber']);
+      Route::get('/admin/dashboard/customer', [DashboardController::class, 'customer']);
+      Route::get('/admin/dashboard/lc', [DashboardController::class, 'lc']);
+      Route::get('/admin/dashboard/create_deliverychallan', [DashboardController::class, 'create_deliverychallan']);
+      Route::get('/admin/dashboard/create_deliveryintimation', [DashboardController::class, 'create_deliveryintimation']);
 
+      
+      
+
+      
       //Users
       Route::get('/admin/users/index',[UserController::class, 'index']);
       Route::get('/admin/users/create',[UserController::class, 'create']);
@@ -74,11 +84,15 @@ Route::middleware(['auth'])->group(function () {
 
       //Modules
       Route::resource('/admin/customers',CustomerController::class);
-      Route::resource('/admin/vendors',VendorController::class);
+    //   Route::resource('/admin/vendors',VendorController::class);
      
       //Consignment 
-      Route::get('/admin/consignments/view/{id}',[ConsignmentController::class,'view']);
+      Route::get('/admin/consignments/print/{id}',[ConsignmentController::class,'print']);
       Route::resource('/admin/consignments',ConsignmentController::class);
+
+      //Pyorders
+      Route::get('/admin/payorders/print/{id}',[PayorderController::class,'print']);
+      Route::resource('/admin/payorders',PayorderController::class);
 
       //Delivery Challans
       Route::resource('/admin/delivery-challans',DeliveryChallanController::class);
@@ -86,8 +100,7 @@ Route::middleware(['auth'])->group(function () {
       //Delivry Intimations
       Route::resource('/admin/delivery-intimations',DeliveryIntimationController::class);
       
-      //Pyorders
-      Route::resource('/admin/payorders',PayorderController::class);
+      
 
       Route::get('/admin/customerstatement',[ReportController::class,'customerstatement']);
       Route::get('/admin/jobtracking',[ReportController::class,'jobtracking']);
@@ -96,14 +109,6 @@ Route::middleware(['auth'])->group(function () {
      
 
 
-    //filemanager
-      Route::get('/admin/filemanager/search', [FilemanagerController::class, 'search']);
-      Route::get('/admin/filemanager', [FilemanagerController::class, 'index']);
-      Route::get('admin/filemanager/create',[FilemanagerController::class,'create']);
-      Route::post('admin/filemanager/store',[FilemanagerController::class,'store']);
-      Route::get('admin/filemanager/edit/{id}',[FilemanagerController::class,'edit']);
-      Route::post('admin/filemanager/update/{id}',[FilemanagerController::class,'update']);
-      Route::get('admin/filemanager/delete/{id}',[FilemanagerController::class,'delete']);
 
    //Settings
     Route::get('admin/settings/edit',[SettingController::class, 'edit']);

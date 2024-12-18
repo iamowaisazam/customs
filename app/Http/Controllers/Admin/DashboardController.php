@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\Collection;
 use App\Models\Category;
+use App\Models\Consignment;
+use App\Models\Customer;
+use App\Models\Payorder;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
@@ -131,38 +134,119 @@ class DashboardController extends Controller
     }
 
 
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function update_file_url(Request $request)
-    {
-        $files = Filemanager::all();
-        foreach ($files as $key => $file) {
-            $file->preview = asset($file->path);
-            $file->save();
-        }
-        
-    }
+ 
 
-    public function products(Request $request)
+    // public function products(Request $request)
+    // {
+
+    //     $search = $request->input('search');
+    //     $data = Product::where('name', 'LIKE', "%$search%")
+    //                 ->orWhere('sku', 'LIKE', "%$search%")
+    //                 ->limit(20)
+    //                 ->get();
+    //     $data = $data->map(function ($item) {
+            
+    //         return [
+    //             'id' => $item->id,
+    //             'text' => $item->name.'-'.$item->sku
+    //         ];
+    //     });
+
+
+    //     return response()->json($data->all());
+    // }
+
+    public function jobnumber(Request $request)
     {
 
         $search = $request->input('search');
-        $data = Product::where('name', 'LIKE', "%$search%")
-                    ->orWhere('sku', 'LIKE', "%$search%")
-                    ->limit(20)
-                    ->get();
+        $data = Consignment::Leftjoin('payorders','payorders.consignment_id','=','consignments.id')
+        ->where('consignments.job_number_prefix', 'LIKE', "%$search%");
+
+        if($request->type == 'payorder'){
+            $data = $data->whereNull('payorders.consignment_id');
+        }
+
+        $data = $data->limit(20)
+                    ->get([
+                        'consignments.*',
+                    ]);
         $data = $data->map(function ($item) {
             
             return [
-                'id' => $item->id,
-                'text' => $item->name.'-'.$item->sku
+                'id' => $item->job_number_prefix,
+                'text' => $item->job_number_prefix,
             ];
         });
 
+        return response()->json($data->all());
+    }
 
+
+    public function create_deliverychallan(Request $request)
+    {
+
+        $search = $request->input('search');
+        $data = Payorder::Leftjoin('consignments','consignments.id','=','payorders.consignment_id')
+        ->Leftjoin('delivery_challans','delivery_challans.payorder_id','=','payorders.id')
+        ->where('consignments.job_number_prefix', 'LIKE', "%$search%")
+        ->whereNull('delivery_challans.payorder_id')
+        ->limit(20)
+        ->get([
+             'payorders.id as id',
+             'consignments.job_number_prefix as text'
+        ]);
+        return response()->json($data);
+    }
+
+    public function create_deliveryintimation(Request $request)
+    {
+
+        $search = $request->input('search');
+        $data = Payorder::Leftjoin('consignments','consignments.id','=','payorders.consignment_id')
+        ->Leftjoin('delivery_intimations','delivery_intimations.payorder_id','=','payorders.id')
+        ->where('consignments.job_number_prefix', 'LIKE', "%$search%")
+        ->whereNull('delivery_intimations.payorder_id')
+        ->limit(20)
+        ->get([
+             'payorders.id as id',
+             'consignments.job_number_prefix as text'
+        ]);
+        return response()->json($data);
+    }
+
+    
+
+
+
+    public function customer(Request $request)
+    {
+        $search = $request->input('search');
+        $data = Customer::where('customer_name', 'LIKE', "%$search%")
+        ->orWhere('company_name', 'LIKE', "%$search%")
+                    ->limit(20)
+                    ->get();
+        $data = $data->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'text' => $item->customer_name,
+            ];
+        });
+        return response()->json($data->all());
+    }
+
+    public function lc(Request $request)
+    {
+        $search = $request->input('search');
+        $data = Consignment::where('lc', 'LIKE', "%$search%")
+                    ->limit(20)
+                    ->get();
+        $data = $data->map(function ($item) {
+            return [
+                'id' => $item->lc,
+                'text' => $item->lc,
+            ];
+        });
         return response()->json($data->all());
     }
 

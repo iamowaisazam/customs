@@ -147,6 +147,18 @@
                 background: {{$_s['primary_color']}};
             }
          }
+         
+         .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 37px!important;
+        }
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #e9ecef!important;
+        }
+        .select2-container .select2-selection--single {
+            height: 39px!important;
+        }
+
+        
     </style>
     @yield('css')
     @stack('css')
@@ -225,16 +237,46 @@
 
     <script>
          let site_url = "{{URL::to('/')}}";
-          $('.file_manager').select2({
+
+         $('.jobnumber').select2({
+            placeholder: 'Search..',
+            allowClear: true,
             ajax: {
-                url: "{{URL::to('admin/filemanager/search')}}",
+            url: "{{URL::to('/admin/dashboard/jobnumber')}}",
+            dataType: 'json',
+            delay: 250, 
+            processResults: function(data) {
+                return { results: data.map(function(item) {return item;})};
+            },
+            cache: true
+            },
+        });
+
+        $('.customer').select2({
+            placeholder: 'Search..',
+            allowClear: true,
+            ajax: {
+                url: "{{URL::to('/admin/dashboard/customer')}}",
                 dataType: 'json',
+                delay: 250, 
+            processResults: function(data) {
+                return { results: data.map(function(item) {return item;})};
             },
-            templateResult: function (state) {  
-                return $('<span><img src="' +site_url+'/'+state.id + '" class="img-flag" /> ' + state.text + '</span>');
+                cache: true
             },
-            templateSelection: function (state) {  
-                return $('<span><img src="' +site_url+'/'+state.id + '" class="img-flag" /> ' + state.text + '</span>');
+        });
+
+        $('.lc').select2({
+            placeholder: 'Search..',
+            allowClear: true,
+            ajax: {
+                url: "{{URL::to('/admin/dashboard/lc')}}",
+                dataType: 'json',
+                delay: 250, 
+            processResults: function(data) {
+                return { results: data.map(function(item) {return item;})};
+            },
+                cache: true
             },
         });
 

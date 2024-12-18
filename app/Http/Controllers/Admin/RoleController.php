@@ -45,7 +45,7 @@ class RoleController extends Controller
         if($request->ajax()){
 
             $query = Role::query();
-            $query->whereNotIn('id',[1,3,4]);
+            $query->whereNotIn('id',[1]);
 
             //Search
             $search = $request->get('search')['value'];
@@ -245,10 +245,17 @@ class RoleController extends Controller
             return back()->with('warning','You Dont Have Access');
         }
 
+     
+
         $model = Role::find(Crypt::decryptString($id));
         if($model == false){
             return back()->with('warning','Record Not Found');
         }else{
+
+            if(in_array([1,2],$model->id)){
+                return back()->with('warning','Record Can Not Be Deleted');
+            }
+    
 
             if(User::where('role_id',$model->id)->first()){
                 return back()->with('warning','Can Not Delete This Roles Its Used In Users');

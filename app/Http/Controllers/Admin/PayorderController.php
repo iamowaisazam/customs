@@ -49,10 +49,10 @@ class PayorderController extends Controller
 
         if($request->ajax()){
 
-            $query = Payorder::Leftjoin('consignments','consignments.id','=','payorders.consignment_id')
+            $query = Payorder::join('consignments','consignments.id','=','payorders.consignment_id')
             ->join('customers','customers.id','=','consignments.customer_id');
 
-            //Search
+            
             if($request->has('status') && $request->status != ''){
                 $query->where('consignments.status',$request->status);
             }
@@ -61,16 +61,20 @@ class PayorderController extends Controller
                 $query->where('consignments.job_number_prefix',$request->job_number);
             }
 
-            if($request->has('company_name') && $request->company_name != ''){
-                $query->where('customers.company_name','like','%'.$request->company_name.'%');
+            if($request->has('customer') && $request->customer != ''){
+                $query->where('customers.id','like','%'.$request->customer.'%');
             }
 
-            if($request->has('customer_name') && $request->customer_name != ''){
-                $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
+            if($request->has('lc') && $request->lc != ''){
+                $query->where('consignments.lc',$request->lc);
             }
 
-            if($request->has('lc_no') && $request->lc_no != ''){
-                // $query->where('consignments.lc_no',$request->lc_no);
+            if($request->has('sdate') && $request->sdate != ''){
+                $query->where('payorders.created_at','>=',$request->sdate);
+            }
+
+            if($request->has('edate') && $request->edate != ''){
+                $query->where('payorders.created_at','<=',$request->edate);
             }
 
             $search = $request->get('search');
@@ -88,7 +92,7 @@ class PayorderController extends Controller
                 'payorders.*',
                 'consignments.job_number_prefix',
                 'consignments.invoice_value',
-                // 'consignments.lc_no',
+                'consignments.lc',
                 'customers.customer_name',
                 'customers.company_name',
             ])
@@ -103,11 +107,11 @@ class PayorderController extends Controller
 
                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
 
-                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'">Print</a>';
+                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/payorders/print/'.Crypt::encryptString($value->id)).'">Print</a>';
 
-                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/payorders/view/'.Crypt::encryptString($value->id)).'">View</a>';
+                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'">View</a>';
                 
-                $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/payorders/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
                 $action .= '</div>';
 
@@ -119,7 +123,8 @@ class PayorderController extends Controller
                     $value->company_name,
                     $value->customer_name,
                     $value->invoice_value,
-                    '',
+                    $value->lc,
+                    date('d-m-Y', strtotime($value->created_at)),
                     "<div class='switchery-demo'>
                      <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
                     </div>",
@@ -136,11 +141,8 @@ class PayorderController extends Controller
             ]);
         }
 
-
-        $consignments = Consignment::all();
-
-
-        return view('admin.payorders.index',compact('consignments'));
+        $data  = [];
+        return view('admin.payorders.index',$data);
 
     }
 
@@ -155,24 +157,23 @@ class PayorderController extends Controller
     public function create(Request $request)
     {
 
-        $model = Consignment::where('id',$request->consignment_id)->first();
+        $model = Consignment::where('job_number_prefix',$request->consignment)->first();
         if($model == false){  
             return back()->with('error','Record Not Found');
         }
 
-        if(Payorder::where('consignment_id',$request->consignment_id)->first()){
+        if(Payorder::where('consignment_id',$model->id)->first()){
             return back()->with('error','Payorder Already Generated');
         }
-
-
+        
         $model = Payorder::create([
             "consignment_details" => json_encode([]),
             "date" => Carbon::now(),
-            "consignment_id" => $request->consignment_id,
+            "consignment_id" => $model->id,
             "header" => json_encode([]),
             "items" => json_encode([]),
             "footer" => json_encode([]),
-            "created_by" => User::where('status',1)->where('role_id',2)->inRandomOrder()->first()->id,
+            "created_by" => User::where('status',1)->where('role_id',1)->inRandomOrder()->first()->id,
         ]);
 
         return redirect('admin/payorders/'.Crypt::encryptString($model->id).'/edit');
@@ -210,7 +211,7 @@ class PayorderController extends Controller
             'package_types' => PackageType::DATA,
             'units' => array_values(Unit::DATA),
         ];
-
+        
         return view('admin.payorders.edit',$data);
     }
 
@@ -221,8 +222,6 @@ class PayorderController extends Controller
      */
     public function update(Request $request,$id)
     {
-
-        // dd($request->all());
 
         $id = Crypt::decryptString($id);
         $model = Payorder::find($id);
@@ -238,27 +237,23 @@ class PayorderController extends Controller
                 'it' => $value['it'],
                 'saletax' => $value['saletax'],
                 'a_saletax' => $value['a_saletax'],
-                'after_duties'=> 0
+                'eto' => $value['eto'],
+                'after_duties'=> $value['after_duties']
             ]);
         }
-
     
         $model->date = Carbon::now();
         $model->consignment_id = $request->consignment_id;
-        $model->eto = $request->eto;
         $model->stan_duty = $request->stan_duty;
         $model->psw_fee = $request->psw_fee;
         $model->drap_fee = $request->drap_fee;
 
-        $model->header = json_encode($request->header);
-        $model->footer = json_encode($request->footer);
+        $model->header = json_encode($request->header ?? []);
+        $model->footer = json_encode($request->footer ?? []);
+
         $model->created_by = Auth::user()->id;
         $model->consignment_details = json_encode([]);
-
         $model->save();
-    
-
-      
 
         return back()->with('success','Record Updated');
 
@@ -272,16 +267,20 @@ class PayorderController extends Controller
     public function show(Request $request,$id)
     {
 
-        $model = Consignment::find(Crypt::decryptString($id));
+        $model = Payorder::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
         }
 
         $data = [
+            'customers' => Customer::where('status',1)->get(),
             'model' => $model,
+            'currencies' => Currency::DATA,
+            'package_types' => PackageType::DATA,
+            'units' => array_values(Unit::DATA),
         ];
 
-        return view('admin.consignments.prints.print',$data);
+        return view('admin.payorders.view',$data);
 
     }
 
@@ -290,19 +289,23 @@ class PayorderController extends Controller
      *
      * @return void
      */
-    public function view(Request $request,$id)
+    public function print(Request $request,$id)
     {
 
-        $model = Consignment::find(Crypt::decryptString($id));
+        $model = Payorder::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
         }
 
         $data = [
+            'customers' => Customer::where('status',1)->get(),
             'model' => $model,
+            'currencies' => Currency::DATA,
+            'package_types' => PackageType::DATA,
+            'units' => array_values(Unit::DATA),
         ];
 
-        return view('admin.consignments.view',$data);
+        return view('admin.payorders.print',$data);
 
     }
 

@@ -1,3 +1,11 @@
+<?php 
+
+$consignment = $model->payorder->consignment;
+$payorder = $model->payorder;
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

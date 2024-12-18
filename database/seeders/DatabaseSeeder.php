@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Enums\Permission as EnumsPermission;
 use App\Models\DeliveryIntimation;
 use App\Models\Payorder;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,26 +19,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        
+        $permissions = EnumsPermission::DATA;
+        foreach ($permissions as $key => $permission) {
+            foreach ($permission as $name) {
+                Permission::create([
+                    'name' => ucfirst(str_replace('-',' ',$name)),
+                    'slug' => $key.'.'.$name,
+                    'grouping' => ucfirst(str_replace('-',' ',$key)),
+                    'status' => 1,
+                ]);
+            }
+        }
 
-        $this->call([
-            UserSeeder::class,
-            PermissionSeeder::class,
-            CustomerSeeder::class,
-            // ConsignmentSeeder::class,
-            // PayorderSeeder::class,
-            // DeliveryChallanSeeder::class,
-            // DeliveryIntimationSeeder::class,
-            // VendorSeeder::class,
-            // SiteSettingSeeder::class,
-            // ProductSeeder::class,
-            // SliderSeedar::class,
-            // MenuSeeder::class,
-            // PagesSeeder::class,
-            // FilemanagerSeeder::class,
-            // PaymentMethodsSeeder::class,
-        ]);
+        $perm = Permission::pluck('slug')->toArray();
+        foreach (Role::all() as $key => $role) {
+            $role->permissions = implode(',',$perm);
+            $role->save();
+        }
 
-        // \App\Models\User::factory(10)->create();
-        // \App\Models\User::factory(10)->create();
+
     }
 }

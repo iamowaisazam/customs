@@ -9,37 +9,37 @@
 
 
 <div class="mb-2 pt-3 description px-3" > 
-    <p>Company Name | Item Name , Item Name 2 , Item Name 3 | Gross Weight | Total Invoice Value </p>
+    <p>{{$consignment->customer->company_name}} | {{implode(' , ',$consignment->Items->pluck('name')->toArray())}} | {{array_sum($consignment->Items->pluck('qty')->toArray())}} | {{number_format($consignment->invoice_value)}} </p>
 </div>
 
 <div class="mb-4 pt-3 description px-3" > 
-    <p>Dear  Company Name</p>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi ea iusto consectetur deleniti, quas sapiente. Hic nobis facere quae sed similique, quaerat et ab non officiis in repudiandae quidem! Magnam.</p>
+    <p>Dear {{$consignment->customer->company_name}}</p>
+    <p>{{$model->description}}</p>
 </div>
 
  <div class="px-3">
     <table class="table table-bordered" >
         <tr>
             <th>Item Name:</th>  
-            <td>Item 1 , Item 2 , Item 2</td> 
+            <td>{{implode(' , ',$consignment->Items->pluck('name')->toArray())}}</td> 
             <th>Quantity:</th>  
-            <td>300</td> 
+            <td>{{array_sum($consignment->Items->pluck('qty')->toArray())}}</td> 
         </tr>
         <tr>
             <th>Date:</th>  
             <td>12/13/2024</td>
             <th>Expected Time Of Arrival:</th>  
-            <td>12/13/2024</td>
+            <td>{{date('d-m-Y', strtotime($consignment->arival_date))}}</td>
         </tr>
         <tr>
             <th>Location :</th>  
-            <td>Location 1</td> 
+            <td>{{$model->location}}</td> 
             <th>PO Number:</th>
-            <td>12313</td> 
+            <td>{{$consignment->po_number}}</td> 
         </tr>
         <tr>
             <th>Job Number:</th>
-            <td>012123</td> 
+            <td>{{$consignment->job_number_prefix}}</td> 
         </tr>
     </table>
  </div>

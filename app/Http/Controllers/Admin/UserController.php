@@ -43,7 +43,7 @@ class UserController extends Controller
 
         if($request->ajax()){
 
-            $query = User::whereNotIn('role_id',[1,3,4]);
+            $query = User::whereNotIn('role_id',[1]);
 
             if($request->has('status') && $request->status != ''){
                 $query->where('status',$request->status);
@@ -190,7 +190,7 @@ class UserController extends Controller
             return back()->with('warning','You Dont Have Access');
         }
 
-        $roles = Role::whereNotIn('id',[1,3,4])->where('status',1)->get();
+        $roles = Role::whereNotIn('id',[1])->where('status',1)->get();
 
         $user = User::find(Crypt::decryptString($id));
         if($user == false){  
@@ -263,6 +263,9 @@ class UserController extends Controller
         }
         
         $user = User::find(Crypt::decryptString($id));
+
+      
+
         if($user == false){
             return back()->with('warning','Record Not Found');
         }else{

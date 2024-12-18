@@ -47,10 +47,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function image()
-    {
-        return $this-> belongsTo(Filemanager::class, 'profile_image');
-    }
+ 
     public function test()
     {
         return "test";

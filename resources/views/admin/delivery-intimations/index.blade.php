@@ -17,6 +17,19 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
     .dataTables_info {
      float: right;
     }
+
+    
+    .select2-container{
+      width: 100%!important;
+    }
+
+    .select2-dropdown {
+      z-index: 1069!important;
+    }
+
+    .js-example-responsive{
+        /* width: 100%; */
+    }
 </style>
 @endsection
 
@@ -46,30 +59,24 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Job Number</label>
-                                <input class="form-control" name="job_number" />
+                                <select class="form-control jobnumber" name="job_number">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Company Name</label>
-                                <input class="form-control" name="company_name" />
+                                <label>Customer</label>
+                                <select class="form-control customer" name="customer">
+                                </select>
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Customer Name</label>
-                                <input class="form-control" name="customer_name" />
+                                <label>Lc / Bt / TT No </label>
+                                <select class="form-control lc" name="lc">
+                                </select>
                             </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>LC Number</label>
-                                <input class="form-control" name="lc_no" />
-                            </div>
-                        </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Status</label>
@@ -80,7 +87,18 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                 </select>
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" name="sdate" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date"  class="form-control" name="edate" />
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Search</label>
@@ -114,28 +132,19 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
                                         <tr class="">
+                                            <th>#</th>
                                             <th>Intimation Date</th>
                                             <th>Job Number</th>
                                             <th>Company Name</th>
                                             <th>Customer Name</th>
                                             <th>Invoice value </th>
+                                            <th>Lc / Bt / TT No </th>
+                                            <th>Status</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                      </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>26/11/2024</td>
-                                            <td>1/34-24</td>
-                                            <td>Company Name</td>
-                                            <td>Customer Name</td>
-                                            <td>100 </td>
-                                            <td class="text-center">
-                                                <div class="text-end">
-                                                    <a class="mx-1 btn btn-success" href="{{URL::to('/admin/delivery-intimations/1')}}">Print</a>
-                                                    <a class="mx-1 btn btn-danger" href="#">Delete</a>
-                                                </div>
-                                            </td>
-                                          </tr>  
+                                   
                                     </tbody>
                                 </table>
                             </div>
@@ -145,7 +154,8 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <form action="{{URL::to('/admin/delivery-intimations/1')}}">
+                <form method="post" action="{{URL::to('/admin/delivery-intimations/')}}">
+                    @csrf
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Delivery Intimation</h5>
@@ -155,26 +165,24 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             
                             <div class="form-group mb-2">
                                 <label for="Job">Job</label>
-                                <select name="consignment_id" class="form-control">
-                                    @foreach ($consignments as $consignment)
-                                      <option value="{{$consignment->id}}">{{$consignment->job_number_prefix}}</option>
-                                    @endforeach
+                                <select required name="payorder" class="js-example-responsive form-control">
+                                   
                                 </select>
                             </div>
 
                             <div class="form-group mb-2">
                                <label for="Description">Description</label>
-                              <textarea placeholder="Description" class="mt-2 form-control"></textarea>
+                              <textarea required name="description" placeholder="Description" class="mt-2 form-control"></textarea>
                             </div>
 
                             <div class="form-group mb-2">
                                 <label for="Estimated Date & Time">Estimated Date & Time</label>
-                                <input class="form-control" type="date" />
+                                <input required name="date" class="form-control" type="date" />
                              </div>
 
                              <div class="form-group mb-2">
                                 <label for="Location">Location</label>
-                                <select name="location" class="form-control" >
+                                <select required name="location" class="form-control" >
                                     <option>Location 1</option>
                                     <option>Location 2</option>
                                     <option>Location 3</option>
@@ -199,6 +207,21 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
        <script>
         $(function () {
+
+            $(".js-example-responsive").select2({
+                ajax: {
+                    url: "{{URL::to('/admin/dashboard/create_deliveryintimation')}}",
+                    dataType:'json',
+                    delay: 250, 
+                    processResults: function(data) {
+                        return { results: data.map(function(item) {return item;})};
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function (e) {
+                var currentValue = e.params.data.id;
+                $(this).val([currentValue]).trigger('change');
+            });
           
             var application_table = $('.mydatatable').DataTable({
             processing: true,
@@ -210,22 +233,23 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             // scrollY: '500px',
             autoWidth: false, 
             dom: 'lirtp',
-            // serverSide: true,
+            serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
-            // ajax: {
-            //     url: "{{URL::to('admin/delivery-intimations')}}",
-            //     type: "GET",
-            //     data: function ( d ) {  
+            ajax: {
+                url: "{{URL::to('admin/delivery-intimations')}}",
+                type: "GET",
+                data: function ( d ) {  
 
-            //         d.job_number = $('input[name=job_number]').val();
-            //         d.company_name = $('input[name=company_name]').val();
-            //         d.customer_name = $('input[name=customer_name]').val();
-            //         d.lc_no = $('input[name=lc_no]').val();
-            //         d.status = $('select[name=status]').val();
-            //         d.search = $('input[name=search]').val();
+                    d.job_number = $('select[name=job_number]').val();
+                    d.customer = $('select[name=customer]').val();
+                    d.lc = $('select[name=lc]').val();
+                    d.sdate = $('input[name=sdate]').val();
+                    d.edate = $('input[name=edate]').val();
+                    d.status = $('select[name=status]').val();
+                    d.search = $('input[name=search]').val();
 
-            //     }
-            // },
+                }
+            },
             initComplete: function () {                
             }
         });

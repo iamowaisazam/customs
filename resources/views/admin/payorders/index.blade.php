@@ -27,6 +27,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
       z-index: 1069!important;
     }
 
+    .js-example-responsive{
+        /* width: 100%; */
+    }
+
 </style>
 @endsection
 
@@ -56,30 +60,24 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Job Number</label>
-                                <input class="form-control" name="job_number" />
+                                <select class="form-control jobnumber" name="job_number">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Company Name</label>
-                                <input class="form-control" name="company_name" />
+                                <label>Customer</label>
+                                <select class="form-control customer" name="customer">
+                                </select>
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Customer Name</label>
-                                <input class="form-control" name="customer_name" />
+                                <label>Lc / Bt / TT No </label>
+                                <select class="form-control lc" name="lc">
+                                </select>
                             </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>LC Number</label>
-                                <input class="form-control" name="lc_no" />
-                            </div>
-                        </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Status</label>
@@ -90,7 +88,18 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                 </select>
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" name="sdate" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date"  class="form-control" name="edate" />
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Search</label>
@@ -122,26 +131,26 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 </header>
                 <div class="card-body">    
                     <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr class="">
-                                            <th>#</th>
-                                            <th>Job Number</th>
-                                            <th>Company Name</th>
-                                            <th>Customer Name</th>
-                                            <th>Invoice value </th>
-                                            <th>LC Number</th>
-                                            <th>Status</th>
-                                            <th class="text-center">Action</th>
-                                        </tr>
-                                     </thead>
-                                    <tbody>
-                             </tbody>
+                            <thead>
+                                <tr class="">
+                                    <th>#</th>
+                                    <th>Job Number</th>
+                                    <th>Company Name</th>
+                                    <th>Customer Name</th>
+                                    <th>Invoice value </th>
+                                    <th>Lc / Bt / TT No</th>
+                                    <th>Created At</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                                </thead>
+                            <tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </section>
          </div>
-
 
 
         <!-- Modal -->
@@ -151,14 +160,14 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Create PayOrder</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <select name="consignment_id" class="form-control">
-                                @foreach ($consignments as $consignment)
-                                  <option value="{{$consignment->id}}">{{$consignment->job_number_prefix}}</option>
-                                @endforeach
+                            <label style="width: 100%" for="id_label_multiple">
+                            <select name="consignment" class="js-example-responsive form-control" id="id_label_multiple" multiple="multiple">
+                                
                             </select>
+                            </label>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -169,10 +178,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             </div>
         </div>
 
-   
-
 @endsection
-
 @section('js')
 
        <script src="{{asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
@@ -182,8 +188,22 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
        <script>
         $(function () {
 
-            $('.js-example-basic-single').select2();
-          
+            $(".js-example-responsive").select2({
+                ajax: {
+                    url: "{{URL::to('/admin/dashboard/jobnumber?type=payorder')}}",
+                    dataType:'json',
+                    delay: 250, 
+                    processResults: function(data) {
+                        return { results: data.map(function(item) {return item;})};
+                    },
+                    cache: true
+                }
+            }).on('select2:select', function (e) {
+                var currentValue = e.params.data.id;
+                $(this).val([currentValue]).trigger('change');
+            });
+
+
             var application_table = $('.mydatatable').DataTable({
             processing: true,
             "searching": true,  
@@ -191,7 +211,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
-            // scrollY: '500px',
             autoWidth: false, 
             dom: 'lirtp',
             serverSide: true,
@@ -200,26 +219,25 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 url: "{{URL::to('admin/payorders')}}",
                 type: "GET",
                 data: function ( d ) {  
-
-                    d.job_number = $('input[name=job_number]').val();
-                    d.company_name = $('input[name=company_name]').val();
-                    d.customer_name = $('input[name=customer_name]').val();
-                    d.lc_no = $('input[name=lc_no]').val();
+                    d.job_number = $('select[name=job_number]').val();
+                    d.customer = $('select[name=customer]').val();
+                    d.lc = $('select[name=lc]').val();
+                    d.sdate = $('input[name=sdate]').val();
+                    d.edate = $('input[name=edate]').val();
                     d.status = $('select[name=status]').val();
                     d.search = $('input[name=search]').val();
-
                 }
             },
             initComplete: function () {                
             }
         });
 
+
         application_table.on( 'draw', function () {
             $('.js-switch').each(function () {
                new Switchery($(this)[0], $(this).data());
             }); 
         } );
-
        
         $(".search_btn").click(e =>{ 
             application_table.draw();
@@ -233,12 +251,12 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         $(".mydatatable").delegate(".is_status", "change", function(){
 
             $.toast({
-            heading: "Status Change Successfully",
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'success',
-            hideAfter: 3500,
-            stack: 6,
+                heading: "Status Change Successfully",
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'success',
+                hideAfter: 3500,
+                stack: 6,
             });
 
             var isChecked = $(this).prop('checked');
@@ -248,7 +266,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 data: {
                     '_token': "{{ csrf_token() }}",
                     id:$(this).data('id'),
-                    table:'consignments',
+                    table:'payorders',
                     column:'status',
                     value: $(this).prop('checked') ? 1: 0,
                 },
@@ -261,6 +279,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 },
             });
         });
+
 
         
         $(".mydatatable").delegate(".delete_btn", "click", function(){
@@ -296,8 +315,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     });
                 },
             });
-
-
         });
 
 

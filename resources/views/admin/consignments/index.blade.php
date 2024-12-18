@@ -48,30 +48,24 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Job Number</label>
-                                <input class="form-control" name="job_number" />
+                                <select class="form-control jobnumber" name="job_number">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Company Name</label>
-                                <input class="form-control" name="company_name" />
+                                <label>Customer</label>
+                                <select class="form-control customer" name="customer">
+                                </select>
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Customer Name</label>
-                                <input class="form-control" name="customer_name" />
+                                <label>Lc / Bt / TT No </label>
+                                <select class="form-control lc" name="lc">
+                                </select>
                             </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>LC Number</label>
-                                <input class="form-control" name="lc_no" />
-                            </div>
-                        </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Status</label>
@@ -82,7 +76,18 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                 </select>
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" name="sdate" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date"  class="form-control" name="edate" />
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Search</label>
@@ -120,8 +125,9 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                             <th>Job Number</th>
                                             <th>Company Name</th>
                                             <th>Customer Name</th>
-                                            <th>Invoice value </th>
-                                            <th>LC Number</th>
+                                            <th>Invoice value</th>
+                                            <th>Lc / Bt / TT No</th>
+                                            <th>Created At</th>
                                             <th>Status</th>
                                             <th class="text-center">Action</th>
                                         </tr>
@@ -160,17 +166,19 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 url: "{{URL::to('admin/consignments')}}",
                 type: "GET",
                 data: function ( d ) {  
+                    d.job_number = $('select[name=job_number]').val();
+                    d.customer = $('select[name=customer]').val();
+                    d.lc = $('select[name=lc]').val();
 
-                    d.job_number = $('input[name=job_number]').val();
-                    d.company_name = $('input[name=company_name]').val();
-                    d.customer_name = $('input[name=customer_name]').val();
-                    d.lc_no = $('input[name=lc_no]').val();
+                    d.sdate = $('input[name=sdate]').val();
+                    d.edate = $('input[name=edate]').val();
+
                     d.status = $('select[name=status]').val();
                     d.search = $('input[name=search]').val();
-
                 }
             },
-            initComplete: function () {                
+            initComplete: function () {       
+
             }
         });
 
@@ -180,7 +188,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             }); 
         } );
 
-       
         $(".search_btn").click(e =>{ 
             application_table.draw();
         });
@@ -188,7 +195,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
         $('input[name=search]').change(function (e) { 
             application_table.draw();
         });
-
 
         $(".mydatatable").delegate(".is_status", "change", function(){
 

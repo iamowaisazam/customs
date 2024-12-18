@@ -69,7 +69,7 @@
 
     
     @if(Auth::user()->permission('vendors.list') || Auth::user()->permission('vendors.create'))
-        <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/vendors/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
+        {{-- <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/vendors/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
             <i class="mdi mdi-border-all"></i>
             <span class="hide-menu">Vendors</span></a>
             <ul aria-expanded="false" class="collapse {{ request()->is('admin/vendors/*') ? 'in' : '' }}">  
@@ -86,7 +86,7 @@
                 </li>
                 @endif
             </ul>
-        </li>
+        </li> --}}
     @endif
    
 

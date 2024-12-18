@@ -8,6 +8,7 @@ use App\Models\Challan;
 use App\Models\Consignment;
 use App\Models\Customer;
 use App\Models\DeliveryIntimation;
+use App\Models\Payorder;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -45,10 +46,9 @@ class DeliveryIntimationController extends Controller
 
         if($request->ajax()){
 
-            $query = DeliveryIntimation::
-            join('delivery_challans','delivery_challans.id','=','delivery_intimations.challan_id')
-            ->join('consignments','consignments.id','=','delivery_challans.consignment_id')
-            ->join('customers','customers.id','=','delivery_challans.customer_id');
+            $query = DeliveryIntimation::join('payorders','payorders.id','=','delivery_intimations.payorder_id')
+            ->join('consignments','consignments.id','=','payorders.consignment_id')
+            ->join('customers','customers.id','=','consignments.customer_id');
 
             //Search
             if($request->has('status') && $request->status != ''){
@@ -67,8 +67,8 @@ class DeliveryIntimationController extends Controller
                 $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
             }
 
-            if($request->has('lc_no') && $request->lc_no != ''){
-                $query->where('consignments.lc_no',$request->lc_no);
+            if($request->has('lc_no') && $request->lc != ''){
+                $query->where('consignments.lc',$request->lc);
             }
 
             
@@ -77,7 +77,7 @@ class DeliveryIntimationController extends Controller
                $query = $query->where(function ($s) use($search) {
                    $s->where('customers.customer_name','like','%'.$search.'%')
                    ->orwhere('customers.company_name','like','%'.$search.'%')
-                   ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
+                   ->orwhere('consignments.lc','like','%'.$search.'%');                   
                });
             }
             
@@ -89,7 +89,7 @@ class DeliveryIntimationController extends Controller
                 'delivery_intimations.*',
                 'consignments.job_number_prefix',
                 'consignments.invoice_value',
-                'consignments.lc_no',
+                'consignments.lc',
                 'customers.customer_name',
                 'customers.company_name',
             ])
@@ -119,7 +119,7 @@ class DeliveryIntimationController extends Controller
                     $value->company_name,
                     $value->customer_name,
                     $value->invoice_value,
-                    $value->lc_no,
+                    $value->lc,
                     "<div class='switchery-demo'>
                      <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
                     </div>",
@@ -135,54 +135,9 @@ class DeliveryIntimationController extends Controller
             ]);
         }
 
-        $consignments = Consignment::all();
-
-        return view('admin.delivery-intimations.index',compact('consignments'));
+        return view('admin.delivery-intimations.index');
 
     }
-
-    
-
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function create()
-    {
-
-        if(request()->job_number != ''){
-
-            $consignment = Consignment::where('job_number_prefix',request()->job_number)->first();
-
-            
-
-            if(!$consignment){
-                return back()->with('warning','Consigment Not Found');
-            }
-
-            if(!$consignment->challan){
-                return back()->with('warning','Challan Not Generated');
-            }
-
-            if($consignment->challan->intimation){
-                return back()->with('warning','Intimation Already Generated');
-            }
-
-
-            $data = [
-                'model' => $consignment,
-            ];
-            
-            return view('admin.delivery-intimations.create',$data);
-        }
-      
-
-        return view('admin.delivery-intimations.create');
-       
-    }
-
 
     /**
      * Create a new controller instance.
@@ -192,42 +147,43 @@ class DeliveryIntimationController extends Controller
     public function store(Request $request)
     {
 
-       $challan = DeliveryIntimation::create([
-            // "consignment_id" => $request->consignment_id, 
-            "challan_id" => $request->challan_id, 
-            "message" => $request->message,
+        $model = Payorder::find($request->payorder);
+        if($model == false){  
+          return back()->with('error','Record Not Found');
+        }
+
+        if(DeliveryIntimation::where('payorder_id',$model->id)->count() > 0){
+            return back()->with('error','Already Generated');
+        }
+
+       $data = DeliveryIntimation::create([ 
+            "payorder_id" =>  $model->id, 
+            "description" => $request->description,
+            "location" => $request->location,
+            "date" => $request->date,
             'status' => 1,
             'created_by' => Auth::user()->id,
         ]);
 
-        return redirect('/admin/delivery-intimations')->with('success','Record Created Success'); 
+        return redirect('/admin/delivery-intimations/'.Crypt::encryptString($data->id))->with('success','Record Created Success'); 
     }
 
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function edit(Request $request,$id)
-    {
-       
-    }
+ 
 
     /**
      * Create a new controller instance.
-     *
      * @return void
      */
     public function show(Request $request,$id)
     {
 
-        // $model = DeliveryIntimation::find(Crypt::decryptString($id));
-        // if($model == false){  
-        //   return back()->with('error','Record Not Found');
-        // }
+        $model = DeliveryIntimation::find(Crypt::decryptString($id));
+        if($model == false){  
+          return back()->with('error','Record Not Found');
+        }
 
         $data = [
-            // 'model' => $model,
+            'model' => $model,
         ];
 
         return view('admin.delivery-intimations.print',$data);
@@ -235,27 +191,12 @@ class DeliveryIntimationController extends Controller
     }
 
 
-
-     /**
+    /**
      * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function update(Request $request,$id)
-    {
-       
-
-    }
-
-
-     /**
-     * Create a new controller instance.
-     *
      * @return void
      */
     public function destroy($id)
     {
-
         $data = DeliveryIntimation::find(Crypt::decryptString($id));
         if($data == false){
             return response()->json(['message' => 'Record Not Found'],400);
@@ -263,11 +204,8 @@ class DeliveryIntimationController extends Controller
             $data->delete();
             return response()->json(['message' => 'Record Not Deleted'],200);
         }
-
-
     }
 
 
-    
 }
 

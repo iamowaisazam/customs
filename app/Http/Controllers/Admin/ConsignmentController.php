@@ -58,25 +58,29 @@ class ConsignmentController extends Controller
                 $query->where('consignments.job_number_prefix',$request->job_number);
             }
 
-            if($request->has('company_name') && $request->company_name != ''){
-                $query->where('customers.company_name','like','%'.$request->company_name.'%');
+            if($request->has('customer') && $request->customer != ''){
+                $query->where('customers.id','like','%'.$request->customer.'%');
             }
 
-            if($request->has('customer_name') && $request->customer_name != ''){
-                $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
+            if($request->has('lc') && $request->lc != ''){
+                $query->where('consignments.lc',$request->lc);
             }
 
-            if($request->has('lc_no') && $request->lc_no != ''){
-                // $query->where('consignments.lc_no',$request->lc_no);
+            if($request->has('sdate') && $request->sdate != ''){
+                $query->where('consignments.created_at','>=',$request->sdate);
             }
 
+            if($request->has('edate') && $request->edate != ''){
+                $query->where('consignments.created_at','<=',$request->edate);
+            }
             
-
             $search = $request->get('search');
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
                    $s->where('customers.customer_name','like','%'.$search.'%')
-                   ->orwhere('customers.company_name','like','%'.$search.'%');                   
+                   ->orwhere('customers.company_name','like','%'.$search.'%')
+                   ->orwhere('consignments.lc','like','%'.$search.'%')
+                   ->orwhere('consignments.job_number_prefix','like','%'.$search.'%'); 
                });
             }
             
@@ -98,16 +102,15 @@ class ConsignmentController extends Controller
 
                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
 
-                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">Print</a>';
+                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">View</a>';
 
-                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/consignments/view/'.Crypt::encryptString($value->id)).'">View</a>';
+                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/consignments/print/'.Crypt::encryptString($value->id)).'">Print</a>';
                 
                 $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
 
                 $action .= '</div>';
 
                 $status = $value->status ? 'checked' : '';
-                
 
                 array_push($data,[
                     $value->id,
@@ -115,7 +118,8 @@ class ConsignmentController extends Controller
                     $value->customer->company_name,
                     $value->customer->customer_name,
                     $value->invoice_value,
-                    '0',
+                    $value->lc,
+                    date('d-m-Y', strtotime($value->created_at)),
                     "<div class='switchery-demo'>
                      <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
                     </div>",
@@ -200,8 +204,6 @@ class ConsignmentController extends Controller
                 return back()->with('error','Record Not Found');
              }
         }
-     
-
 
          $data = [
             'customers' => Customer::where('status',1)->get(),
@@ -211,8 +213,6 @@ class ConsignmentController extends Controller
             'units' => array_values(Unit::DATA),
             'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
         ];
-
-        
 
         return view('admin.consignments.edit',$data);
     }
@@ -268,37 +268,34 @@ class ConsignmentController extends Controller
 
         if($id != 'create'){
             
-            $model->blawbno = $request->blawbno;
-            $model->ttno = $request->ttno;
-            
-            $model->po_number = $request->po_number;
-            $model->machine_number = $request->machine_number;
-            $model->port = $request->port;
-            $model->eiffino = $request->eiffino;
-            $model->freight = $request->freight;
-            $model->ins_rs = $request->ins_rs;
-        
-            $model->insurance_in_fc = $request->insurance_in_fc;
-            $model->lc_date = $request->lc_date;
-            $model->vessel = $request->vessel;
-            $model->igmno = $request->igmno;
-            $model->igm_date = $request->igm_date;
-            $model->bl_awb_date = $request->bl_awb_date;
-            $model->port_of_shippment = $request->port_of_shippment;
-            $model->country_origion = $request->country_origion;
+            $model->po_number        = $request->po_number;
+            $model->machine_number   = $request->machine_number;
+            $model->pol              = $request->pol;
+            $model->pod              = $request->pod;
+            $model->eiffino          = $request->eiffino;
+            $model->freight          = $request->freight;
+            $model->insurance_in_fc  = $request->insurance_in_fc;
+            $model->insurance_in_pkr = $request->insurance_in_pkr;
+            $model->lc               = $request->lc;
+            $model->lc_date          = $request->lc_date;
+            $model->vessel           = $request->vessel;
+            $model->igmno            = $request->igmno;
+            $model->igm_date         = $request->igm_date;
+            $model->index_no         = $request->index_no;
+            $model->blawbno          = $request->blawbno;
+            $model->blawb_date       = $request->blawb_date;
+            $model->country_origion  = $request->country_origion;
             $model->rate_of_exchange = $request->rate_of_exchange;
-            $model->master_agent = $request->master_agent;
-            $model->other_agent_agent = $request->other_agent;
-            $model->due_date = $request->due_date;
-            $model->shipment_number = $request->shipment_number;
+            $model->master_agent     = $request->master_agent;
+            $model->freight_agent    = $request->freight_agent;
+            $model->arival_date      = $request->arival_date;
+            $model->package_type     = $request->package_type;
+            $model->no_of_packages   = $request->no_of_packages;
+            $model->shipment_number  = $request->shipment_number;
             $model->mode_of_shipment = $request->mode_of_shipment;
+            $model->gross            = $request->gross ?? 0;
+            $model->net              = $request->net ?? 0;
 
-            $model->no_of_packages = $request->no_of_packages;
-            $model->index_no = $request->index_no;
-
-            $model->gross = $request->gross;
-            $model->nett = $request->nett;
-        
             $model->documents = $request->documents ? json_encode($request->documents) : null;
         
        }
@@ -364,18 +361,21 @@ class ConsignmentController extends Controller
      */
     public function show(Request $request,$id)
     {
-
         $model = Consignment::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
         }
 
         $data = [
+            'customers' => Customer::where('status',1)->get(),
             'model' => $model,
+            'currencies' => Currency::DATA,
+            'package_types' => PackageType::DATA,
+            'units' => array_values(Unit::DATA),
+            'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
         ];
 
-        return view('admin.consignments.prints.print',$data);
-
+        return view('admin.consignments.view',$data);
     }
 
     /**
@@ -383,20 +383,21 @@ class ConsignmentController extends Controller
      *
      * @return void
      */
-    public function view(Request $request,$id)
+    public function print(Request $request,$id)
     {
-
         $model = Consignment::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
         }
 
         $data = [
+            'customers' => Customer::where('status',1)->get(),
+            'currencies' => Currency::DATA,
             'model' => $model,
+            'units' => array_values(Unit::DATA),
+            'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
         ];
-
-        return view('admin.consignments.view',$data);
-
+        return view('admin.consignments.prints.print',$data);
     }
 
 
