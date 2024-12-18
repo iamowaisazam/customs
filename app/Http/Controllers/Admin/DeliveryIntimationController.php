@@ -103,9 +103,13 @@ class DeliveryIntimationController extends Controller
 
                 $action = '<div class="text-end">';
 
+                 if(Auth::user()->permission('delivery-intimation.print')){
                     $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/delivery-intimations/'.Crypt::encryptString($value->id)).'">Print</a>';
-                    
+                }
+
+                 if(!Auth::user()->permission('delivery-intimation.delete')){
                     $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/delivery-intimations/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                 }
 
                 $action .= '</div>';
 
@@ -146,6 +150,9 @@ class DeliveryIntimationController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->permission('delivery-intimation.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $model = Payorder::find($request->payorder);
         if($model == false){  
@@ -177,6 +184,10 @@ class DeliveryIntimationController extends Controller
     public function show(Request $request,$id)
     {
 
+        if(!Auth::user()->permission('delivery-intimation.print')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $model = DeliveryIntimation::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
@@ -197,6 +208,10 @@ class DeliveryIntimationController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->permission('delivery-intimation.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $data = DeliveryIntimation::find(Crypt::decryptString($id));
         if($data == false){
             return response()->json(['message' => 'Record Not Found'],400);

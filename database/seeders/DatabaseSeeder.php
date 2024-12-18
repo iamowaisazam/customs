@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         
+        Permission::select('*')->delete();
+        
         $permissions = EnumsPermission::DATA;
         foreach ($permissions as $key => $permission) {
             foreach ($permission as $name) {

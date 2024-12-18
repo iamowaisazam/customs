@@ -81,8 +81,8 @@ class PayorderController extends Controller
             if($search != ""){
                $query = $query->where(function ($s) use($search) {
                    $s->where('customers.customer_name','like','%'.$search.'%')
-                   ->orwhere('customers.company_name','like','%'.$search.'%');
-                //    ->orwhere('consignments.lc_no','like','%'.$search.'%');                   
+                   ->orwhere('customers.company_name','like','%'.$search.'%')
+                   ->orwhere('consignments.lc','like','%'.$search.'%');                   
                });
             }
             
@@ -105,13 +105,21 @@ class PayorderController extends Controller
 
                 $action = '<div class="text-end">';
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                if(Auth::user()->permission('payorders.edit')){
+                 $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                }
 
+                if(Auth::user()->permission('payorders.print')){
                 $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/payorders/print/'.Crypt::encryptString($value->id)).'">Print</a>';
+                }
 
+                if(Auth::user()->permission('payorders.view')){
                 $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'">View</a>';
-                
+                }
+
+                if(Auth::user()->permission('payorders.delete')){
                 $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/payorders/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                }
 
                 $action .= '</div>';
 
@@ -146,50 +154,7 @@ class PayorderController extends Controller
 
     }
 
-    
 
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function create(Request $request)
-    {
-
-        $model = Consignment::where('job_number_prefix',$request->consignment)->first();
-        if($model == false){  
-            return back()->with('error','Record Not Found');
-        }
-
-        if(Payorder::where('consignment_id',$model->id)->first()){
-            return back()->with('error','Payorder Already Generated');
-        }
-        
-        $model = Payorder::create([
-            "consignment_details" => json_encode([]),
-            "date" => Carbon::now(),
-            "consignment_id" => $model->id,
-            "header" => json_encode([]),
-            "items" => json_encode([]),
-            "footer" => json_encode([]),
-            "created_by" => User::where('status',1)->where('role_id',1)->inRandomOrder()->first()->id,
-        ]);
-
-        return redirect('admin/payorders/'.Crypt::encryptString($model->id).'/edit');
-
-    }
-
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function store(Request $request)
-    {
-       
-    }
 
      /**
      * Create a new controller instance.
@@ -198,6 +163,9 @@ class PayorderController extends Controller
      */
     public function edit(Request $request,$id)
     {
+        if(!Auth::user()->permission('payorders.edit')){
+            return back()->with('warning','You Dont Have Access');
+        }
         
         $model = PayOrder::find(Crypt::decryptString($id));
         if($model == false){  
@@ -222,6 +190,9 @@ class PayorderController extends Controller
      */
     public function update(Request $request,$id)
     {
+        if(!Auth::user()->permission('payorders.edit')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $id = Crypt::decryptString($id);
         $model = Payorder::find($id);
@@ -266,6 +237,9 @@ class PayorderController extends Controller
      */
     public function show(Request $request,$id)
     {
+        if(!Auth::user()->permission('payorders.view')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $model = Payorder::find(Crypt::decryptString($id));
         if($model == false){  
@@ -291,6 +265,9 @@ class PayorderController extends Controller
      */
     public function print(Request $request,$id)
     {
+        if(!Auth::user()->permission('payorders.print')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $model = Payorder::find(Crypt::decryptString($id));
         if($model == false){  
@@ -320,6 +297,9 @@ class PayorderController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->permission('payorders.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $data = Payorder::find(Crypt::decryptString($id));
         if($data == false){

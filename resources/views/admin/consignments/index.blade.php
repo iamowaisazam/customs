@@ -112,29 +112,33 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <div class="col-md-6 align-self-center">
                             <h4 class="mb-0 text-white">Consignment & Job Creation List</h4>
                         </div>
-                        <div class="col-md-6 text-end">
-                            <a class="btn btn-primary" href="{{URL::to('admin/consignments/create/edit')}}">Create New </a>
-                        </div>
+                        @if(Auth::user()->permission('consignments.create'))
+                            <div class="col-md-6 text-end">
+                                <a class="btn btn-primary" href="{{URL::to('admin/consignments/create/edit')}}">Create New </a>
+                            </div>
+                        @endif
                     </div>
                 </header>
-                <div class="card-body">    
-                    <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr class="">
-                                            <th>#</th>
-                                            <th>Job Number</th>
-                                            <th>Company Name</th>
-                                            <th>Customer Name</th>
-                                            <th>Invoice value</th>
-                                            <th>Lc / Bt / TT No</th>
-                                            <th>Created At</th>
-                                            <th>Status</th>
-                                            <th class="text-center">Action</th>
-                                        </tr>
-                                     </thead>
-                                    <tbody>
-                             </tbody>
-                        </table>
+                <div class="card-body"> 
+                    @if(Auth::user()->permission('consignments.list'))
+                        <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr class="">
+                                                <th>#</th>
+                                                <th>Job Number</th>
+                                                <th>Company Name</th>
+                                                <th>Customer Name</th>
+                                                <th>Invoice value</th>
+                                                <th>Lc / Bt / TT No</th>
+                                                <th>Created At</th>
+                                                <th>Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 </div>
             </section>

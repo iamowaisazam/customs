@@ -155,6 +155,10 @@ class DeliveryChallanController extends Controller
     public function store(Request $request)
     {
 
+        if(!Auth::user()->permission('delivery-challans.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $model = Payorder::find($request->payorder);
         if($model == false){  
          return back()->with('error','Record Not Found');
@@ -183,6 +187,9 @@ class DeliveryChallanController extends Controller
      */
     public function show(Request $request,$id)
     {
+        if(!Auth::user()->permission('delivery-challans.print')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $model = Challan::find(Crypt::decryptString($id));
         if($model == false){  
@@ -204,6 +211,9 @@ class DeliveryChallanController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->permission('delivery-challans.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $data = Challan::find(Crypt::decryptString($id));
         if($data == false){

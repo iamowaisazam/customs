@@ -75,9 +75,13 @@ class CustomerController extends Controller
 
                 $action = '<div class="text-end">';
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/customers/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                if(Auth::user()->permission('customers.edit')){
+                   $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/customers/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                }
                 
-                $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/customers/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                if(Auth::user()->permission('customers.delete')){
+                   $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/customers/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                }
 
                 $action .= '</div>';
 
@@ -119,6 +123,10 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->permission('customers.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
+        
         return view('admin.customers.create');
     }
 
@@ -130,6 +138,10 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->permission('customers.create')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $validator = Validator::make($request->all(), [
             "company_name" => 'required|max:255',
             "customer_name" => 'required|max:255',
@@ -185,6 +197,10 @@ class CustomerController extends Controller
      */
     public function edit(Request $request,$id)
     {
+        if(!Auth::user()->permission('customers.edit')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $customer = Customer::find(Crypt::decryptString($id));
         if($customer == false){  
             return back()->with('error','Record Not Found');
@@ -215,6 +231,10 @@ class CustomerController extends Controller
      */
     public function update(Request $request,$id)
     {
+        if(!Auth::user()->permission('customers.edit')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $id = Crypt::decryptString($id);
         $customer = Customer::find($id);
         if($customer == false){  
@@ -267,6 +287,9 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->permission('customers.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $data = Customer::find(Crypt::decryptString($id));
         if($data == false){

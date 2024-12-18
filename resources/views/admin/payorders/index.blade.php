@@ -125,11 +125,14 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <h4 class="mb-0 text-white">Payorders</h4>
                         </div>
                         <div class="col-md-6 text-end">
+                            @if(Auth::user()->permission('payorders.create'))
                             <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button>
+                            @endif
                         </div>
                     </div>
                 </header>
                 <div class="card-body">    
+                    @if(Auth::user()->permission('payorders.list'))
                     <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                             <thead>
                                 <tr class="">
@@ -147,6 +150,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <tbody>
                             </tbody>
                         </table>
+                        @endif
                     </div>
                 </div>
             </section>

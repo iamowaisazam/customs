@@ -100,13 +100,21 @@ class ConsignmentController extends Controller
 
                 $action = '<div class="text-end">';
 
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                if(Auth::user()->permission('consignments.edit')){
+                  $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                }
 
-                $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">View</a>';
+                if(Auth::user()->permission('consignments.view')){
+                  $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/consignments/'.Crypt::encryptString($value->id)).'">View</a>';
+                }
 
-                $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/consignments/print/'.Crypt::encryptString($value->id)).'">Print</a>';
+                if(Auth::user()->permission('consignments.print')){
+                  $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/consignments/print/'.Crypt::encryptString($value->id)).'">Print</a>';
+                }
                 
-                $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                if(Auth::user()->permission('consignments.delete')){
+                     $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/consignments/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                }
 
                 $action .= '</div>';
 
@@ -138,55 +146,9 @@ class ConsignmentController extends Controller
         return view('admin.consignments.index');
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function create()
-    {
+  
 
-        $data = [
-            'customers' => Customer::where('status',1)->get(),
-            'currencies' => Currency::DATA,
-            'units' => array_values(Unit::DATA),
-            'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
-        ];
-
-        return view('admin.consignments.create',$data);
-    }
-
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-             "job_number" => 'required|max:255',
-             "customer_id" => 'required|max:255',
-             "exporter_id" => 'required|max:255',
-             "currency" => 'required|max:255',
-             "data" => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $req = $request->all();
-        $req['created_by'] = Auth::user()->id;
-        $job = ConsigmentUtility::create_job($req);
-
-       ConsigmentUtility::update_consignment_item($job->id,$request->data);
-
-        return redirect('/admin/consignments/'.Crypt::encryptString($job->id).'/edit')
-        ->with('success','Record Created Success'); 
-    }
+   
 
      /**
      * Create a new controller instance.
@@ -198,7 +160,17 @@ class ConsignmentController extends Controller
 
         if($id == 'create'){
             $model = null;
+
+            if(!Auth::user()->permission('consignments.create')){
+                return back()->with('warning','You Dont Have Access');
+            }
+
         }else{
+
+            if(!Auth::user()->permission('consignments.edit')){
+                return back()->with('warning','You Dont Have Access');
+            }
+
             $model = Consignment::find(Crypt::decryptString($id));
             if($model == false){  
                 return back()->with('error','Record Not Found');
@@ -243,6 +215,11 @@ class ConsignmentController extends Controller
 
 
         if($id == 'create'){
+
+            if(!Auth::user()->permission('consignments.create')){
+                return back()->with('warning','You Dont Have Access');
+            }
+
             $model = new Consignment();
             $model->customer_id = $request->customer_id;
             $model->job_number = ConsigmentUtility::get_job_number();
@@ -251,6 +228,10 @@ class ConsignmentController extends Controller
 
 
         }else{
+
+            if(!Auth::user()->permission('consignments.edit')){
+                return back()->with('warning','You Dont Have Access');
+            }
 
             $id = Crypt::decryptString($id);
             $model = Consignment::find($id);
@@ -361,6 +342,10 @@ class ConsignmentController extends Controller
      */
     public function show(Request $request,$id)
     {
+        if(!Auth::user()->permission('consignments.view')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $model = Consignment::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
@@ -385,6 +370,10 @@ class ConsignmentController extends Controller
      */
     public function print(Request $request,$id)
     {
+        if(!Auth::user()->permission('consignments.print')){
+            return back()->with('warning','You Dont Have Access');
+        }
+
         $model = Consignment::find(Crypt::decryptString($id));
         if($model == false){  
           return back()->with('error','Record Not Found');
@@ -413,6 +402,9 @@ class ConsignmentController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->permission('consignments.delete')){
+            return back()->with('warning','You Dont Have Access');
+        }
 
         $data = Consignment::find(Crypt::decryptString($id));
         if($data == false){

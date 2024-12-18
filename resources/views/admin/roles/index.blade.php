@@ -61,7 +61,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                 </div>
                             </header>
                         <div class="card-body">    
-                         
+                            @if(Auth::user()->permission('roles.list'))
                             <table id="example23" class="mydatatable display nowrap table table-hover table-striped border" cellspacing="0" width="100%">
                                     <thead>
                                         <tr class="" >
@@ -74,6 +74,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                     <tbody>
                              </tbody>
                         </table>
+                        @endif
               </div>
            </div>
           </section>

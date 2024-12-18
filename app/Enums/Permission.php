@@ -30,14 +30,15 @@ CONST DATA = array(
             'delete',
             'statement',
         ],
-        'vendors' => [
+        'consignments' => [
             'list',
             'create',
             'edit',
             'view',
+            'print',
             'delete',
         ],
-        'jobs-consignment' => [
+        'jobs-payorders' => [
             'list',
             'create',
             'edit',
@@ -57,6 +58,8 @@ CONST DATA = array(
             'print',
             'delete',
         ],
+
+
         'settings' => [
             'menu',
             'edit',

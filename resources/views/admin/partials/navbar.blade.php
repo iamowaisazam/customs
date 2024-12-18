@@ -90,19 +90,19 @@
     @endif
    
 
-    @if(Auth::user()->permission('jobs-consignment.list') || Auth::user()->permission('jobs-consignment.create'))
+    @if(Auth::user()->permission('consignments.list') || Auth::user()->permission('consignments.create'))
         <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/consignments/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
             <i class="mdi mdi-border-all"></i>
             <span class="hide-menu">Job / Consignment</span></a>
             <ul aria-expanded="false" class="collapse {{ request()->is('admin/consignments/*') ? 'in' : '' }}">
                 
-                @if(Auth::user()->permission('jobs-consignment.create'))
+                @if(Auth::user()->permission('consignments.create'))
                 <li><a class="{{ request()->is('admin/consignments/create') ? 'active' : ''}}"  
                     href="{{URL::to('admin/consignments/create/edit')}}">Create Consignment</a>
                 </li>
                 @endif
 
-                @if(Auth::user()->permission('jobs-consignment.list'))
+                @if(Auth::user()->permission('consignments.list'))
                 <li><a 
                     class="{{ request()->is('admin/consignments/*') && request()->is('admin/consignments/create') == false  ? 'active' : '' }}" 
                     href="{{URL::to('admin/consignments')}}">View Consignments</a>
