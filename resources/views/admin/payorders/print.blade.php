@@ -331,7 +331,7 @@
 
                     <div class="col-6 ">
                         <div class="row invoice_box m-0">
-                            <div class="col-7 ">
+                            <div class="col-8 ">
                                 <table class="table">
                                     <tr>
                                         <th>Invoice Value</th>
@@ -359,7 +359,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-5">
+                            <div class="col-4">
                                 <table class="table invoice">
                                     <tr>
                                         <td>{{number_format($item->total,2)}}</td>

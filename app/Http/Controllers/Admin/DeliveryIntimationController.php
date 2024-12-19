@@ -108,7 +108,7 @@ class DeliveryIntimationController extends Controller
                     $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/delivery-intimations/'.Crypt::encryptString($value->id)).'">Print</a>';
                 }
 
-                 if(!Auth::user()->permission('delivery-intimation.delete')){
+                 if(Auth::user()->permission('delivery-intimation.delete')){
                     $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/delivery-intimations/'.Crypt::encryptString($value->id)).'">Delete</a>';
                  }
 

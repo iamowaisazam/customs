@@ -269,11 +269,11 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
        
         $(".search_btn").click(e =>{ 
-            // application_table.draw();
+            application_table.draw();
         });
 
         $('input[name=search]').change(function (e) { 
-            // application_table.draw();
+            application_table.draw();
         });
 
 
