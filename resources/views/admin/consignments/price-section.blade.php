@@ -136,6 +136,7 @@
                             name="data[${un}][price]" step="0.0001" value="${data.price}" />
                         </div>
                     </div>
+                    
                     <div class="col-sm-2 nopadding">
                         <div class="form-group">
                             <label for="Date">Total</label>
