@@ -41,4 +41,43 @@ class Setting extends Model
         
     }
 
+
+    public static function get_pod()
+    {
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+        $pod = [];
+        if(isset($data['pod']) && $data['pod']){
+            $pod = json_decode($data['pod']);
+        }
+        return $pod;   
+    }
+
+    public static function get_pol()
+    {
+
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+
+        $pol = [];
+        if(isset($data['pol']) && $data['pol']){
+            $pol = json_decode($data['pol']);
+        }
+
+        return $pol;
+        
+    }
+
+    public static function get_documents()
+    {
+
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+
+        $documents = [];
+        if(isset($data['documents']) && $data['documents']){
+            $documents = json_decode($data['documents']);
+        }
+
+        return $documents;
+        
+    }
+
 }

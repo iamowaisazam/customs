@@ -11,6 +11,7 @@ use App\Models\ConsignmentItem;
 use App\Models\Customer;
 use App\Models\Exporter;
 use App\Models\Role;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -184,6 +185,9 @@ class ConsignmentController extends Controller
             'package_types' => PackageType::DATA,
             'units' => array_values(Unit::DATA),
             'job_number' => ConsigmentUtility::get_job_number_with_prefix(),
+            'pod' => Setting::get_pod(),
+            'pol' => Setting::get_pol(),
+            'documents' => Setting::get_documents(),
         ];
 
         return view('admin.consignments.edit',$data);

@@ -13,12 +13,7 @@
 
 <?php
 
-$ports = $_s['ports'] ? json_decode($_s['ports']) : [];
-$port_of_shipments = $_s['port_of_shipment'] ? json_decode($_s['port_of_shipment']) : [];
-$documents = $_s['documents'] ? json_decode($_s['documents']) : [];
-
 $options = '';
-
 foreach ($documents as $value) {
     $options .= '<option value="'.$value.'">'.$value.'</option>';
 }
@@ -201,7 +196,7 @@ foreach ($documents as $value) {
                     <div class="form-group">
                         <label class="form-label">POL</label>
                         <select class="form-control" name="pol" >
-                        @foreach ($ports as $port)
+                        @foreach ($pol as $port)
                             <option @if($model->pol == $port) selected @endif value="{{$port}}">{{$port}}</option>
                         @endforeach
                         </select>
@@ -215,7 +210,7 @@ foreach ($documents as $value) {
                     <div class="form-group">
                         <label class="form-label">POD</label>
                         <select class="form-control" name="pod" >
-                          @foreach ($port_of_shipments as $shipment)
+                          @foreach ($pod as $shipment)
                           <option @if($model->pod == $shipment) selected @endif 
                             value="{{$shipment}}">{{$shipment}}</option>  
                           @endforeach
