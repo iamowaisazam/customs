@@ -152,7 +152,7 @@
           margin-bottom:0px;
           border-left: 0px;
           border-right: 0px;
-          padding: 11px 0px;" >Amount Demand And Received With Date Against This Consignment </h6>
+          padding: 11px 0px;" >Item Details</h6>
 
           <table class="items-table table table-bordered" >
             <thead>
@@ -203,7 +203,12 @@
                 @foreach ($data as $key => $item)
                 <tr>
                     <td class="text-center" >{{$item->name}}</td>
-                    <td class="text-center">{{date('d-m-Y', strtotime($item->date))}}</td>
+                    <td class="text-center">
+                      @if($item->date)
+                      {{date('d-m-Y', strtotime($item->date))}}
+                      @endif
+
+                    </td>
                 </tr>
                 @endforeach
               </tbody>

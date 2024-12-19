@@ -6,7 +6,7 @@
         </div>
         <div class="box-row" > 
             <span class="label">Consignee:</span>
-            <span style="width: 164px" class="value" >{{$model->job_number_prefix}}</span> 
+            <span style="width: 164px" class="value" >{{$model->customer->company_name}}</span> 
         </div>
         <div class="box-row" > 
             <span class="label">Exporter:</span>
@@ -55,7 +55,7 @@
         </div>
         <div class="box-row" >
             <span class="label">Frieght in FC:</span>  
-            <span style="width: 100px"  class="value" >{{$model->frieght}}</span> 
+            <span style="width: 100px"  class="value" >{{$model->freight}}</span> 
         </div>
         <div class="box-row" >
             <span class="label">Insurance In PKR:</span>  
@@ -96,7 +96,7 @@
     <div class="box" >
         <div class="box-row" >
             <span class="label">BL/AWB No:</span>  
-            <span style="width:100px"  class="value">{{$model->blawb}}</span> 
+            <span style="width:100px"  class="value">{{$model->blawbno}}</span> 
         </div>
         <div class="box-row">
             <span class="label">BL/AWB Date:</span>  

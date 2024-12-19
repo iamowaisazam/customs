@@ -111,7 +111,7 @@ foreach ($documents as $value) {
     <div class="col-12">
         <section class="consignment-price card">
             <header  class="card-header d-flex justify-content-between">
-                <h4 class="mb-0 text-white ">Amount Demand And Received With Date Against This Consignment</h4>
+                <h4 class="mb-0 text-white ">Item Details</h4>
             </header>
             <div class="card-body">
                 <div class="rows" >
@@ -164,11 +164,11 @@ foreach ($documents as $value) {
                 <div class="price-summary">
                   <div class="row" >
                     <div class="col-md-10 text-end"><p><b>Total Quantity </b></p></div>
-                    <div class="col-md-2 total_quantity"> : <span>0</span></div>
+                    <div class="col-md-2 total_quantity"> : <span>{{$model->totalWeight()}}</span></div>
                   </div>
                   <div class="row">
                     <div class="col-md-10 text-end"><p><b>Total Value </b></p></div>
-                    <div class="col-md-2 total_value"> : <span>0</span></div>
+                    <div class="col-md-2 total_value"> : <span>{{$model->invoice_value}}</span></div>
                   </div>
                </div>
             </div>

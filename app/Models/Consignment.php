@@ -31,6 +31,16 @@ class Consignment extends Model
         return $this->hasOne(Challan::class, 'consignment_id');
     }
 
+    public function totalWeight()
+    {
+        $qty = 0;
+        foreach (ConsignmentItem::where('consignment_id',$this->id)->get() as $item) {
+            $qty += $item->qty;
+        }
+
+        return $qty;
+    }
+
   
 
 }

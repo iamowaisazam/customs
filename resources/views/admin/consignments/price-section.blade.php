@@ -21,7 +21,7 @@
 
  <section class="consignment-price card">
     <header  class="py-4 card-header d-flex justify-content-between">
-        <h4 class="mb-0 text-white ">Amount Demand And Received With Date Against This Consignment</h4>
+        <h4 class="mb-0 text-white ">Item Details</h4>
         <button class="add_row btn btn-success text-white" type="button">
             <i class="fa fa-plus"></i></button>
     </header>
