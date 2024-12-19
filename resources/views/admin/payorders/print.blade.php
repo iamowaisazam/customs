@@ -156,24 +156,23 @@
                 <div class="col-6 col_1st">
                     <table class="table">
                         <tr>
-                            <th>Our Ref #</th>
-                            <td> 145/24-25</td>
+                            <th>Job Number</th>
+                            <td>{{$model->consignment->job_number_prefix}}</td>
 
                         </tr>
                         <tr>
                             <th>HAWB #</th>
-                            <td></td>
+                            <td>---</td>
+                        </tr>
+                        <tr>
+                            <th>Customer Name</th>
+                            <td>{{$model->consignment->customer->customer_name}}</td>
 
                         </tr>
                         <tr>
-                            <th>ATTN</th>
-                            <td>MR MUHAMMAD TARIQ</td>
-
-                        </tr>
-                        <tr>
-                            <th>M/s</th>
+                            <th>Company name</th>
                             <td>
-                                Phermatec
+                                {{$model->consignment->exporter}}
                             </td>
 
                         </tr>
@@ -184,17 +183,17 @@
                         </tr>
                         <tr>
                             <th>L/C </th>
-                            <td>23453564567</td>
+                            <td>{{$model->consignment->lc}}</td>
 
                         </tr>
                         <tr>
                             <th>PO # </th>
-                            <td>23453564567</td>
+                            <td>{{$model->consignment->po_number}}</td>
 
                         </tr>
                         <tr>
-                            <th>Shipment # </th>
-                            <td>By Sea</td>
+                            <th>Shipment #</th>
+                            <td>{{$model->consignment->shipment_number}}</td>
 
                         </tr>
                     </table>
@@ -202,39 +201,33 @@
                 <div class="col-6 col_2nd">
                     <table class="table">
                         <tr>
-
                             <th>Requisition Date</th>
-                            <td>12/12/24</td>
+                            <td>{{date('d-m-Y', strtotime($model->consignment->created_at))}}</td>
                         </tr>
                         <tr>
 
                             <th>BL/LAWB NO</th>
-                            <td>GXPWE924076883</td>
+                            <td>{{$model->consignment->blawbno}}</td>
                         </tr>
                         <tr>
-
                             <th>Containers/PKGS</th>
-                            <td>67 PLTS</td>
+                            <td>{{$model->consignment->no_of_packages}}</td>
                         </tr>
                         <tr>
-
-                            <th>Weight (KGS)</th>
-                            <td>8525.70</td>
+                            <th>Net weight</th>
+                            <td>{{$model->consignment->net}} </td>
                         </tr>
                         <tr>
-
                             <th>IGM NO & Date</th>
-                            <td>205-24 20.09.2024</td>
+                            <td>{{$model->consignment->igmno}} {{date('d-m-Y', strtotime($model->consignment->igm_date))}}</td>
                         </tr>
                         <tr>
-
-                            <th>Vessel</th>
-                            <td>OOCL NAGOYA</td>
+                            <th>Vessel / Flight Name</th>
+                            <td>{{$model->consignment->vessel}}</td>
                         </tr>
                         <tr>
-
                             <th>Made Of Shipment</th>
-                            <td>By Sea</td>
+                            <td>{{ ucwords(str_replace("_", " ",$model->consignment->mode_of_shipment))}}</td>
                         </tr>
                         <tr>
 
