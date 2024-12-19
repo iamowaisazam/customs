@@ -133,7 +133,7 @@
                         <div class="form-group">
                             <label for="Received">Amount</label>
                             <input  type="number" class="price form-control" 
-                            name="data[${un}][price]" step="0.01 value="${data.price}" />
+                            name="data[${un}][price]" step="0.01" value="${data.price}" />
                         </div>
                     </div>
                     <div class="col-sm-2 nopadding">
