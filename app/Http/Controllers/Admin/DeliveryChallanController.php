@@ -49,11 +49,7 @@ class DeliveryChallanController extends Controller
             ->join('consignments','consignments.id','=','payorders.consignment_id')
             ->join('customers','customers.id','=','consignments.customer_id');
 
-            //Search
-            if($request->has('status') && $request->status != ''){
-                $query->where('delivery_challans.status',$request->status);
-            }
-
+     
             if($request->has('job_number') && $request->job_number != ''){
                 $query->where('consignments.job_number',explode('/',$request->job_number)[0]);
             }
@@ -67,7 +63,7 @@ class DeliveryChallanController extends Controller
             }
 
             if($request->has('lc') && $request->lc != ''){
-                $query->where('consignments.lc',$request->lc_no);
+                $query->where('consignments.lc',$request->lc);
             }
 
             if($request->has('sdate') && $request->sdate != ''){
@@ -117,7 +113,7 @@ class DeliveryChallanController extends Controller
                 $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/delivery-challans/'.Crypt::encryptString($value->id)).'">Delete</a>';
                 $action .= '</div>';
 
-                $status = $value->status ? 'checked' : '';
+                
 
                 array_push($data,[
                     $value->id,
@@ -127,9 +123,6 @@ class DeliveryChallanController extends Controller
                     $value->customer_name,
                     $value->invoice_value,
                     $value->lc,
-                    "<div class='switchery-demo'>
-                     <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
-                    </div>",
                     $action,
                 ]);        
             }

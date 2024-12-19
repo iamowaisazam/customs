@@ -51,10 +51,7 @@ class DeliveryIntimationController extends Controller
             ->join('consignments','consignments.id','=','payorders.consignment_id')
             ->join('customers','customers.id','=','consignments.customer_id');
 
-            //Search
-            if($request->has('status') && $request->status != ''){
-                $query->where('delivery_intimations.status',$request->status);
-            }
+          
 
             if($request->has('job_number') && $request->job_number != ''){
                 $query->where('consignments.job_number',explode('/',$request->job_number)[0]);
@@ -68,7 +65,7 @@ class DeliveryIntimationController extends Controller
                 $query->where('customers.customer_name','like','%'.$request->customer_name.'%');
             }
 
-            if($request->has('lc_no') && $request->lc != ''){
+            if($request->has('lc') && $request->lc != ''){
                 $query->where('consignments.lc',$request->lc);
             }
 
@@ -114,8 +111,7 @@ class DeliveryIntimationController extends Controller
 
                 $action .= '</div>';
 
-                $status = $value->status ? 'checked' : '';
-                
+        
 
                 array_push($data,[
                     $value->id,
@@ -125,9 +121,6 @@ class DeliveryIntimationController extends Controller
                     $value->customer_name,
                     $value->invoice_value,
                     $value->lc,
-                    "<div class='switchery-demo'>
-                     <input ".$status." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
-                    </div>",
                     $action,
                 ]);        
             }
