@@ -344,6 +344,7 @@ class ReportController extends Controller
                 array_push($data,[
                     $value->id,
                     $value->job_number_prefix,
+                    $value->customer_name,
                     $value->po_number,
                     $value->blawbno,
                     $value->lc,

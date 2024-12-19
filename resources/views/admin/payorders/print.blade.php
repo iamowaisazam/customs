@@ -346,7 +346,7 @@
                                         <td>USD</td>
                                     </tr>
                                     <tr>
-                                        <th>Invoice Value</th>
+                                        <th>Invoice value (ER {{$model->consignment->rate_of_exchange}})</th>
                                         <td>PKR</td>
                                     </tr>
                                     <tr>

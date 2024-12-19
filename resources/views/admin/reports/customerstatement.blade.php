@@ -74,16 +74,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Status</label>
-                                <select name="status" class="form-control" >
-                                    <option value="">Select Status</option>
-                                    <option value="1">Enable</option>
-                                    <option value="0">Disable</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label>Start Date</label>
                                 <input type="date" class="form-control" name="sdate" />
                             </div>
@@ -128,6 +118,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <tr class="">
                             <th>#</th>
                             <th class="text-center">Job</th>
+                            <th class="text-center">Customer</th>
                             <th>Po Number</th>
                             <th>BL Number</th>
                             <th class="text-center" >LC/BT/TT Number</th>
@@ -181,7 +172,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                     d.lc = $('select[name=lc]').val();
                     d.sdate = $('input[name=sdate]').val();
                     d.edate = $('input[name=edate]').val();
-                    d.status = $('select[name=status]').val();
                     d.search = $('input[name=search]').val();
 
                  }

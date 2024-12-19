@@ -190,7 +190,7 @@ $consignment = $model->consignment;
                         </div>
 
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Invoice Value (PKR) : </label>
+                            <label class="form-label">Invoice value (ER {{$consignment->rate_of_exchange}}) (PKR) : </label>
                             <input readonly style="width: 150px;" value="{{number_format($result['rate_exchange'],2)}}" class="form-control" placeholder="Exchange Rate" />
                         </div>
 
@@ -205,7 +205,7 @@ $consignment = $model->consignment;
                         </div>
 
                         <div class="d-flex justify-content-between" >
-                            <label class="form-label">Assets value (PKR) : </label>
+                            <label class="form-label">Assessed value (PKR) : </label>
                             <input readonly style="width: 150px;" value="{{number_format($result['asset_value'],2)}}" class="form-control" placeholder="Assets value" />
                          </div>
 
