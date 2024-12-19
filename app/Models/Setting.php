@@ -80,4 +80,18 @@ class Setting extends Model
         
     }
 
+    public static function get_vessels()
+    {
+
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+
+        $vessels = [];
+        if(isset($data['vessels']) && $data['vessels']){
+            $vessels = json_decode($data['vessels']);
+        }
+
+        return $vessels;
+        
+    }
+
 }

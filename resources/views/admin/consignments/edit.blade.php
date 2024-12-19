@@ -291,8 +291,12 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Vessel / Flight Name</label>
-                        <input  value="{{$model->vessel}}" name="vessel" 
-                        class="form-control" placeholder="Vessel">
+                        <select class="form-control" name="vessel" id="">
+                            @foreach ($vessels as $v)
+                                <option @if($v == $model->vessel) selected @endif 
+                                    value="{{$v}}">{{$v}}</option>
+                            @endforeach
+                        </select>
                         @if($errors->has('vessel'))
                          <p class="text-danger" >{{ $errors->first('vessel') }}</p>
                         @endif 

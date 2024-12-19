@@ -188,6 +188,7 @@ class ConsignmentController extends Controller
             'pod' => Setting::get_pod(),
             'pol' => Setting::get_pol(),
             'documents' => Setting::get_documents(),
+            'vessels' => Setting::get_vessels(),
         ];
 
         return view('admin.consignments.edit',$data);
