@@ -168,7 +168,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         </div>
                         <div class="modal-body">
                             <label style="width: 100%" for="id_label_multiple">
-                            <select name="consignment" class="js-example-responsive form-control" id="id_label_multiple" multiple="multiple">
+                            <select required name="consignment" class="js-example-responsive form-control" id="id_label_multiple" multiple="multiple">
                                 
                             </select>
                             </label>

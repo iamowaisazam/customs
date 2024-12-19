@@ -167,19 +167,19 @@ $consignment = $model->consignment;
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Stan Duty</label>
-                            <input name="stan_duty"  type="number"  value="{{$model->stan_duty}}" class="stan_duty form-control" />
+                            <input required name="stan_duty"  type="number"  value="{{$model->stan_duty}}" class="stan_duty form-control" />
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">PSW Fee</label>
-                            <input name="psw_fee"  type="number"  value="{{$model->psw_fee}}" class="psw_fee form-control" />
+                            <input required name="psw_fee"  type="number"  value="{{$model->psw_fee}}" class="psw_fee form-control" />
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">DRAP Fee</label>
-                            <input name="drap_fee"  type="number" value="{{$model->drap_fee}}" class="drap_fee form-control" />
+                            <input required name="drap_fee"  type="number" value="{{$model->drap_fee}}" class="drap_fee form-control" />
                         </div>
                     </div>
                 </div>

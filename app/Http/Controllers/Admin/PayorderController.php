@@ -154,6 +154,32 @@ class PayorderController extends Controller
 
     }
 
+    public function create(Request $request)
+    {
+
+        $model = Consignment::where('job_number_prefix',$request->consignment)->first();
+        if($model == false){  
+            return back()->with('error','Record Not Found');
+        }
+
+        if(Payorder::where('consignment_id',$model->id)->first()){
+            return back()->with('error','Payorder Already Generated');
+        }
+        
+        $model = Payorder::create([
+            "consignment_details" => json_encode([]),
+            "date" => Carbon::now(),
+            "consignment_id" => $model->id,
+            "header" => json_encode([]),
+            "items" => json_encode([]),
+            "footer" => json_encode([]),
+            "created_by" => Auth::user()->id,
+        ]);
+
+        return redirect('admin/payorders/'.Crypt::encryptString($model->id).'/edit')->with('success','Payorder Generated Successfully');
+
+    }
+
 
 
      /**
