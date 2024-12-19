@@ -105,10 +105,15 @@ Route::middleware(['auth'])->group(function () {
       Route::get('/admin/customerstatement',[ReportController::class,'customerstatement']);
       Route::get('/admin/jobtracking',[ReportController::class,'jobtracking']);
       Route::get('/admin/jobstatus',[ReportController::class,'jobstatus']);
-      Route::resource('masters',MasterController::class);
      
 
 
+    // Master
+    Route::match(['get', 'post'],'admin/masters/locations',[MasterController::class, 'locations']);
+    Route::match(['get', 'post'],'admin/masters/pod',[MasterController::class, 'pod']);
+    Route::match(['get', 'post'],'admin/masters/pol',[MasterController::class, 'pol']);
+   
+    
 
    //Settings
     Route::get('admin/settings/edit',[SettingController::class, 'edit']);

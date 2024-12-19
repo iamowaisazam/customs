@@ -255,9 +255,109 @@ class ReportController extends Controller
     public function customerstatement(Request $request)
     {
 
-        
-        $consignments = Consignment::all();
-        return view('admin.reports.customerstatement',compact('consignments'));
+    
+        if($request->ajax()){
+
+            $query = Consignment::join('payorders','payorders.consignment_id','=','consignments.id')
+            ->join('customers','customers.id','=','consignments.customer_id');
+
+            if($request->has('job_number') && $request->job_number != ''){
+                $query->where('consignments.job_number_prefix',$request->job_number);
+            }
+
+            if($request->has('customer') && $request->customer != ''){
+                $query->where('customers.id','like','%'.$request->customer.'%');
+            }
+
+            if($request->has('lc') && $request->lc != ''){
+                $query->where('consignments.lc',$request->lc);
+            }
+
+            if($request->has('sdate') && $request->sdate != ''){
+                $query->where('payorders.created_at','>=',$request->sdate);
+            }
+
+            if($request->has('edate') && $request->edate != ''){
+                $query->where('payorders.created_at','<=',$request->edate);
+            }
+
+            $search = $request->get('search');
+            if($search != ""){
+               $query = $query->where(function ($s) use($search) {
+                   $s->where('customers.customer_name','like','%'.$search.'%')
+                   ->orwhere('customers.company_name','like','%'.$search.'%')
+                   ->orwhere('consignments.lc','like','%'.$search.'%');                   
+               });
+            }
+            
+            $count = $query->count();
+            $results = $query->skip($request->start)
+            ->select([
+                'payorders.*',
+                'consignments.job_number_prefix',
+                'consignments.invoice_value',
+                'consignments.lc',
+                'consignments.arival_date',
+                'customers.customer_name',
+                'customers.company_name',
+            ])
+            ->take($request->length)
+            ->orderBy('payorders.id','desc')
+            ->get();
+
+            $data = [];
+            foreach ($results as $key => $value) {
+
+                // $action = '<div class="text-end">';
+
+                // if(Auth::user()->permission('payorders.edit')){
+                //  $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
+                // }
+
+                // if(Auth::user()->permission('payorders.print')){
+                // $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/payorders/print/'.Crypt::encryptString($value->id)).'">Print</a>';
+                // }
+
+                // if(Auth::user()->permission('payorders.view')){
+                // $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'">View</a>';
+                // }
+
+                // if(Auth::user()->permission('payorders.delete')){
+                // $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/payorders/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                // }
+
+                // $action .= '</div>';
+
+                // $status = $value->status ? 'checked' : '';
+
+                array_push($data,[
+                    $value->id,
+                    $value->job_number_prefix,
+                    $value->company_name,
+                    $value->customer_name,
+                    $value->lc,
+                    'Item Name',
+                    'qty',
+                    $value->invoice_value,
+                    date('d-m-Y', strtotime($value->arival_date)),
+                    'arrived Date',
+                    'Reamaining documents',
+                    'Remarks',
+                ]);
+            }
+
+
+            return response()->json([
+                "draw" => $request->draw,
+                "recordsTotal" => $count,
+                "recordsFiltered" => $count,
+                'data'=> $data,
+            ]);
+
+        }
+
+        $data = [];
+        return view('admin.reports.customerstatement',$data);
 
     }
 

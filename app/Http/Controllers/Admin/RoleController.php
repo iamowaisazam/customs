@@ -45,7 +45,7 @@ class RoleController extends Controller
         if($request->ajax()){
 
             $query = Role::query();
-            $query->whereNotIn('id',[1]);
+            // $query->whereNotIn('id',[1]);
 
             //Search
             $search = $request->get('search')['value'];
@@ -64,34 +64,32 @@ class RoleController extends Controller
             $data = [];
             foreach ($records as $key => $value) {
 
-              
-
                 $action = '<div class="text-end">';
 
-                if(Auth::user()->permission('roles.view')){
-                $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
-                }
+                    if(Auth::user()->permission('roles.edit')){
+                        if($value->is_editable){
+                        $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('admin/roles/edit/'.Crypt::encryptString($value->id)).'">Edit</a>';
+                        }
+                    }
 
-                if(Auth::user()->permission('roles.delete')){
-                    $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
-                }
+                    if(Auth::user()->permission('roles.delete')){
+                        if($value->is_editable){
+                        $action .= '<a class="mx-1 btn btn-danger" href="'.URL::to('admin/roles/delete/'.Crypt::encryptString($value->id)).'">Delete</a>';
+                        }
+                    }
 
-
-                $status = $value->status ? 'Active' : 'Deactive';
-
-                if(Auth::user()->permission('roles.edit')){
-                    $selected = $value->status ? 'checked' : '';
-                    $status = "<div class='switchery-demo'><input ".$selected." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
-                    </div>";
-                }
-                    
+                    if(Auth::user()->permission('roles.edit')){
+                        $selected = $value->status ? 'checked' : '';
+                        $status = "<div class='switchery-demo'><input ".$selected." data-id='".Crypt::encryptString($value->id)."' type='checkbox' class=' is_status js-switch' data-color='#009efb'/>
+                        </div>";
+                    }
+                        
 
                 $action .= '</div>';
 
                 array_push($data,[
                     $value->id,
                     $value->name,
-                    $status,
                     $action,
                  ]);
 
@@ -245,14 +243,13 @@ class RoleController extends Controller
             return back()->with('warning','You Dont Have Access');
         }
 
-     
-
         $model = Role::find(Crypt::decryptString($id));
+        
         if($model == false){
             return back()->with('warning','Record Not Found');
         }else{
 
-            if(in_array([1,2],$model->id)){
+            if(!$model->is_editable){
                 return back()->with('warning','Record Can Not Be Deleted');
             }
     

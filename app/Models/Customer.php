@@ -12,23 +12,7 @@ class Customer extends Model
      * The attributes that are mass assignable.
      * @var array<int, string>
      */
-    protected $fillable = [
-        'id',
-        'user_id',
-        'company_name',
-        'customer_name',
-        'customer_email',
-        'customer_phone',
-        'country',
-        'state',
-        'city',
-        'postal_code',
-        'street_address',
-        'is_enable',
-        'created_by',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
     public function user()
     {

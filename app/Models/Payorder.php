@@ -12,24 +12,8 @@ class Payorder extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [
-        'id',
-        'consignment_id',
-        'consignment_details',
-        'footer',
-        'items',
-        'date',
-        'header',
-        'status',
-        'eto',
-        'stan_duty',
-        'psw_fee',
-        'drap_fee',
-        'created_by',
-        'created_at',
-        'updated_at',
-    ];
-
+    protected $guarded = [];
+    
     public function consignment()
     {
         return $this->belongsTo(Consignment::class, 'consignment_id');

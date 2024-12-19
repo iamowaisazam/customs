@@ -29,7 +29,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Job Status</li>
+                    <li class="breadcrumb-item active">Customer</li>
                 </ol>
             </div>
         </div>
@@ -46,30 +46,32 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Job Number</label>
-                                <input class="form-control" name="job_number" />
+                                <select class="form-control jobnumber" name="job_number">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Company Name</label>
-                                <input class="form-control" name="company_name" />
+                                <label>Customer</label>
+                                @if(Auth::user()->role_id == 3)
+                                    <select class="form-control" name="customer">
+                                        <option value="{{Auth::user()->customer->id}}">
+                                            {{Auth::user()->customer->customer_name}}
+                                        </option>
+                                    </select>
+                                @else
+                                <select class="form-control customer" name="customer">
+                                </select>
+                                @endif
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Customer Name</label>
-                                <input class="form-control" name="customer_name" />
+                                <label>Lc / Bt / TT No </label>
+                                <select class="form-control lc" name="lc">
+                                </select>
                             </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>LC Number</label>
-                                <input class="form-control" name="lc_no" />
-                            </div>
-                        </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Status</label>
@@ -80,7 +82,18 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                 </select>
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" name="sdate" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date"  class="form-control" name="edate" />
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Search</label>
@@ -106,7 +119,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <h4 class="mb-0 text-white">Customer Statement</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            {{-- <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Create New </button> --}}
                         </div>
                     </div>
                 </header>
@@ -126,52 +138,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                             <th>Arrived Date</th>
                             <th>Remaining Document</th>
                             <th>Remarks</th>
-
                         </tr>
-                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</th>
-                            <td>20/123</td>
-                            <td>0123</td>
-                            <td>0143</td>
-                            <td>0234</td>
-                            <td>Item Name, Item Name, Item Name 3</td>
-                            <td>50,100,20 </td>
-                            <td>10,30,50</td>
-                            <td>24-5-2024</td>
-                            <td class="bg-danger" >28-11-2024</td>
-                            <td>Doc 1, Doc 2, Doc 3</td>
-                            <td>Remarks</td>
-                          </tr>
-                          <tr>
-                            <td>2</th>
-                            <td>20/123</td>
-                            <td>0123</td>
-                            <td>0143</td>
-                            <td>0234</td>
-                            <td>Item Name, Item Name, Item Name 3</td>
-                            <td>50,100,20 </td>
-                            <td>10,30,50</td>
-                            <td>24-5-2024</td>
-                            <td class="bg-danger" >28-11-2024</td>
-                            <td>Doc 1, Doc 2, Doc 3</td>
-                            <td>Remarks</td>
-                          </tr>
-                          <tr>
-                            <td>3</th>
-                            <td>20/123</td>
-                            <td>0123</td>
-                            <td>0143</td>
-                            <td>0234</td>
-                            <td>Item Name, Item Name, Item Name 3</td>
-                            <td>50,100,20 </td>
-                            <td>10,30,50</td>
-                            <td>24-5-2024</td>
-                            <td class="bg-danger" >28-11-2024</td>
-                            <td>Doc 1, Doc 2, Doc 3</td>
-                            <td>Remarks</td>
-                          </tr>
+                        </thead>
+                         <tbody>
+
                          </tbody>
                         </table>
                     </div>
@@ -199,43 +169,42 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             // scrollY: '500px',
             autoWidth: false, 
             dom: 'lirtp',
-            // serverSide: true,
+            serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
-            // ajax: {
-            //     url: "{{URL::to('admin/delivery-challans')}}",
-            //     type: "GET",
-            //     data: function ( d ) {  
+            ajax: {
+                url: "{{URL::to('admin/customerstatement')}}",
+                type: "GET",
+                data: function ( d ) {  
+ 
+                    d.job_number = $('select[name=job_number]').val();
+                    d.customer = $('select[name=customer]').val();
+                    d.lc = $('select[name=lc]').val();
+                    d.sdate = $('input[name=sdate]').val();
+                    d.edate = $('input[name=edate]').val();
+                    d.status = $('select[name=status]').val();
+                    d.search = $('input[name=search]').val();
 
-            //         d.job_number = $('input[name=job_number]').val();
-            //         d.company_name = $('input[name=company_name]').val();
-            //         d.customer_name = $('input[name=customer_name]').val();
-            //         d.lc_no = $('input[name=lc_no]').val();
-            //         d.status = $('select[name=status]').val();
-            //         d.search = $('input[name=search]').val();
+                 }
 
-            //     }
-            // },
+            },
             initComplete: function () {                
             }
         });
 
         application_table.on( 'draw', function () {
-            $('.js-switch').each(function () {
-               new Switchery($(this)[0], $(this).data());
-            }); 
+            
         } );
 
         $(".search_btn").click(e =>{ 
-            // application_table.draw();
+            application_table.draw();
         });
 
         $('input[name=search]').change(function (e) { 
-            // application_table.draw();
+            application_table.draw();
         });
 
 
         $(".mydatatable").delegate(".is_status", "change", function(){
-
             $.toast({
                 heading: "Status Change Successfully",
                 position: 'top-right',
@@ -244,65 +213,10 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                 hideAfter: 3500,
                 stack: 6,
             });
-
-            var isChecked = $(this).prop('checked');
-            $.ajax({
-                url: "{{URL::to('/admin/status')}}",
-                method:"POST",
-                data: {
-                    '_token': "{{ csrf_token() }}",
-                    id:$(this).data('id'),
-                    table:'delivery_challans',
-                    column:'status',
-                    value: $(this).prop('checked') ? 1: 0,
-                },
-                dataType: "json",
-                success: function (response) {
-                    
-                },
-                errror:function (response) {
-                    
-                },
-            });
         });
 
         
-        $(".mydatatable").delegate(".delete_btn", "click", function(){
-            
-            var id = $(this).data('id'); 
-            $.ajax({
-                url:id,
-                method:"delete",
-                data:{
-                  '_token': "{{ csrf_token() }}",
-                },
-                success: function (response) {
-                    
-                    $.toast({
-                        heading: response.message,
-                        position: 'top-right',
-                        loaderBg: '#ff6849',
-                        icon: 'success',
-                        hideAfter: 3500,
-                        stack: 6,
-                    });
-                    application_table.draw();
-                },
-                error:function (response) {
-                    
-                    $.toast({
-                    heading: response?.responseJSON?.message ? response?.responseJSON?.message : 'Something Went Wrong',
-                    position: 'top-right',
-                    loaderBg: '#ff6849',
-                    icon: 'error',
-                    hideAfter: 3500,
-                    stack: 6,
-                    });
-                },
-            });
-
-
-        });
+   
 
     });
     </script>

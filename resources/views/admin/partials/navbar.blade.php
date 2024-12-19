@@ -60,35 +60,9 @@
                     href="{{URL::to('admin/customers')}}">View Customers</a>
                 </li>
                 @endif
-                @if(Auth::user()->permission('customers.statement'))
-                <li><a href="{{URL::to('admin/customerstatement')}}" >View Customers Statements</a></li>
-                @endif
             </ul>
         </li>
     @endif
-
-    
-    @if(Auth::user()->permission('vendors.list') || Auth::user()->permission('vendors.create'))
-        {{-- <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/vendors/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
-            <i class="mdi mdi-border-all"></i>
-            <span class="hide-menu">Vendors</span></a>
-            <ul aria-expanded="false" class="collapse {{ request()->is('admin/vendors/*') ? 'in' : '' }}">  
-                @if(Auth::user()->permission('vendors.create')) 
-                <li><a class="{{ request()->is('admin/vendors/create') ? 'active' : ''}}"  
-                    href="{{URL::to('admin/vendors/create')}}">Create New Vendor</a>
-                </li>
-                @endif
-
-                @if(Auth::user()->permission('vendors.list')) 
-                <li><a 
-                    class="{{ request()->is('admin/vendors/*') && request()->is('admin/vendors/create') == false  ? 'active' : '' }}" 
-                    href="{{URL::to('admin/vendors')}}">View Vendor</a>
-                </li>
-                @endif
-            </ul>
-        </li> --}}
-    @endif
-   
 
     @if(Auth::user()->permission('consignments.list') || Auth::user()->permission('consignments.create'))
         <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/consignments/*') ? 'active' : '' }} " href="javascript:void(0)" aria-expanded="false">
@@ -131,9 +105,12 @@
      </li>
     @endif
 
-    {{-- @if(Auth::user()->permission('payorders.list')) --}}
-   
-    {{-- @endif --}}
+    @if(Auth::user()->permission('reports.customerstatement'))
+    <li><a class="waves-effect waves-dark {{ request()->is('admin/customerstatement') ? 'active' : '' }}" href="{{URL::to('admin/customerstatement')}}" aria-expanded="false">
+        <i class="mdi mdi-border-all"></i>
+        <span class="hide-menu">Customer Statement</span></a>
+    </li>
+    @endif
 
     <li><a class="waves-effect waves-dark {{ request()->is('admin/jobtracking') ? 'active' : '' }}" href="{{URL::to('admin/jobtracking')}}" aria-expanded="false">
         <i class="mdi mdi-border-all"></i>
@@ -144,16 +121,44 @@
         <i class="mdi mdi-border-all"></i>
         <span class="hide-menu">Job Status</span></a>
      </li>
+
+    @if(Auth::user()->permission('masters.menu'))
+        <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/masters*') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false">
+            <i class="mdi mdi-border-all"></i>
+            <span class="hide-menu">Masters</span></a>
+            <ul aria-expanded="false" class="collapse {{ request()->is('admin/masters/*') ? 'in' : '' }}">
+
+                @if(Auth::user()->permission('masters.locations'))
+                 <li><a href="{{URL::to('admin/masters/locations')}}">Locations</a></li>  
+                @endif
+
+                @if(Auth::user()->permission('masters.pol'))
+                <li><a href="{{URL::to('admin/masters/pol')}}">POL</a></li>  
+               @endif
+
+               @if(Auth::user()->permission('masters.pod'))
+               <li><a href="{{URL::to('admin/masters/pod')}}">POD</a></li>  
+              @endif
+
+            </ul>
+        </li>
+    @endif
     
     @if(Auth::user()->permission('settings.menu'))
         <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
             <i class="ti-settings"></i>
             <span class="hide-menu">Settings</span></a>
             <ul aria-expanded="false" class="collapse">
+                @if(Auth::user()->permission('settings.general'))
                 <li><a href="{{URL::to('admin/settings/edit')}}?group=general_settings">General Settings</a>
                 </li>  
-                <li><a href="{{URL::to('admin/settings/edit')}}?group=theme_settings">Theme Settings</a>
-                </li>  
+                @endif
+                
+                @if(Auth::user()->permission('settings.theme'))
+                  <li>
+                    <a href="{{URL::to('admin/settings/edit')}}?group=theme_settings">Theme Settings</a>
+                  </li>  
+                @endif
             </ul>
         </li>
     @endif

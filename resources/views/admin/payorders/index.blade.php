@@ -217,6 +217,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             scrollX: true,
             autoWidth: false, 
             dom: 'lirtp',
+            ordering:false,
             serverSide: true,
             lengthMenu: [[10,25, 50, 100,500],[10,25, 50, 100,500]],
             ajax: {

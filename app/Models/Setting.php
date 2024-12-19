@@ -27,11 +27,18 @@ class Setting extends Model
         'grouping',
     ];
 
-    public function image()
+    public static function get_locations()
     {
-        return $this->belongsTo(Filemanager::class, 'value');
+
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+
+        $locations = [];
+        if(isset($data['locations']) && $data['locations']){
+            $locations = json_decode($data['locations']);
+        }
+
+        return $locations;
+        
     }
 
-
-    
 }

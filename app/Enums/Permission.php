@@ -28,7 +28,6 @@ CONST DATA = array(
             'edit',
             'view',
             'delete',
-            'statement',
         ],
         'consignments' => [
             'list',
@@ -58,13 +57,23 @@ CONST DATA = array(
             'print',
             'delete',
         ],
-
-
+        'masters' => [
+            'menu',
+            'locations',
+            'pol',
+            'pod'
+        ],
         'settings' => [
             'menu',
-            'edit',
-            'view',
+            'general',
+            'theme',
         ],
+        'reports' => [
+            'customerstatement',
+            'jobstatus',
+            'jobstracking',
+        ],
+    
     );
 
 }

@@ -34,6 +34,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 @endsection
 
 @section('content')
+
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h4 class="text-themecolor">Delivery Intimations</h4>
@@ -181,18 +182,19 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
                             <div class="form-group mb-2">
                                 <label for="Estimated Date & Time">Estimated Date & Time</label>
-                                <input required name="date" class="form-control" type="date" />
+                                <input required name="date" class="form-control mt-2" type="date" />
                              </div>
 
                              <div class="form-group mb-2">
                                 <label for="Location">Location</label>
-                                <select required name="location" class="form-control" >
-                                    <option>Location 1</option>
-                                    <option>Location 2</option>
-                                    <option>Location 3</option>
+                                <select required name="location" class="form-control mt-2" >
+                                    @foreach ($locations as $item)
+                                      <option value="{{$item}}">{{$item}}</option>
+                                    @endforeach
                                 </select>
                              </div>
                         </div>
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Create</button>

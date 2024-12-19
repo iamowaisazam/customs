@@ -66,8 +66,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                                     <thead>
                                         <tr class="" >
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Status</th>
+                                            <th class="text-center" >Name</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                      </thead>
@@ -99,6 +98,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
+            ordering: false,
             // scrollY: '500px',
             autoWidth: false, 
             dom: 'lfrtip',

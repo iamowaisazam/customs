@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\DeliveryIntimation;
 use App\Models\Payorder;
 use App\Models\Role;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -139,7 +140,13 @@ class DeliveryIntimationController extends Controller
             ]);
         }
 
-        return view('admin.delivery-intimations.index');
+        $data = [
+            'locations' => Setting::get_locations(),
+        ];
+
+
+
+        return view('admin.delivery-intimations.index',$data);
 
     }
 

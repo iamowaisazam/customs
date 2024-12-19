@@ -143,6 +143,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             var application_table = $('.mydatatable').DataTable({
             processing: true,
             "searching": true,  
+            ordering:false,
             fixedColumns: false,
             fixedHeader: false,
             scrollCollapse: false,

@@ -1,12 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-
 use App\Models\Setting;
 
 class MasterController extends Controller
@@ -14,63 +10,47 @@ class MasterController extends Controller
 
 
     //
-    public function index(Request $request){
+    public function locations(Request $request)
+    {
 
-        $data = [];        
-        $field = $request->field;
-        $res = Setting::where('field',$field)->first();
-        if($res){
-
-            $old_value =  $res->value  ? json_decode($res->value) : [];
-            if(!is_array($old_value)){
-                $old_value = [];
-            }
-            $data = $old_value;
-        }else{
-            $data = [];
+        if(request()->isMethod('post')) {   
+            Setting::where('field','locations')->update(['value' => json_encode($request->locations)]);
+            return back()->with('success','Record Updated');
         }
 
-        
-        return view('settings.'.$request->field,compact('data','field'));
-
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.locations',$data);
     }
 
-    public function store(Request $request){
+    public function pol(Request $request)
+    {
 
-        $field = $request->field;
-
-        $res = Setting::where('field',$field)->first();
-        if($res){
-
-            $old_value =  $res->value  ? json_decode($res->value) : [];
-            if(!is_array($old_value)){
-                $old_value = [];
-            }
-            
-            array_push($old_value,$request->data);
-            Setting::where('field',$field)->update(['value' => json_encode($old_value)]);
-
-        }else{
-            Setting::create([
-                'field' => $field,
-                'value' => json_encode([$request->data]),
-            ]);
+        if(request()->isMethod('post')) {   
+            Setting::where('field','pol')->update(['value' => json_encode($request->pol)]);
+            return back()->with('success','Record Updated');
         }
 
-        return back();
-
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.pol',$data);
     }
 
+    public function pod(Request $request)
+    {
 
+        if(request()->isMethod('post')) {   
+            Setting::where('field','pod')->update(['value' => json_encode($request->pod)]);
+            return back()->with('success','Record Updated');
+        }
 
-
-
-    
-
-
-
-
-
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.pod',$data);
+    }
 
 
 
