@@ -52,6 +52,32 @@ class MasterController extends Controller
         return view('admin.masters.pod',$data);
     }
 
+    public function vessels(Request $request)
+    {
+        if(request()->isMethod('post')) {   
+            Setting::where('field','vessels')->update(['value' => json_encode($request->vessels)]);
+            return back()->with('success','Record Updated');
+        }
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.vessels',$data);
+    }
+
+
+    public function documents(Request $request)
+    {
+        if(request()->isMethod('post')) {   
+            Setting::where('field','documents')->update(['value' => json_encode($request->documents)]);
+            return back()->with('success','Record Updated');
+        }
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.documents',$data);
+    }
+
+
 
 
 }

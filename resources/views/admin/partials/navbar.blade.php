@@ -112,15 +112,19 @@
     </li>
     @endif
 
+    @if(Auth::user()->permission('reports.jobtracking'))
     <li><a class="waves-effect waves-dark {{ request()->is('admin/jobtracking') ? 'active' : '' }}" href="{{URL::to('admin/jobtracking')}}" aria-expanded="false">
         <i class="mdi mdi-border-all"></i>
         <span class="hide-menu">Job Tracking</span></a>
      </li>
-
+    @endif
+    
+    @if(Auth::user()->permission('reports.jobstatus'))
      <li><a class="waves-effect waves-dark {{ request()->is('admin/jobstatus') ? 'active' : '' }}" href="{{URL::to('admin/jobstatus')}}" aria-expanded="false">
         <i class="mdi mdi-border-all"></i>
         <span class="hide-menu">Job Status</span></a>
      </li>
+    @endif
 
     @if(Auth::user()->permission('masters.menu'))
         <li><a class="has-arrow waves-effect waves-dark {{ request()->is('admin/masters*') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false">
@@ -138,6 +142,14 @@
 
                @if(Auth::user()->permission('masters.pod'))
                <li><a href="{{URL::to('admin/masters/pod')}}">POD</a></li>  
+              @endif
+
+              @if(Auth::user()->permission('masters.vessels'))
+               <li><a href="{{URL::to('admin/masters/vessels')}}">Vessels</a></li>  
+              @endif
+
+              @if(Auth::user()->permission('masters.documents'))
+               <li><a href="{{URL::to('admin/masters/documents')}}">Documents</a></li>  
               @endif
 
             </ul>

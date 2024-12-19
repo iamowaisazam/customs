@@ -6,6 +6,7 @@ use App\Enums\Currency;
 use App\Http\Controllers\Controller;
 use App\Models\Challan;
 use App\Models\Consignment;
+use App\Models\ConsignmentItem;
 use App\Models\Customer;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Utilities\ConsigmentUtility;
 use Carbon\Carbon;
+use Dotenv\Parser\Value;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
@@ -258,8 +260,8 @@ class ReportController extends Controller
     
         if($request->ajax()){
 
-            $query = Consignment::join('payorders','payorders.consignment_id','=','consignments.id')
-            ->join('customers','customers.id','=','consignments.customer_id');
+            $query = Consignment::Leftjoin('payorders','payorders.consignment_id','=','consignments.id')
+            ->Leftjoin('customers','customers.id','=','consignments.customer_id');
 
             if($request->has('job_number') && $request->job_number != ''){
                 $query->where('consignments.job_number_prefix',$request->job_number);
@@ -293,11 +295,7 @@ class ReportController extends Controller
             $count = $query->count();
             $results = $query->skip($request->start)
             ->select([
-                'payorders.*',
-                'consignments.job_number_prefix',
-                'consignments.invoice_value',
-                'consignments.lc',
-                'consignments.arival_date',
+                'consignments.*',
                 'customers.customer_name',
                 'customers.company_name',
             ])
@@ -328,21 +326,34 @@ class ReportController extends Controller
 
                 // $action .= '</div>';
 
-                // $status = $value->status ? 'checked' : '';
+                $documents = ' ';
+                $itemName = '';
+                $qty = 0;
+                foreach (ConsignmentItem::where('consignment_id',$value->id)->get() as $key => $item) {
+                    $itemName .= $item->name.' ('.$item->qty.') : '.$item->total.' , ';
+                    $qty += $item->qty;
+                }
+
+               $docs = $value->documents ? json_decode($value->documents) : '';
+                foreach ($docs as $doc) {
+                    $documents .= ' '.$doc->name.' , ';
+                }
+
+                
 
                 array_push($data,[
                     $value->id,
                     $value->job_number_prefix,
-                    $value->company_name,
-                    $value->customer_name,
+                    $value->po_number,
+                    $value->blawbno,
                     $value->lc,
-                    'Item Name',
-                    'qty',
+                    $itemName,
+                    $qty,
                     $value->invoice_value,
                     date('d-m-Y', strtotime($value->arival_date)),
-                    'arrived Date',
-                    'Reamaining documents',
-                    'Remarks',
+                    date('d-m-Y', strtotime($value->igm_date)),
+                    $documents,
+                    $value->remarks,
                 ]);
             }
 

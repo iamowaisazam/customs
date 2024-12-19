@@ -276,6 +276,7 @@ class ConsignmentController extends Controller
             $model->mode_of_shipment = $request->mode_of_shipment;
             $model->gross            = $request->gross ?? 0;
             $model->net              = $request->net ?? 0;
+            $model->remarks          = $request->remarks;
 
             $model->documents = $request->documents ? json_encode($request->documents) : null;
         

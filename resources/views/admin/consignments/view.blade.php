@@ -546,6 +546,14 @@ foreach ($documents as $value) {
                         @endif 
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label">Remarks</label>
+                        <textarea  readonly class="form-control" rows="5">{{$model->remarks}}</textarea>
+                    </div>
+                </div>
+
               </div> 
           </div>
       </section>

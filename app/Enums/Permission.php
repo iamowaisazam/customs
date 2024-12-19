@@ -61,7 +61,9 @@ CONST DATA = array(
             'menu',
             'locations',
             'pol',
-            'pod'
+            'pod',
+            'vessels',
+            'documents',
         ],
         'settings' => [
             'menu',
