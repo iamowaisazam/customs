@@ -38,12 +38,11 @@ static public function get_job_number_with_prefix(){
     ->orderBy('job_number','desc')->get();
 
     if(count($Consignment) > 0){
-        
         $maxJobNumber = intval($Consignment->first()->job_number) + 1;
-        return $maxJobNumber.'/34-24';
+        return sprintf("%02d",$maxJobNumber).'/'.date("Y").'-24';
 
     }else{
-        return '1'.'/34-24';
+        return sprintf("%02d",1).'/'.date("Y").'-OS';
     }   
 
 }
