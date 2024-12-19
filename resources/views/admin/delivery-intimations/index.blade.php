@@ -182,7 +182,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
                             <div class="form-group mb-2">
                                 <label for="Estimated Date & Time">Estimated Date & Time</label>
-                                <input required name="date" class="form-control mt-2" type="date" />
+                                <input required name="date" class="form-control mt-2" type="datetime-local" />
                              </div>
 
                              <div class="form-group mb-2">

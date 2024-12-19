@@ -9,7 +9,7 @@
 
 
 <div class="mb-2 pt-3 description px-3" > 
-    <p>{{$consignment->customer->company_name}} | {{implode(' , ',$consignment->Items->pluck('name')->toArray())}} | {{array_sum($consignment->Items->pluck('qty')->toArray())}} | {{number_format($consignment->invoice_value)}} </p>
+    <p>{{$consignment->customer->company_name}} | {{implode(' , ',$consignment->Items->pluck('name')->toArray())}} | {{array_sum($consignment->Items->pluck('qty')->toArray())}} | {{number_format($consignment->invoice_value)}}</p>
 </div>
 
 <div class="mb-4 pt-3 description px-3" > 
@@ -27,9 +27,9 @@
         </tr>
         <tr>
             <th>Date:</th>  
-            <td>12/13/2024</td>
+            <td>{{date('d-m-Y', strtotime($model->date))}}</td>
             <th>Expected Time Of Arrival:</th>  
-            <td>{{date('d-m-Y', strtotime($consignment->arival_date))}}</td>
+            <td>{{date('h:i A', strtotime($consignment->date))}}</td>
         </tr>
         <tr>
             <th>Location :</th>  

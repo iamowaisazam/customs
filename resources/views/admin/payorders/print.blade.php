@@ -384,7 +384,7 @@
                         </div>
                         <table class="table invoice">
                             <tr class="total">
-                                <th>Assest Value</th>
+                                <th>Assessed Value</th>
                                 <th>{{number_format($result['asset_value'],2)}}</th>
                             </tr>
                         </table>
