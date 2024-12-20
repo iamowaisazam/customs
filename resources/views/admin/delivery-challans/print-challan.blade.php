@@ -85,7 +85,7 @@
 
         <div class="box-row" >
             <span class="label" >Port:	</span>  
-            <span style="width:66px" class="value">{{$consignment->port}}</span> 
+            <span style="width:66px" class="value">{{$consignment->pol}}</span> 
         </div>
 
         <div class="box-row" >
@@ -105,4 +105,5 @@
         <label class="form-label">Oceanic Logistics</label>
     </div>
 </div>
+  <p class="text-center mt-4 mb-0" style="font-weight: 600;">Goods Delivered In Orignal Sealed Condition </p>
 </div>

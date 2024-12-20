@@ -331,8 +331,21 @@ class PayorderController extends Controller
         if($data == false){
             return response()->json(['message' => 'Record Not Found'],400);
         }else{
+
+            ConsignmentItem::where('consignment_id',$data->consignment_id)
+            ->update([
+                "custom_duty" => 0, 
+                "a_custom_duty" => 0, 
+                "rd" => 0, 
+                "saletax" => 0, 
+                "a_saletax" => 0, 
+                "it" => 0, 
+                "eto" => 0, 
+                "after_duties" => 0, 
+            ]);
             $data->delete();
-            return response()->json(['message' => 'Record Not Deleted'],200);
+
+            return response()->json(['message' => 'Record Deleted'],200);
         }
 
     }
