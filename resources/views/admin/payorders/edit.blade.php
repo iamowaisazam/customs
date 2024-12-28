@@ -340,7 +340,7 @@ $consignment = $model->consignment;
         }
 
 
-        $('.custom_duty,.sale_tax,.rd,.income_tax,.cd,.st,.eto,.stan_duty,.psw_fee,.dlap_feee').change(function (e) { 
+        $('.custom_duty,.sale_tax,.rd,.income_tax,.cd,.st,.eto,.stan_duty,.psw_fee,.drap_fee').change(function (e) { 
             calculate();
         });
 
