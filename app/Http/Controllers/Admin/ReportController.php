@@ -334,7 +334,7 @@ class ReportController extends Controller
                     $qty += $item->qty;
                 }
 
-               $docs = $value->documents ? json_decode($value->documents) : '';
+               $docs = $value->documents ? json_decode($value->documents) : [];
                 foreach ($docs as $doc) {
                     $documents .= ' '.$doc->name.' , ';
                 }
