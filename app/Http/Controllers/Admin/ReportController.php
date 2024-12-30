@@ -330,7 +330,7 @@ class ReportController extends Controller
                 $itemName = '';
                 $qty = 0;
                 foreach (ConsignmentItem::where('consignment_id',$value->id)->get() as $key => $item) {
-                    $itemName .= $item->name.' ('.$item->qty.') : '.$item->total.' , ';
+                    $itemName .= $item->name.' , ';
                     $qty += $item->qty;
                 }
 
@@ -344,7 +344,6 @@ class ReportController extends Controller
                 array_push($data,[
                     $value->id,
                     $value->job_number_prefix,
-                    $value->customer_name,
                     $value->po_number,
                     $value->blawbno,
                     $value->lc,

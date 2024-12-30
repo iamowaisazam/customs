@@ -118,7 +118,6 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         <tr class="">
                             <th>#</th>
                             <th class="text-center">Job</th>
-                            <th class="text-center">Customer</th>
                             <th>Po Number</th>
                             <th>BL Number</th>
                             <th class="text-center" >LC/BT/TT Number</th>

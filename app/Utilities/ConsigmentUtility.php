@@ -39,10 +39,10 @@ static public function get_job_number_with_prefix(){
 
     if(count($Consignment) > 0){
         $maxJobNumber = intval($Consignment->first()->job_number) + 1;
-        return sprintf("%02d",$maxJobNumber).'/'.date("Y").'-OS';
+        return 'OCL/'.sprintf("%02d",$maxJobNumber).'/'.date("Y");
 
     }else{
-        return sprintf("%02d",1).'/'.date("Y").'-OS';
+        return 'OCL/'.sprintf("%02d",1).'/'.date("Y");
     }   
 
 }

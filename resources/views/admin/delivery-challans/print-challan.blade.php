@@ -30,19 +30,13 @@
             <span class="label" >IGM No:</span>  
             <span style="width: 95px"  class="value" >{{$consignment->igmno}}</span> 
         </div>
-
         <div class="box-row" >
-            <span class="label" >IGM Date:</span>  
-            <span style="width:91px" class="value" >{{\Carbon\Carbon::parse($consignment->igm_date)->format('Y-m-d') }}</span> 
-        </div>
-
-        <div class="box-row" >
-            <span class="label" >Index No:</span>  
-            <span style="width:91px" class="value">{{$consignment->index_no}}</span> 
+            <span class="label" >Package Type:</span>  
+            <span style="width: 128px"  class="value" >{{$consignment->package_type}}</span> 
         </div>
         <div class="box-row" >
             <span class="label" >LC/BT/TT No:</span>  
-            <span style="width:99px" class="value">{{$consignment->lc}}</span> 
+            <span style="width:209px" class="value">{{$consignment->lc}}</span> 
         </div>
     </div>
 
@@ -71,18 +65,14 @@
 
         <div class="box-row">
             <span class="label">Gross Weight:</span>  
-            <span style="width:49px" class="value">{{$consignment->gross}}</span> 
+            <span style="width:90px" class="value">{{$consignment->gross}}</span> 
         </div>
 
         <div class="box-row" >
             <span class="label">BL No:</span>  
-            <span style="width:70px" class="value">{{$consignment->blawbno}}</span> 
+            <span style="width:115px" class="value">{{$consignment->blawbno}}</span> 
         </div>
-        <div class="box-row" >
-            <span class="label">Po No:</span>  
-            <span style="width:80px" class="value">{{$consignment->po_number}}</span> 
-        </div>
-
+       
         <div class="box-row" >
             <span class="label" >Port:	</span>  
             <span style="width:66px" class="value">{{$consignment->pol}}</span> 
@@ -90,7 +80,7 @@
 
         <div class="box-row" >
             <span class="label">Country:</span>  
-            <span style="width:71px" class="value">{{$consignment->country_origion}}</span> 
+            <span style="width:146px" class="value">{{$consignment->country_origion}}</span> 
         </div>
 
     </div>

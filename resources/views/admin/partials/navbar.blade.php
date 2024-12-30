@@ -145,7 +145,7 @@
               @endif
 
               @if(Auth::user()->permission('masters.vessels'))
-               <li><a href="{{URL::to('admin/masters/vessels')}}">Vessels</a></li>  
+               {{-- <li><a href="{{URL::to('admin/masters/vessels')}}">Vessels</a></li>   --}}
               @endif
 
               @if(Auth::user()->permission('masters.documents'))

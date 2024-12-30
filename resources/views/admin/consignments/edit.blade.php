@@ -291,12 +291,13 @@ foreach ($documents as $value) {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label">Vessel / Flight Name</label>
-                        <select class="form-control" name="vessel" id="">
+                        <input type="text" class="form-control" name="vessel" value="{{$model->vessel}}" />
+                        {{-- <select class="form-control" name="vessel" id="">
                             @foreach ($vessels as $v)
                                 <option @if($v == $model->vessel) selected @endif 
                                     value="{{$v}}">{{$v}}</option>
                             @endforeach
-                        </select>
+                        </select> --}}
                         @if($errors->has('vessel'))
                          <p class="text-danger" >{{ $errors->first('vessel') }}</p>
                         @endif 
@@ -376,7 +377,7 @@ foreach ($documents as $value) {
                     <div class="form-group">
                         <label class="form-label">Rate Of Exchange</label>
                         <input type="number" value="{{$model->rate_of_exchange}}" 
-                        name="rate_of_exchange" class="form-control" placeholder="Rate Of Exchange" />
+                        name="rate_of_exchange" step="0.0001" class="form-control" placeholder="Rate Of Exchange" />
                         @if($errors->has('rate_of_exchange'))
                          <p class="text-danger" >{{ $errors->first('rate_of_exchange') }}</p>
                         @endif 

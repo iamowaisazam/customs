@@ -186,6 +186,13 @@ foreach ($documents as $value) {
 
                <div class="row">
 
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label">Created Date</label>
+                        <input disabled  value="{{\Carbon\Carbon::parse($model->created_at)->format('Y-m-d H:i:s A') }}" class="form-control" />
+                    </div>
+                </div>
+
                   <div class="col-md-3">
                       <div class="form-group">
                           <label class="form-label">Job Number</label>
@@ -356,9 +363,6 @@ foreach ($documents as $value) {
                         <label class="form-label">Vessel / Flight Name</label>
                         <input disabled  value="{{$model->vessel}}" name="vessel" 
                         class="form-control" placeholder="Vessel">
-                        @if($errors->has('vessel'))
-                         <p class="text-danger" >{{ $errors->first('vessel') }}</p>
-                        @endif 
                     </div>
                 </div>
 
