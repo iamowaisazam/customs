@@ -277,6 +277,8 @@ $consignment = $model->consignment;
 
             $('.payorder_items').children().each(function() {
 
+                
+
                 subtotal = 0;
                 
                 let element = $(this);
@@ -313,14 +315,14 @@ $consignment = $model->consignment;
                 element.find('.st_label').val(st_calc.toFixed(2));
             
                 
-                if(custom_duty_calc > 0 || cd_calc > 0 || rd_calc > 0 || sale_tax_calc> 0 || st_calc){
+                // if(custom_duty_calc > 0 || cd_calc > 0 || rd_calc > 0 || sale_tax_calc> 0 || st_calc){
                    it_calc = total_gif + custom_duty_calc + cd_calc + rd_calc + sale_tax_calc + st_calc;
                    it_calc = (it_calc / 100) * income_tax;
                    subtotal += it_calc;   
                    element.find('.income_tax_label').val(it_calc.toFixed(2));
-                }else{
-                    element.find('.income_tax_label').val(0);
-                }
+                // }else{
+                    // element.find('.income_tax_label').val(0);
+                // }
 
                 eto = (eto / 100) * total_gif;
                 subtotal += eto;

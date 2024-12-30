@@ -43,12 +43,12 @@ class ConsignmentItem extends Model
         $a_saletax = $asset_value + $custom_duty + $a_custom_duty + $rd;
         $a_saletax = ($a_saletax / 100) * $this->a_saletax;
 
-        if($custom_duty > 0 || $a_custom_duty > 0 || $rd > 0 || $saletax > 0 || $a_saletax){
+        // if($custom_duty > 0 || $a_custom_duty > 0 || $rd > 0 || $saletax > 0 || $a_saletax){
             $it = $asset_value + $custom_duty + $a_custom_duty + $rd + $saletax + $a_saletax;
             $it = ($it / 100) * $this->it;
-        }else{
-            $it = 0;
-        }
+        // }else{
+            // $it = 0;
+        // }
 
         return [
            "frieght_rate" => $frieght_rate,
