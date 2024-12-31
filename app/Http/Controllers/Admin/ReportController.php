@@ -256,8 +256,7 @@ class ReportController extends Controller
      */
     public function customerstatement(Request $request)
     {
-
-    
+        
         if($request->ajax()){
 
             $query = Consignment::Leftjoin('payorders','payorders.consignment_id','=','consignments.id')
@@ -306,26 +305,6 @@ class ReportController extends Controller
             $data = [];
             foreach ($results as $key => $value) {
 
-                // $action = '<div class="text-end">';
-
-                // if(Auth::user()->permission('payorders.edit')){
-                //  $action .= '<a class="mx-1 btn btn-info" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'/edit">Edit</a>';
-                // }
-
-                // if(Auth::user()->permission('payorders.print')){
-                // $action .= '<a class="mx-1 btn btn-success" href="'.URL::to('/admin/payorders/print/'.Crypt::encryptString($value->id)).'">Print</a>';
-                // }
-
-                // if(Auth::user()->permission('payorders.view')){
-                // $action .= '<a class="mx-1 btn btn-primary" href="'.URL::to('/admin/payorders/'.Crypt::encryptString($value->id)).'">View</a>';
-                // }
-
-                // if(Auth::user()->permission('payorders.delete')){
-                // $action .= '<a class="delete_btn mx-1 btn btn-danger" data-id="'.URL::to('admin/payorders/'.Crypt::encryptString($value->id)).'">Delete</a>';
-                // }
-
-                // $action .= '</div>';
-
                 $documents = ' ';
                 $itemName = '';
                 $qty = 0;
@@ -338,8 +317,6 @@ class ReportController extends Controller
                 foreach ($docs as $doc) {
                     $documents .= ' '.$doc->name.' , ';
                 }
-
-                
 
                 array_push($data,[
                     $value->id,

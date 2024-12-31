@@ -92,6 +92,8 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
                         </div>
                         <div class="col-md-12 text-center">
                             <button type="button" class="search_btn btn btn-primary">Search</button>
+                            <button type="button" id="download_excel" class="btn btn-success">Download Excel</button>
+
                         </div>
                     </div>
                 </div>
@@ -142,9 +144,15 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
 @section('js')
 
+
+
        <script src="{{asset('admin/assets/node_modules/datatables.net/js/jquery.dataTables.min.js')}}"></script>
        <script src="{{asset('admin/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js')}}"></script>
        <script src="https://www.fatwaqa.com/admin/assets/node_modules/switchery/dist/switchery.min.js"></script>
+       {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script> --}}
+       <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
        <script>
         $(function () {
@@ -204,9 +212,71 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             });
         });
 
-        
-   
+        $("#download_excel").click(function(){
 
+            var table = document.querySelector("#example23");
+            let dataArray = [];
+
+            dataArray.push([
+                'Customer Statement '+ $('select[name=customer] option:checked').text(),
+            ]);
+            dataArray.push([
+                'ID',
+                'Job',
+                'Po No',
+                'BL No',
+                'LC/BT/TT No',
+                'Item Name',
+                'Quantity',
+                'Item Amount',
+                'Arrival Date',
+                'Arrived Date',
+                'Remaining Document',
+                'Remarks',  
+            ]);
+            $('#example23 tbody tr').each(function(){
+                dataArray.push([
+                    $(this).find('td:eq(0)').html(),
+                    $(this).find('td:eq(1)').html(),
+                    $(this).find('td:eq(2)').html(),
+                    $(this).find('td:eq(3)').html(),
+                    $(this).find('td:eq(4)').html(),
+                    $(this).find('td:eq(5)').html(),
+                    $(this).find('td:eq(6)').html(),
+                    $(this).find('td:eq(7)').html(),
+                    $(this).find('td:eq(8)').html(),
+                    $(this).find('td:eq(9)').html(),
+                    $(this).find('td:eq(10)').html(),
+                    $(this).find('td:eq(11)').html(),  
+                ]);
+            });
+
+
+            // var ws = XLSX.utils.aoa_to_sheet(dataArray);
+            // ws['!merges'] = [
+            //     { s: { r: 0, c: 0 }, e: { r: 0, c: 11 } }, 
+            // ];
+            // ws['A1'].s = { font: { bold: true }, alignment: { horizontal: "center", vertical: "center" } };
+            // var wb = XLSX.utils.book_new();
+            // XLSX.utils.book_append_sheet(wb, ws, "Customer Statement");
+            // XLSX.writeFile(wb, 'Customer_Statement.xlsx');
+
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Customer Statement');
+            dataArray.forEach((row) => {
+                worksheet.addRow(row);
+            });
+            worksheet.mergeCells('A1:L1');
+            const titleCell = worksheet.getCell('A1');
+            titleCell.font = { bold: true, size: 14 };
+            titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+            workbook.xlsx.writeBuffer().then((data) => {
+                const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                saveAs(blob, 'Customer_Statement.xlsx');
+            });
+
+        });
     });
     </script>
 @endsection
