@@ -58,15 +58,15 @@
     <div class="box" >
         <div class="box-row" >
             <span class="label">BL No:</span>  
-            <span style="width:86px" class="value">{{$consignment->blawbno}}</span> 
+            <span style="width:146px" class="value">{{$consignment->blawbno}}</span> 
         </div>
         <div class="box-row" >
             <span class="label" >Port:	</span>  
-            <span style="width:168px" class="value">{{$consignment->pol}}</span> 
+            <span style="width:218px" class="value">{{$consignment->pol}}</span> 
         </div>
         <div class="box-row" >
             <span class="label">Country:</span>  
-            <span style="width:302px" class="value">{{$consignment->country_origion}}</span> 
+            <span style="width:189px" class="value">{{$consignment->country_origion}}</span> 
         </div>
     </div>
 
