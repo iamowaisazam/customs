@@ -27,6 +27,34 @@ class Setting extends Model
         'grouping',
     ];
 
+    public static function get_account()
+    {
+
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+
+        $account = [];
+        if(isset($data['account']) && $data['account']){
+            $account = json_decode($data['account']);
+        }
+
+        return $account;
+        
+    }
+
+    public static function get_favor()
+    {
+
+        $data = Setting::where('section','masters')->pluck('value','field')->toArray();
+
+        $favor = [];
+        if(isset($data['favor']) && $data['favor']){
+            $favor = json_decode($data['favor']);
+        }
+
+        return $favor;
+        
+    }
+
     public static function get_locations()
     {
 

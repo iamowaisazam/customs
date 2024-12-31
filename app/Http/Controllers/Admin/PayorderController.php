@@ -12,6 +12,7 @@ use App\Models\Customer;
 use App\Models\Exporter;
 use App\Models\Payorder;
 use App\Models\Role;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -204,6 +205,8 @@ class PayorderController extends Controller
             'currencies' => Currency::DATA,
             'package_types' => PackageType::DATA,
             'units' => array_values(Unit::DATA),
+            'favors' => Setting::get_favor(),
+            'accounts' => Setting::get_account(),
         ];
         
         return view('admin.payorders.edit',$data);

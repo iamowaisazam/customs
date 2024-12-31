@@ -203,19 +203,27 @@ $consignment = $model->consignment;
                         <div class="col-md-5 nopadding">
                             <div class="form-group">
                                 <label>Account</label>
-                                <input value="Dues" name="header[title]" value="{{$header->title ?? ''}}"
-                                class="form-control" />
+                                <select name="header[title]" class="form-control mt-2" >
+                                    @foreach ($accounts as $item)
+                                      <option @if($header->title == $item) selected @endif value="{{$item}}">{{$item}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-2 nopadding">
-                                <label>Amount</label>
-                                <input readonly value="{{$header->amount ?? ''}}" name="header[amount]" class="gtotal form-control" />
+                            <div class="form-group">
+                               <label>Amount</label>
+                               <input readonly value="{{$header->amount ?? ''}}" name="header[amount]" class="gtotal form-control mt-2" />
+                            </div>
                         </div>
                         <div class="col-md-5 nopadding">
                             <div class="form-group">
                                 <label>Pay Order In Favor OF</label>
-                                    <input value="{{$header->company ?? ''}}" name="header[company]" 
-                                    class="form-control" />
+                                <select name="header[company]" class="form-control mt-2">
+                                    @foreach ($favors as $item)
+                                    <option @if($header->company == $item) selected @endif value="{{$item}}">{{$item}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -225,20 +233,27 @@ $consignment = $model->consignment;
                         <div class="row">
                                 <div class="col-md-5 nopadding">
                                     <div class="form-group">
-                                        <label>Account</label>
-                                        <input value="{{$f->title}}" name="footer[{{$key}}][title]" class="form-control" />
+                                        <label class="pb-2" >Account</label>
+                                        <select name="footer[{{$key}}][title]" class="form-control">
+                                            @foreach ($accounts as $item)
+                                             <option @if($f->title == $item) selected @endif value="{{$item}}">{{$item}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2 nopadding">
-                                        <label>Amount</label>
+                                        <label class="pb-2" >Amount</label>
                                         <input value="{{$f->amount}}" name="footer[{{$key}}][amount]" class="form-control" />
                                 </div>
                                 <div class="col-md-5 nopadding">
+                                    <label class="pb-2" >Pay Order In Favor OF</label>
                                     <div class="form-group">
-                                        <label>Pay Order In Favor OF</label>
                                         <div class="input-group">
-                                            <input value="{{$f->company}}" name="footer[{{$key}}][company]" 
-                                            class="form-control" />
+                                            <select name="footer[{{$key}}][company]" class="form-control">
+                                                @foreach ($favors as $item)
+                                                 <option @if($f->company == $item) selected @endif value="{{$item}}">{{$item}}</option>
+                                                @endforeach
+                                            </select>
                                             <div class="remove_btn input-group-append">
                                                 <button class="btn btn-danger text-white" type="button">
                                                 <i class="fa fa-minus"></i></button>
@@ -271,7 +286,31 @@ $consignment = $model->consignment;
 <script>
     $(document).ready(function() {
 
+        
+
+        let options1 = @json($accounts);
+        let options2 = @json($favors);
+
+        let optionsHtml1 = '';
+        for (let key in options1) {
+            optionsHtml1 += `<option value="${key}">${options1[key]}</option>`;
+        }
+
+        let optionsHtml2 = '';
+        for (let key in options2) {
+            optionsHtml2 += `<option value="${key}">${options2[key]}</option>`;
+        }
+
+        console.log(options1);
+        
+
+        
+
         function calculate(){
+
+          
+
+
 
             let gtotal = 0;
 
@@ -352,25 +391,29 @@ $consignment = $model->consignment;
         $('.add_row').click(function(){
 
                  let un = getRandomUniqueNumber();
-
+                 
                 $('.data_rows').append(`<div class="row">
                 <div class="col-md-5 nopadding">
                     <div class="form-group">
                         <label>Account</label>
-                        <input value="" name="footer[${un}][title]" 
-                        class="form-control" />
+                        <select class="form-control mt-2" name="footer[${un}][title]" > 
+                            ${optionsHtml1}
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-2 nopadding">
-                    <label>Amount</label>
-                    <input value="" name="footer[${un}][amount]" class="form-control" />
+                    <div class="form-group">
+                      <label>Amount</label>
+                      <input value="" name="footer[${un}][amount]" class="form-control mt-2" />
+                    </div>
                 </div>
                 <div class="col-md-5 nopadding">
                     <div class="form-group">
                         <label>Pay Order In Favor OF</label>
                         <div class="input-group">
-                            <input value="" name="footer[${un}][company]" 
-                            class="form-control" />
+                            <select class="form-control mt-2" name="footer[${un}][company]" > 
+                                ${optionsHtml2}
+                            </select>
                             <div class="remove_btn input-group-append">
                                 <button class="btn btn-danger text-white" type="button">
                                 <i class="fa fa-minus"></i></button>

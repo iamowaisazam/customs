@@ -108,6 +108,8 @@ Route::middleware(['auth'])->group(function () {
     
       
     // Master
+    Route::match(['get', 'post'],'admin/masters/account',[MasterController::class, 'account']);
+    Route::match(['get', 'post'],'admin/masters/favor',[MasterController::class, 'favor']);
     Route::match(['get', 'post'],'admin/masters/locations',[MasterController::class, 'locations']);
     Route::match(['get', 'post'],'admin/masters/pod',[MasterController::class, 'pod']);
     Route::match(['get', 'post'],'admin/masters/pol',[MasterController::class, 'pol']);

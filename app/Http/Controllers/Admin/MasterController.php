@@ -24,6 +24,34 @@ class MasterController extends Controller
         return view('admin.masters.locations',$data);
     }
 
+    public function favor(Request $request)
+    {
+
+        if(request()->isMethod('post')) {   
+            Setting::where('field','favor')->update(['value' => json_encode($request->favor)]);
+            return back()->with('success','Record Updated');
+        }
+
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.favor',$data);
+    }
+
+    public function account(Request $request)
+    {
+
+        if(request()->isMethod('post')) {   
+            Setting::where('field','account')->update(['value' => json_encode($request->account)]);
+            return back()->with('success','Record Updated');
+        }
+
+        $data = [
+            'data' => Setting::pluck('value','field')->toArray()
+        ];
+        return view('admin.masters.account',$data);
+    }
+
     public function pol(Request $request)
     {
 

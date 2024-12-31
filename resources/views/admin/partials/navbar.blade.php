@@ -132,6 +132,16 @@
             <span class="hide-menu">Masters</span></a>
             <ul aria-expanded="false" class="collapse {{ request()->is('admin/masters/*') ? 'in' : '' }}">
 
+                @if(Auth::user()->permission('masters.account'))
+                 <li><a href="{{URL::to('admin/masters/account')}}">Account</a></li>  
+                @endif
+
+                @if(Auth::user()->permission('masters.favor'))
+                 <li><a href="{{URL::to('admin/masters/favor')}}">Favor</a></li>  
+                @endif
+
+          
+
                 @if(Auth::user()->permission('masters.locations'))
                  <li><a href="{{URL::to('admin/masters/locations')}}">Locations</a></li>  
                 @endif
