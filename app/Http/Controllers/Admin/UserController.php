@@ -43,7 +43,7 @@ class UserController extends Controller
 
         if($request->ajax()){
 
-            $query = User::whereNotIn('role_id',[1]);
+            $query = User::whereNotIn('role_id',[1,3]);
 
             if($request->has('status') && $request->status != ''){
                 $query->where('status',$request->status);

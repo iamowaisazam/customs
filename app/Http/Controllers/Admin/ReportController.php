@@ -256,7 +256,7 @@ class ReportController extends Controller
      */
     public function customerstatement(Request $request)
     {
-        
+
         if($request->ajax()){
 
             $query = Consignment::Leftjoin('payorders','payorders.consignment_id','=','consignments.id')
@@ -303,7 +303,16 @@ class ReportController extends Controller
             ->get();
 
             $data = [];
+            $thresholdDays = 3;
+            
             foreach ($results as $key => $value) {
+
+
+                $isNear = ''; 
+                if (abs(strtotime($value->arival_date) - strtotime(date('Y-m-d'))) <= ($thresholdDays * 86400)) {
+                 $isNear = 'nearby';
+                }
+
 
                 $documents = ' ';
                 $itemName = '';
@@ -331,6 +340,7 @@ class ReportController extends Controller
                     date('d-m-Y', strtotime($value->igm_date)),
                     $documents,
                     $value->remarks,
+                    $isNear,
                 ]);
             }
 

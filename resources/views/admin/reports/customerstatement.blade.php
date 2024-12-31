@@ -17,6 +17,18 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
     .dataTables_info {
      float: right;
     }
+
+    .table-hover > tbody > tr:hover {
+        --bs-table-accent-bg: none;
+        color: none;
+    }
+
+    .nearby {
+        background: #ff00002b!important;
+    }
+    .nearby:hover {
+        background: #ff00002b!important;
+    }
 </style>
 @endsection
 
@@ -185,7 +197,12 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
 
             },
             initComplete: function () {                
-            }
+            },
+            createdRow: function (row, data, dataIndex) {  
+              if (data[12] == 'nearby') {
+                $(row).addClass(data[12]);
+              }
+           }
         });
 
         application_table.on( 'draw', function () {

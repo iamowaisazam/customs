@@ -196,7 +196,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             application_table.draw();
         });
 
-        $('input[name=search]').change(function (e) { 
+        $('input[name=search]').on('keyup', function () { 
             application_table.draw();
         });
 
