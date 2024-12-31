@@ -225,7 +225,7 @@ $consignment = $model->consignment;
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Stan Duty</label>
+                            <label class="form-label">Stamp Duty</label>
                             <input readonly type="number"  value="{{$model->stan_duty}}" class="form-control" />
                         </div>
                     </div>

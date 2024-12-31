@@ -166,7 +166,7 @@ $consignment = $model->consignment;
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="form-label">Stan Duty</label>
+                            <label class="form-label">Stamp Duty</label>
                             <input required name="stan_duty"  type="number"  value="{{$model->stan_duty}}" class="stan_duty form-control" />
                         </div>
                     </div>
@@ -391,7 +391,7 @@ $consignment = $model->consignment;
         $('.add_row').click(function(){
 
                  let un = getRandomUniqueNumber();
-                 
+
                 $('.data_rows').append(`<div class="row">
                 <div class="col-md-5 nopadding">
                     <div class="form-group">

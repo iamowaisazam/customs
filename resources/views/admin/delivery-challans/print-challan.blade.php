@@ -43,46 +43,42 @@
     <div class="box" >
         
         <div class="box-row" >
-            <span class="label">Number Of Packages:</span>  
+            <span class="label">Packages:</span>  
             <span style="width:93px" class="value">{{$consignment->no_of_packages}}</span> 
         </div>
 
         <div class="box-row" >
             <span class="label" >Item Name:</span>  
-            <span style="width:176px" class="value">
+            <span style="width:468px" class="value">
                 {{implode(' , ',$consignment->Items->pluck('name')->toArray())}}
             </span> 
         </div>
+    </div>
 
+    <div class="box" >
+        <div class="box-row" >
+            <span class="label">BL No:</span>  
+            <span style="width:86px" class="value">{{$consignment->blawbno}}</span> 
+        </div>
+        <div class="box-row" >
+            <span class="label" >Port:	</span>  
+            <span style="width:168px" class="value">{{$consignment->pol}}</span> 
+        </div>
+        <div class="box-row" >
+            <span class="label">Country:</span>  
+            <span style="width:302px" class="value">{{$consignment->country_origion}}</span> 
+        </div>
+    </div>
+
+    <div class="box" >
         <div class="box-row" >
             <span class="label">Net Weight:</span>  
             <span style="width:86px" class="value">{{$consignment->net}}</span> 
         </div>
-
-    </div>
-
-    <div class="box" >
-
         <div class="box-row">
             <span class="label">Gross Weight:</span>  
             <span style="width:90px" class="value">{{$consignment->gross}}</span> 
         </div>
-
-        <div class="box-row" >
-            <span class="label">BL No:</span>  
-            <span style="width:115px" class="value">{{$consignment->blawbno}}</span> 
-        </div>
-       
-        <div class="box-row" >
-            <span class="label" >Port:	</span>  
-            <span style="width:66px" class="value">{{$consignment->pol}}</span> 
-        </div>
-
-        <div class="box-row" >
-            <span class="label">Country:</span>  
-            <span style="width:146px" class="value">{{$consignment->country_origion}}</span> 
-        </div>
-
     </div>
 </div>
 

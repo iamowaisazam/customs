@@ -403,7 +403,7 @@
                     <table class="table" style="max-width: 97%;margin: auto;margin-bottom: 17px;    margin-top: 15px;" >
                         <tr class="">
                             <td class="text-center" style="border: 1px solid" >
-                                <span class="fw-bold" >Stan Duty :</span> 
+                                <span class="fw-bold" >Stamp Duty :</span> 
                                 {{number_format($model->stan_duty,2)}} PKR
                             </td>
                             <td class="text-center" style="border: 1px solid" >
