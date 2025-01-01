@@ -205,7 +205,7 @@ $consignment = $model->consignment;
                                 <label>Account</label>
                                 <select name="header[title]" class="form-control mt-2" >
                                     @foreach ($accounts as $item)
-                                      <option @if($header->title == $item) selected @endif value="{{$item}}">{{$item}}</option>
+                                      <option @if($header && $header->title == $item) selected @endif value="{{$item}}">{{$item}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -221,7 +221,7 @@ $consignment = $model->consignment;
                                 <label>Pay Order In Favor OF</label>
                                 <select name="header[company]" class="form-control mt-2">
                                     @foreach ($favors as $item)
-                                    <option @if($header->company == $item) selected @endif value="{{$item}}">{{$item}}</option>
+                                    <option @if($header && $header->company == $item) selected @endif value="{{$item}}">{{$item}}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -173,6 +173,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             processing: true,
             "searching": true,  
             fixedColumns: false,
+            ordering:false,
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,

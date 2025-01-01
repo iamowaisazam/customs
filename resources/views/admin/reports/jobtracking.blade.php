@@ -206,6 +206,7 @@ href="{{asset('admin/assets/node_modules/datatables.net-bs4/css/responsive.dataT
             fixedHeader: false,
             scrollCollapse: false,
             scrollX: true,
+            ordering:false,
             // scrollY: '500px',
             autoWidth: false, 
             dom: 'lirtp',
