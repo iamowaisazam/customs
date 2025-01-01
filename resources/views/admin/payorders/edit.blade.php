@@ -74,46 +74,46 @@ $consignment = $model->consignment;
                     <div class="col-md-6">
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Custom Duty :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->custom_duty ?? ''}}" name="items[{{$key}}][custom_duty]" class="custom_duty form-control"  />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->custom_duty ?? ''}}" name="items[{{$key}}][custom_duty]" class="custom_duty form-control"  />
                             <input style="width: 150px;" readonly class="custom_duty_label form-control" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Additional C.D :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->a_custom_duty ?? ''}}" name="items[{{$key}}][a_custom_duty]" class="cd form-control" placeholder="Additional C.D" />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->a_custom_duty ?? ''}}" name="items[{{$key}}][a_custom_duty]" class="cd form-control" placeholder="Additional C.D" />
                             <input style="width: 150px;" readonly class="cd_label form-control" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">R.D :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->rd ?? ''}}" name="items[{{$key}}][rd]" class="rd items form-control" placeholder="R.D" />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->rd ?? ''}}" name="items[{{$key}}][rd]" class="rd items form-control" placeholder="R.D" />
                             <input style="width: 150px;" readonly class="rd_label form-control" />
                         </div>
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Sale Tax :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->saletax ?? ''}}" name="items[{{$key}}][saletax]" class="sale_tax form-control" placeholder="Sale Tax" />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->saletax ?? ''}}" name="items[{{$key}}][saletax]" class="sale_tax form-control" placeholder="Sale Tax" />
                             <input style="width: 150px;" readonly class="sale_tax_label form-control" />  
                         </div>
 
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Additional S.T :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->a_saletax ?? ''}}" name="items[{{$key}}][a_saletax]" class="st form-control" placeholder="Additional S.T" />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->a_saletax ?? ''}}" name="items[{{$key}}][a_saletax]" class="st form-control" placeholder="Additional S.T" />
                             <input style="width: 150px;" readonly class="st_label form-control" />
                         </div>
 
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Income Tax :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->it ?? ''}}" name="items[{{$key}}][it]" class="income_tax form-control" placeholder="Income Tax" />
                             <input readonly style="width: 150px;" class="income_tax_label form-control" />
                         </div>
 
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">ETO :</label>
-                            <input type="number" style="width: 150px;" value="{{$item->eto ?? ''}}" name="items[{{$key}}][eto]" class="eto form-control" placeholder="ETO" />
+                            <input step="0.0001" type="number" style="width: 150px;" value="{{$item->eto ?? ''}}" name="items[{{$key}}][eto]" class="eto form-control" placeholder="ETO" />
                             <input readonly style="width: 150px;" class="eto_label form-control" />
                         </div>
                         
                         <div class="d-flex justify-content-between" >
                             <label class="duties_label form-label">Total :</label>
-                            <input readonly style="width: 150px;" value="{{$item->after_duties}}" 
+                            <input  readonly style="width: 150px;" value="{{$item->after_duties}}" 
                             name="items[{{$key}}][after_duties]" class="total form-control"/>
                         </div>
                     </div>
@@ -167,19 +167,19 @@ $consignment = $model->consignment;
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Stamp Duty</label>
-                            <input required name="stan_duty"  type="number"  value="{{$model->stan_duty}}" class="stan_duty form-control" />
+                            <input step="0.0001"  required name="stan_duty"  type="number"  value="{{$model->stan_duty}}" class="stan_duty form-control" />
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">PSW Fee</label>
-                            <input required name="psw_fee"  type="number"  value="{{$model->psw_fee}}" class="psw_fee form-control" />
+                            <input step="0.0001"  required name="psw_fee"  type="number"  value="{{$model->psw_fee}}" class="psw_fee form-control" />
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">DRAP Fee</label>
-                            <input required name="drap_fee"  type="number" value="{{$model->drap_fee}}" class="drap_fee form-control" />
+                            <input step="0.0001"  required name="drap_fee"  type="number" value="{{$model->drap_fee}}" class="drap_fee form-control" />
                         </div>
                     </div>
                 </div>
@@ -213,7 +213,7 @@ $consignment = $model->consignment;
                         <div class="col-md-2 nopadding">
                             <div class="form-group">
                                <label>Amount</label>
-                               <input readonly value="{{$header->amount ?? ''}}" name="header[amount]" class="gtotal form-control mt-2" />
+                               <input  readonly value="{{$header->amount ?? ''}}" name="header[amount]" class="gtotal form-control mt-2" />
                             </div>
                         </div>
                         <div class="col-md-5 nopadding">
